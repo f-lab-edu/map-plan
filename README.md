@@ -6,9 +6,12 @@ MapWithPlan
 일정이 있는 해당 지역에 커뮤티니도 운영하는 서버입니다.
 
 실제 서버에 대한 학습과 배포를 목적으로 하고 있습니다.
- 
+
+ [OverView](https://ovenapp.io/view/igQ9zwNX8hZeELH4pUkpYjcAqXwPrMgd/)
 
 ### 1. 프로젝트 구조
+- HLD (High-level design)
+  
 
 
 ### 2. 프로젝트 주요 관심사
@@ -32,7 +35,7 @@ MapWithPlan
 
 
 ### 6. Wiki
-
+[Project Wiki](https://github.com/f-lab-edu/map-plan/wiki)
 
 ### 7. CI
 
@@ -42,4 +45,6 @@ MapWithPlan
 ### 9. 화면 설계
 
 #### 9.1 고객화면
+
+[ProtoType](https://ovenapp.io/view/kQ9bpGlA8kSjXexXvNPTym1u2JSNatnK/)
 
