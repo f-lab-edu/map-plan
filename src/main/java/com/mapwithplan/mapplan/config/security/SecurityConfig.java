@@ -1,55 +1,94 @@
 package com.mapwithplan.mapplan.config.security;
 
 
-import com.mapwithplan.mapplan.login.service.LoginService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import com.mapwithplan.mapplan.jwt.JWTFilter;
+import com.mapwithplan.mapplan.jwt.JWTUtil;
+import com.mapwithplan.mapplan.jwt.LoginFilter;
+
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity // 시큐리티 활성화 -> 기본 스프링 필터체인에 등록
-@RequiredArgsConstructor
 public class SecurityConfig  {
 
-    private final LoginService loginService;
-    @Value("${jwt.secret}")
-    private String secretKey;
+    //AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체 생성자 주입
+    private final AuthenticationConfiguration authenticationConfiguration;
+
+    private final JWTUtil jwtUtil;
+
+    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration,JWTUtil jwtUtil) {
+        this.authenticationConfiguration = authenticationConfiguration;
+        this.jwtUtil = jwtUtil;
+    }
+    //BCryptPasswordEncoder 등록
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    //AuthenticationManager Bean 등록
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.httpBasic(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable) // jwt 사용시 사용 x
-                .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers("/member/create","/login")
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated())
-                .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))//jwt 사용하는 경우 상용 rest api 는 세션을 사용하지 않는다.
-                .build();
+        //csrf disable
+        http.csrf((auth) -> auth.disable());
 
-//        http
-//                .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers("/blog/**").permitAll()
-//                        .anyRequest().authenticated()
-//                )
-//                .formLogin(formLogin -> formLogin
-//                        .loginPage("/login")
-//                        .permitAll()
-//                )
-//                .rememberMe(Customizer.withDefaults());
+        //From 로그인 방식 disable
+        http.formLogin((auth) -> auth.disable());
+
+        //http basic 인증 방식 disable
+        http.httpBasic((auth) -> auth.disable());
+
+        //경로별 인가 작업
+        http.authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/login", "/", "/member/create","/member/*/verify").permitAll()
+                        .anyRequest().authenticated());
+        //JWTFilter 등록
+        http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+        //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
+        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+        //세션 설정
+        http.sessionManagement((session) -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        http.cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+                    @Override
+                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+
+                        CorsConfiguration configuration = new CorsConfiguration();
+
+                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        configuration.setAllowedMethods(Collections.singletonList("*"));
+                        configuration.setAllowCredentials(true);
+                        configuration.setAllowedHeaders(Collections.singletonList("*"));
+                        configuration.setMaxAge(3600L);
+
+                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+
+                        return configuration;
+                    }
+                })));
 
         return http.build();
     }
+
 }

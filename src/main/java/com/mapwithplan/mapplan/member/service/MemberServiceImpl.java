@@ -10,6 +10,7 @@ import com.mapwithplan.mapplan.member.domain.MemberCreate;
 import com.mapwithplan.mapplan.member.service.port.MemberRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,10 +26,19 @@ public class MemberServiceImpl implements MemberService {
     private final LocalDateTimeClockHolder clockHolder;
 
     private final UuidHolder uuidHolder;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
     @Transactional
     @Override
     public Member saveMember(MemberCreate memberCreate) {
-        Member member = Member.from(memberCreate, clockHolder,uuidHolder);
+        
+        // 비밀 번호 암호화 후 저장
+        String encodePassword = bCryptPasswordEncoder.encode(memberCreate.getPassword());
+
+        Member member = Member.from(memberCreate,encodePassword , clockHolder,uuidHolder);
+
         member = memberRepository.saveMember(member);
         certificationService.send(memberCreate.getEmail(),member.getId(),member.getCertificationCode());
         return member;

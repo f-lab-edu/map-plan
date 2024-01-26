@@ -43,11 +43,11 @@ public class Member extends BaseTime {
 
 
 
-    public static Member from(MemberCreate memberCreate, LocalDateTimeClockHolder clockHolder, UuidHolder uuidHolder){
+    public static Member from(MemberCreate memberCreate, String encodePassword, LocalDateTimeClockHolder clockHolder, UuidHolder uuidHolder){
         return Member.builder()
                 .email(memberCreate.getEmail())
                 .name(memberCreate.getName())
-                .password(memberCreate.getPassword())
+                .password(encodePassword)
                 .memberStatus(EMemberStatus.PENDING)
                 .certificationCode(uuidHolder.random())
                 .phone(memberCreate.getPhone())

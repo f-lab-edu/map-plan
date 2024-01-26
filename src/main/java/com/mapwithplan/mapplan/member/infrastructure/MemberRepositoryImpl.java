@@ -26,4 +26,10 @@ public class MemberRepositoryImpl implements MemberRepository {
     public Optional<Member> findById(long id) {
         return memberJPARepository.findById(id).map(MemberEntity::toModel);
     }
+
+    @Override
+    public Optional<Member> findByEmail(String email) {
+        return memberJPARepository.findByEmail(email).map(MemberEntity::toModel);
+
+    }
 }

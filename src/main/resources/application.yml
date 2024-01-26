@@ -4,17 +4,23 @@ spring:
     url: jdbc:mysql://localhost:3306/MapPlan
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+
   servlet:
     multipart:
       max-file-size: 1MB
       max-request-size: 10MB
+  sql:
+    init:
+      data-locations: classpath*:data.sql
+      mode: always
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
         format_sql: true
+    defer-datasource-initialization: true
   mail:
     host: smtp.gmail.com
     port: 587
@@ -27,12 +33,12 @@ spring:
           timeout: 5000
           starttls:
             enable: true
+  jwt:
+    secret: vmfhaltmskdlstkfkdgodyroqkfwkdbalroqkfwkdbalaaaaaaaaaaaaaaaabbbbb
+
 file:
   dir: C:/Users/kyj20/Desktop/flabproject/ProjectFile/
 
 logging.level:
   org.hibernate.SQL: debug
 
-
-jwt:
-  secret: hello.world.ee.ff

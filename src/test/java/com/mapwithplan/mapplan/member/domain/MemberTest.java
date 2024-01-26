@@ -23,7 +23,7 @@ class MemberTest {
                 .name("테스트")
                 .build();
         //When
-        Member from = Member.from(memberCreate,
+        Member from = Member.from(memberCreate,"test" ,
                 new TestClockHolder(LocalDateTime.of(2024, 1, 24, 12, 30)),
                 new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"));
         //Then
