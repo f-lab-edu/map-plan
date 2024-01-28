@@ -44,9 +44,7 @@ public class MemberEntity extends BaseTimeEntity {
     @Column(name = "certification_code")
     private String certificationCode;
 
-    //    @Column
-//    @OneToMany(mappedBy = "member",fetch = FetchType.LAZY)
-//    private List<MemberProfileFileEntity> memberProfileFile =new ArrayList<>();
+
 
     @Builder
     public MemberEntity(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String email, String password, String name, String phone, String statusMessage, EMemberStatus memberStatus, String certificationCode) {

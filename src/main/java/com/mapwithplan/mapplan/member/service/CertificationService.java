@@ -1,9 +1,11 @@
 package com.mapwithplan.mapplan.member.service;
 
 import com.mapwithplan.mapplan.member.service.port.MailSender;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@Builder
 @Service
 @RequiredArgsConstructor
 public class CertificationService {
