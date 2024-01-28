@@ -10,6 +10,7 @@ import com.mapwithplan.mapplan.member.service.MemberServiceImpl;
 import com.mapwithplan.mapplan.member.service.port.MailSender;
 import com.mapwithplan.mapplan.member.service.port.MemberRepository;
 import lombok.Builder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class TestContainer {
 
@@ -32,6 +33,7 @@ public class TestContainer {
                 .clockHolder(clockHolder)
                 .uuidHolder(uuidHolder)
                 .memberRepository(this.memberRepository)
+                .passwordEncoder(new BCryptPasswordEncoder())
                 .build();
         this.memberCreateController = MemberCreateController
                 .builder()

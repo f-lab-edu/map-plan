@@ -7,6 +7,7 @@ import com.mapwithplan.mapplan.common.timeutils.service.port.LocalDateTimeClockH
 import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 
@@ -43,11 +44,11 @@ public class Member extends BaseTime {
 
 
 
-    public static Member from(MemberCreate memberCreate, String encodePassword, LocalDateTimeClockHolder clockHolder, UuidHolder uuidHolder){
+    public static Member from(MemberCreate memberCreate, LocalDateTimeClockHolder clockHolder, UuidHolder uuidHolder, PasswordEncoder encoder){
         return Member.builder()
                 .email(memberCreate.getEmail())
                 .name(memberCreate.getName())
-                .password(encodePassword)
+                .password(encoder.encode(memberCreate.getPassword()))
                 .memberStatus(EMemberStatus.PENDING)
                 .certificationCode(uuidHolder.random())
                 .phone(memberCreate.getPhone())

@@ -11,6 +11,7 @@ import com.mapwithplan.mapplan.member.service.port.MemberRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final UuidHolder uuidHolder;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Transactional
@@ -35,9 +36,7 @@ public class MemberServiceImpl implements MemberService {
     public Member saveMember(MemberCreate memberCreate) {
         
         // 비밀 번호 암호화 후 저장
-        String encodePassword = bCryptPasswordEncoder.encode(memberCreate.getPassword());
-
-        Member member = Member.from(memberCreate,encodePassword , clockHolder,uuidHolder);
+        Member member = Member.from(memberCreate, clockHolder,uuidHolder,passwordEncoder);
 
         member = memberRepository.saveMember(member);
         certificationService.send(memberCreate.getEmail(),member.getId(),member.getCertificationCode());

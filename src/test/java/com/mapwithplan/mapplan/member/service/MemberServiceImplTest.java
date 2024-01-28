@@ -11,6 +11,7 @@ import com.mapwithplan.mapplan.mock.TestUuidHolder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 
@@ -29,6 +30,7 @@ class MemberServiceImplTest {
                 .uuidHolder(new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab"))
                 .clockHolder(new TestClockHolder(LocalDateTime.of(2024, 1, 24, 12, 30)))
                 .certificationService(new CertificationService(fakeMailSender))
+                .passwordEncoder(new BCryptPasswordEncoder())
                 .build();
 
         fakeMemberRepository.saveMember(Member.builder()
@@ -70,7 +72,7 @@ class MemberServiceImplTest {
         Member member = memberService.saveMember(memberCreate);
         //Then
         assertThat(member.getId()).isNotNull();
-        assertThat(member.getPassword()).isEqualTo(memberCreate.getPassword());
+        assertThat(member.getPassword()).isNotEqualTo(memberCreate.getPassword());
         assertThat(member.getMemberStatus()).isEqualTo(EMemberStatus.PENDING);
         assertThat(member.getCertificationCode()).isEqualTo("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab");
     }

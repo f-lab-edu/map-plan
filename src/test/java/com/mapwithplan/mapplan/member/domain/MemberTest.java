@@ -5,6 +5,7 @@ import com.mapwithplan.mapplan.mock.TestClockHolder;
 import com.mapwithplan.mapplan.mock.TestUuidHolder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 
@@ -23,13 +24,14 @@ class MemberTest {
                 .name("테스트")
                 .build();
         //When
-        Member from = Member.from(memberCreate,"test" ,
+        Member from = Member.from(memberCreate ,
                 new TestClockHolder(LocalDateTime.of(2024, 1, 24, 12, 30)),
-                new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"));
+                new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                new BCryptPasswordEncoder());
         //Then
         assertThat(from.getId()).isNull();
         assertThat(from.getEmail()).isEqualTo(memberCreate.getEmail());
-        assertThat(from.getPassword()).isEqualTo(memberCreate.getPassword());
+        assertThat(from.getPassword()).isNotEqualTo(memberCreate.getPassword());
         assertThat(from.getPhone()).isEqualTo(memberCreate.getPhone());
         assertThat(from.getName()).isEqualTo(memberCreate.getName());
         assertThat(from.getCertificationCode()).isEqualTo("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
