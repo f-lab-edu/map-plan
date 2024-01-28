@@ -33,8 +33,6 @@ spring:
           timeout: 5000
           starttls:
             enable: true
-  jwt:
-    secret: vmfhaltmskdlstkfkdgodyroqkfwkdbalroqkfwkdbalaaaaaaaaaaaaaaaabbbbb
 
 file:
   dir: C:/Users/kyj20/Desktop/flabproject/ProjectFile/

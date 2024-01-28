@@ -1,11 +1,11 @@
 package com.mapwithplan.mapplan.config.security;
 
 
-import com.mapwithplan.mapplan.jwt.JWTFilter;
-import com.mapwithplan.mapplan.jwt.JWTUtil;
-import com.mapwithplan.mapplan.jwt.LoginFilter;
+
+import com.mapwithplan.mapplan.jwt.JwtAuthenticationFilter;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,25 +17,24 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Collections;
+/**
+ * @EnableMethodSecurity를 추가하여 메소드 시큐리티를 활성화한다.
+ */
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity // 시큐리티 활성화 -> 기본 스프링 필터체인에 등록
 public class SecurityConfig  {
 
-    //AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체 생성자 주입
-    private final AuthenticationConfiguration authenticationConfiguration;
-    private final JWTUtil jwtUtil;
 
 
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration,JWTUtil jwtUtil) {
-        this.authenticationConfiguration = authenticationConfiguration;
-        this.jwtUtil = jwtUtil;
-    }
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;	// JwtAuthenticationFilter 주입
+
     //BCryptPasswordEncoder 등록
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
@@ -61,14 +60,14 @@ public class SecurityConfig  {
 
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) ->
-                auth.requestMatchers("/login", "/", "/member/create","/member/*/verify").permitAll() // requestMatchers의 인자로 전달된 url은 모두에게 허용
-                .requestMatchers(PathRequest.toH2Console()).permitAll()
+                // requestMatchers의 인자로 전달된 url은 모두에게 허용
+                auth.requestMatchers("/login", "/", "/member/create","/member/*/verify").permitAll()
                 .anyRequest().authenticated());// 그 외의 모든 요청은 인증 필요
 
-        //JWTFilter 등록
-        http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+        //jwtAuthenticationFilter 등록
+        http.addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class);
         //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
-        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
 
         //세션 설정
         http.sessionManagement((session) -> session
