@@ -5,6 +5,7 @@ import com.mapwithplan.mapplan.login.controller.response.LoginResponse;
 import com.mapwithplan.mapplan.login.domain.Login;
 import com.mapwithplan.mapplan.login.service.LoginService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody Login login){
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid Login login){
         log.info("getEmail = {}, getPassword = {}",login.getEmail(),login.getPassword());
         loginService.login(login);
         return ResponseEntity
