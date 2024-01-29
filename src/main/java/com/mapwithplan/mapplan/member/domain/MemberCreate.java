@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * 회원 가입시 사용되는 DTO 입니다.
+ */
 @Getter
 public class MemberCreate {
 

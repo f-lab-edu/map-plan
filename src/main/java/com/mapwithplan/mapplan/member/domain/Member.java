@@ -10,6 +10,9 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+/**
+ * 회원 도메인 입니다.
+ */
 @Getter
 public class Member extends BaseTime {
 
@@ -56,6 +59,11 @@ public class Member extends BaseTime {
                 .build();
     }
 
+    /**
+     * 현재 인증 코드와 들어온 인증 코드 파라미터의 일치 여부를 판단합니다.
+     * @param certificationCode 인증 코드입니다.
+     * @return
+     */
     public Member certificate(String certificationCode) {
         if (!this.certificationCode.equals(certificationCode)) {
             throw new CertificationCodeNotMatchedException();

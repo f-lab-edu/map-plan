@@ -8,6 +8,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+/**
+ * localDate 시간을 지정하는 클래스입니다.
+ */
 @Component
 public class ClockHolder implements LocalDateTimeClockHolder {
 
