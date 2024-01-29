@@ -1,11 +1,15 @@
 package com.mapwithplan.mapplan.config.swagger;
 
 
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -39,4 +43,18 @@ public class SwaggerConfig {
                         .version("1.0.0"));
     }
 
+    /**
+     * 이렇게 설정하고 애플리케이션을 실행해서 스웨거 문서를 실행해보면 아래와 같이 헤더를 추가할 수 있는 텍스트 필드가 추가된 것을 볼 수 있다.
+     * @return
+     */
+    @Bean
+    public OperationCustomizer globalHeader() {
+        return (operation, handlerMethod) -> {
+            operation.addParametersItem(new Parameter()
+                    .in(ParameterIn.HEADER.toString())
+                    .schema(new StringSchema().name("Refresh-Token"))
+                    .name("Refresh-Token"));
+            return operation;
+        };
+    }
 }

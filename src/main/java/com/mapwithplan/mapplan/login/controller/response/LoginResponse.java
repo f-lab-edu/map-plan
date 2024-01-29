@@ -8,25 +8,29 @@ import lombok.Getter;
 @Getter
 public class LoginResponse {
 
-    private String email;
+    private final String email;
 
-    private String token;
-    private EMemberType memberType;
+
+    private final EMemberType memberType;
+
+    private final String accessToken;
+    private final String refreshToken;
+
+
     @Builder
-    public LoginResponse(String email, String token, EMemberType memberType) {
+    public LoginResponse(String email, EMemberType memberType, String accessToken, String refreshToken) {
         this.email = email;
-        this.token = token;
         this.memberType = memberType;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 
-
-
-
-    public static LoginResponse from(Member member, String token){
+    public static LoginResponse from(Member member, String accessToken,String refreshToken){
         return LoginResponse.builder()
                 .email(member.getEmail())
                 .memberType(member.getEMemberType())
-                .token(token)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -23,6 +24,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Collections;
 /**
+ * JWT 에 필요한 필터를 주입 받으며 password 를 암호와 처리하는 bCryptPasswordEncoder 도 주입한다.
  * @EnableMethodSecurity를 추가하여 메소드 시큐리티를 활성화한다.
  */
 
@@ -32,9 +34,10 @@ import java.util.Collections;
 public class SecurityConfig  {
 
 
-
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;	// JwtAuthenticationFilter 주입
-
+    // JwtAuthenticationFilter 주입
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    //여기서 AuthenticationEntryPoint는 빈으로 등록된 엔트리포인트를 주입받는다.
+    private final AuthenticationEntryPoint entryPoint;
     //BCryptPasswordEncoder 등록
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
@@ -64,7 +67,10 @@ public class SecurityConfig  {
                 .anyRequest().authenticated());// 그 외의 모든 요청은 인증 필요
 
         //jwtAuthenticationFilter 등록
-        http.addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class)
+                //이 경우에는 앞서 작성했던 JwtAuthenticationEntryPoint를 주입받게 된다.
+                .exceptionHandling(handler -> handler.authenticationEntryPoint(entryPoint));
+
 
 
         //세션 설정

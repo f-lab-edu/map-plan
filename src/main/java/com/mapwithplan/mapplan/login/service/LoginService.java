@@ -6,6 +6,9 @@ import com.mapwithplan.mapplan.jwt.TokenProvider;
 import com.mapwithplan.mapplan.login.controller.response.LoginResponse;
 import com.mapwithplan.mapplan.login.domain.Login;
 import com.mapwithplan.mapplan.member.domain.Member;
+import com.mapwithplan.mapplan.member.infrastructure.MemberRefreshTokenRepository;
+import com.mapwithplan.mapplan.member.infrastructure.entity.MemberEntity;
+import com.mapwithplan.mapplan.member.infrastructure.entity.MemberRefreshTokenEntity;
 import com.mapwithplan.mapplan.member.service.port.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +24,8 @@ public class LoginService {
     private final PasswordEncoder encoder;
     private final TokenProvider tokenProvider;
 
-
-    @Transactional(readOnly = true)
+    private final MemberRefreshTokenRepository memberRefreshTokenRepository;
+    @Transactional
     public LoginResponse login(Login login){
 
         Member member = memberRepository
@@ -31,8 +34,16 @@ public class LoginService {
                 .orElseThrow(() -> new ResourceNotFoundException("Member", login.getEmail()));
 
         //토큰 생성 로직
-        String token = tokenProvider.createToken(String.format("%s:%s", member.getId(), member.getEMemberType()));
-        log.info("토큰 = {}",token);
-        return LoginResponse.from(member,token);
+        String accessToken = tokenProvider.createAccessToken(String.format("%s:%s", member.getId(), member.getEMemberType()));
+        String refreshToken = tokenProvider.createRefreshToken();
+
+        memberRefreshTokenRepository
+                .findByMemberEntityId(member.getId())
+                .ifPresentOrElse(
+                        it ->it.updateRefreshToken(refreshToken),
+                        () -> memberRefreshTokenRepository.save(new MemberRefreshTokenEntity(MemberEntity.from(member),refreshToken))
+                );
+        log.info("토큰 = {} , 리프레시 토큰 = {}",accessToken, refreshToken);
+        return LoginResponse.from(member,accessToken,refreshToken);
     }
 }
