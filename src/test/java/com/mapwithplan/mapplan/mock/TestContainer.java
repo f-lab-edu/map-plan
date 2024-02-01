@@ -1,8 +1,13 @@
 package com.mapwithplan.mapplan.mock;
 
-import com.mapwithplan.mapplan.common.timeutils.infrastructure.ClockHolder;
-import com.mapwithplan.mapplan.common.timeutils.service.port.LocalDateTimeClockHolder;
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
 import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
+import com.mapwithplan.mapplan.jwt.util.JwtTokenizer;
+import com.mapwithplan.mapplan.loginlogout.controller.LoginLogoutController;
+import com.mapwithplan.mapplan.loginlogout.controller.port.LoginService;
+import com.mapwithplan.mapplan.loginlogout.service.LoginServiceImpl;
+import com.mapwithplan.mapplan.loginlogout.service.RefreshTokenService;
+import com.mapwithplan.mapplan.loginlogout.service.port.RefreshTokenRepository;
 import com.mapwithplan.mapplan.member.controller.MemberController;
 import com.mapwithplan.mapplan.member.controller.MemberCreateController;
 import com.mapwithplan.mapplan.member.service.CertificationService;
@@ -23,8 +28,15 @@ public class TestContainer {
     public final CertificationService certificationService;
 
     public final MemberController memberController;
+
+    public final LoginService loginService;
+
+    public final LoginLogoutController loginLogoutController;
+
+    public final RefreshTokenService refreshTokenService;
+    public final RefreshTokenRepository refreshTokenRepository;
     @Builder
-    public TestContainer(LocalDateTimeClockHolder clockHolder, UuidHolder uuidHolder) {
+    public TestContainer(TimeClockHolder clockHolder, UuidHolder uuidHolder) {
         this.mailSender = new FakeMailSender();
         this.memberRepository = new FakeMemberRepository();
         this.certificationService = new CertificationService(this.mailSender);
@@ -41,6 +53,22 @@ public class TestContainer {
                 .build();
         this.memberController = MemberController.builder()
                 .memberService(memberService)
+                .build();
+        String accessSecret = "testtesttesttesttesttesttesttesttesttesttesttest";
+        String refreshSecret = "testtesttesttesttesttesttesttesttesttesttesttest";
+        this.refreshTokenRepository = new FakeRefreshTokenRepository();
+        this.loginService = LoginServiceImpl.builder()
+                .refreshTokenRepository(this.refreshTokenRepository)
+                .jwtTokenizer(new JwtTokenizer(accessSecret, refreshSecret))
+                .encoder(new FakePasswordEncoder())
+                .timeClockHolder(clockHolder)
+                .memberRepository(this.memberRepository)
+                .build();
+        this.loginLogoutController = LoginLogoutController.builder()
+                .loginService(loginService)
+                .build();
+        this.refreshTokenService = RefreshTokenService.builder()
+                .refreshTokenRepository(this.refreshTokenRepository)
                 .build();
     }
 }

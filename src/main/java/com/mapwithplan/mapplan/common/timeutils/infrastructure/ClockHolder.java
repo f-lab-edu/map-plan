@@ -1,15 +1,15 @@
 package com.mapwithplan.mapplan.common.timeutils.infrastructure;
 
-import com.mapwithplan.mapplan.common.timeutils.service.port.LocalDateTimeClockHolder;
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
 import org.springframework.stereotype.Component;
 
-import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Date;
 
 @Component
-public class ClockHolder implements LocalDateTimeClockHolder {
+public class ClockHolder implements TimeClockHolder {
 
     @Override
     public LocalDateTime clockHold() {
@@ -19,5 +19,11 @@ public class ClockHolder implements LocalDateTimeClockHolder {
         // UTC 시간을 LocalDateTime으로 변환하기
         return LocalDateTime.ofInstant(currentUtcTime, ZoneOffset.UTC);
     }
+
+    @Override
+    public Date dateClockHold() {
+        return new Date(System.currentTimeMillis());
+    }
+
 }
 

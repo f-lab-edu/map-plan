@@ -11,16 +11,16 @@ public class LoginResponse {
     private final String email;
 
 
-    private final EMemberRole memberType;
+    private final EMemberRole memberRole;
 
     private final String accessToken;
     private final String refreshToken;
 
 
     @Builder
-    public LoginResponse(String email, EMemberRole memberType, String accessToken, String refreshToken) {
+    public LoginResponse(String email, EMemberRole memberRole, String accessToken, String refreshToken) {
         this.email = email;
-        this.memberType = memberType;
+        this.memberRole = memberRole;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
@@ -28,7 +28,7 @@ public class LoginResponse {
     public static LoginResponse from(Member member, String accessToken,String refreshToken){
         return LoginResponse.builder()
                 .email(member.getEmail())
-                .memberType(member.getEMemberRole())
+                .memberRole(member.getEMemberRole())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();

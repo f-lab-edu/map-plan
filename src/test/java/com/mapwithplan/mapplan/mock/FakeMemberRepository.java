@@ -1,5 +1,6 @@
 package com.mapwithplan.mapplan.mock;
 
+import com.mapwithplan.mapplan.member.domain.EMemberRole;
 import com.mapwithplan.mapplan.member.domain.EMemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.service.port.MemberRepository;
@@ -19,7 +20,8 @@ public class FakeMemberRepository implements MemberRepository {
                     .email(member.getEmail())
                     .name(member.getName())
                     .password(member.getPassword())
-                    .memberStatus(EMemberStatus.PENDING)
+                    .memberStatus(member.getMemberStatus())
+                    .eMemberRole(EMemberRole.MEMBER)
                     .certificationCode(member.getCertificationCode())
                     .phone(member.getPhone())
                     .createdAt(member.getCreatedAt())
@@ -41,6 +43,7 @@ public class FakeMemberRepository implements MemberRepository {
 
     @Override
     public Optional<Member> findByEmail(String email) {
-        return Optional.empty();
+        return data.stream().filter(item -> item.getEmail().equals(email)).findAny();
+
     }
 }

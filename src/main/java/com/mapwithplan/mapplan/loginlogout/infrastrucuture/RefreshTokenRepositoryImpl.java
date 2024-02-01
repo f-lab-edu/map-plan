@@ -1,6 +1,7 @@
 package com.mapwithplan.mapplan.loginlogout.infrastrucuture;
 
 
+import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
 import com.mapwithplan.mapplan.loginlogout.domain.RefreshToken;
 import com.mapwithplan.mapplan.loginlogout.infrastrucuture.entity.RefreshTokenEntity;
 import com.mapwithplan.mapplan.loginlogout.service.port.RefreshTokenRepository;
@@ -43,7 +44,11 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
 
     @Override
     public RefreshToken findByToken(String refreshToken) {
-        return null;
+        return refreshTokenJPARepository
+                .findByToken(refreshToken)
+                .orElseThrow(() -> new ResourceNotFoundException("RefreshToken",refreshToken))
+                .toModel();
+
     }
 
     @Override

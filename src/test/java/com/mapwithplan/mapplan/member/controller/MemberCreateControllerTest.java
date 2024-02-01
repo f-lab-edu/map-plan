@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
@@ -24,7 +25,7 @@ class MemberCreateControllerTest {
         MemberCreate memberCreate =
                 new MemberCreate("test", "test", "test", "test");
         TestContainer testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(LocalDateTime.of(2024,1,13,12,30)))
+                .clockHolder(new TestClockHolder(Instant.now().toEpochMilli()))
                 .uuidHolder(() -> "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .build();
         //When

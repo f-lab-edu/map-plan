@@ -5,6 +5,7 @@ import com.mapwithplan.mapplan.loginlogout.domain.Login;
 
 public interface LoginService {
 
+
     LoginResponse login(Login login);
 
     void logout(String memberRefreshTokenUuid);

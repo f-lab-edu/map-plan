@@ -8,6 +8,7 @@ import com.mapwithplan.mapplan.loginlogout.domain.Login;
 
 
 import jakarta.validation.Valid;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+@Builder
 @Slf4j
 @RestController
 @RequestMapping("/member")
@@ -24,12 +26,8 @@ public class LoginLogoutController {
     private final LoginService loginService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid Login login, BindingResult result){
-        if(result.hasErrors()){
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(login);
-        }
+    public ResponseEntity<?> login(@RequestBody @Valid Login login){
+
         log.info("getEmail = {}, getPassword = {}",login.getEmail(),login.getPassword());
         LoginResponse loginResponse = loginService.login(login);
 
