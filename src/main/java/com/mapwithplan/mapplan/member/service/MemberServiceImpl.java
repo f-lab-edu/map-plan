@@ -12,7 +12,6 @@ import com.mapwithplan.mapplan.member.service.port.MemberRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,9 +55,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void verifyEmail(long id, String certificationCode) {
         Member member = memberRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Member", id));
-        log.info("member= {}",member.getEMemberType());
+        log.info("member= {}",member.getEMemberRole());
         member = member.certificate(certificationCode);
-        log.info("member= {}",member.getEMemberType());
+        log.info("member= {}",member.getEMemberRole());
         memberRepository.saveMember(member);
     }
 

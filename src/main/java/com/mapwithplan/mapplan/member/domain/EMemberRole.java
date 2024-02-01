@@ -1,6 +1,6 @@
 package com.mapwithplan.mapplan.member.domain;
 
-public enum EMemberType {
+public enum EMemberRole {
 
     MEMBER, ADMIN
 }

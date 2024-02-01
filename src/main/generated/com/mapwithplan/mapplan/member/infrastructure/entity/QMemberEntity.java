@@ -30,9 +30,9 @@ public class QMemberEntity extends EntityPathBase<MemberEntity> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final EnumPath<com.mapwithplan.mapplan.member.domain.EMemberStatus> memberStatus = createEnum("memberStatus", com.mapwithplan.mapplan.member.domain.EMemberStatus.class);
+    public final EnumPath<com.mapwithplan.mapplan.member.domain.EMemberRole> memberRole = createEnum("memberRole", com.mapwithplan.mapplan.member.domain.EMemberRole.class);
 
-    public final EnumPath<com.mapwithplan.mapplan.member.domain.EMemberType> memberType = createEnum("memberType", com.mapwithplan.mapplan.member.domain.EMemberType.class);
+    public final EnumPath<com.mapwithplan.mapplan.member.domain.EMemberStatus> memberStatus = createEnum("memberStatus", com.mapwithplan.mapplan.member.domain.EMemberStatus.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;

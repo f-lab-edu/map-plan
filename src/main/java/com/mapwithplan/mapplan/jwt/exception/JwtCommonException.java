@@ -1,4 +1,4 @@
-package com.mapwithplan.mapplan.common.exception;
+package com.mapwithplan.mapplan.jwt.exception;
 
 /**
  * JWT의 공통된 예외를 처리합니다.

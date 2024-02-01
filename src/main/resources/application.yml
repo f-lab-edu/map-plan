@@ -34,9 +34,11 @@ spring:
           starttls:
             enable: true
 
+
 file:
   dir: C:/Users/kyj20/Desktop/flabproject/ProjectFile/
 
 logging.level:
   org.hibernate.SQL: debug
-
+server:
+  address: localhost

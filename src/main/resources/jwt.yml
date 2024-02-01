@@ -1,6 +1,7 @@
 spring:
   #secret-key : JWT의 서명에 사용할 비밀키. 서명부의 암호화 알고리즘으로 HS512를 사용할 것이기 때문에 길이가 512비트(64바이트) 이상인 비밀키를 사용해야 한다.
   secret-key: NiOeyFbN1Gqo10bPgUyTFsRMkJpGLXSvGP04eFqj5B30r5TcrtlSXfQ7TndvYjNvfkEKLqILn0j1SmKODO1Yw3JpBBgI3nVPEahqxeY8qbPSFGyzyEVxnl4AQcrnVneI
+  refresh-Key: NiOeyFbN1Gqo10bPgUyTFsRMkJpGLXSvGP04eFqj5B30r5TcrtlSXfQ7TndvYjNvfkEKLqILn0j1SmKODO1Yw3JpBBgI3nVPEahqxeY8qbPSFGyzyEVxnl4AQcrnVneI
   expiration-minutes: 30
   #expiration-hours : 발급된 토큰의 만료시간. 토큰이 발급되고 설정된 시간이 지나면 해당 토큰은 무효화된다.
   refresh-expiration-hours: 24

@@ -1,4 +1,4 @@
-package com.mapwithplan.mapplan.login.domain;
+package com.mapwithplan.mapplan.loginlogout.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;

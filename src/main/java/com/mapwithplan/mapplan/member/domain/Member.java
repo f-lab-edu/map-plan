@@ -30,9 +30,9 @@ public class Member extends BaseTime {
 
     private final EMemberStatus memberStatus;
 
-    private final EMemberType eMemberType;
+    private final EMemberRole eMemberRole;
     @Builder
-    public Member(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String email, String password, String name, String phone, String statusMessage, String certificationCode, EMemberStatus memberStatus, EMemberType eMemberType) {
+    public Member(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String email, String password, String name, String phone, String statusMessage, String certificationCode, EMemberStatus memberStatus, EMemberRole eMemberRole) {
         super(createdAt, modifiedAt);
         this.id = id;
         this.email = email;
@@ -42,7 +42,7 @@ public class Member extends BaseTime {
         this.statusMessage = statusMessage;
         this.certificationCode = certificationCode;
         this.memberStatus = memberStatus;
-        this.eMemberType = eMemberType;
+        this.eMemberRole = eMemberRole;
     }
 
 
@@ -57,7 +57,7 @@ public class Member extends BaseTime {
                 .phone(memberCreate.getPhone())
                 .createdAt(clockHolder.clockHold())
                 .modifiedAt(clockHolder.clockHold())
-                .eMemberType(EMemberType.MEMBER)
+                .eMemberRole(EMemberRole.MEMBER)
                 .build();
     }
 
@@ -72,7 +72,7 @@ public class Member extends BaseTime {
                 .password(password)
                 .memberStatus(EMemberStatus.ACTIVE)
                 .phone(phone)
-                .eMemberType(eMemberType)
+                .eMemberRole(eMemberRole)
                 .certificationCode(certificationCode)
                 .build();
     }

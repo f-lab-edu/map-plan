@@ -1,9 +1,7 @@
-package com.mapwithplan.mapplan.common.exception.controller;
+package com.mapwithplan.mapplan.jwt.exception;
 
-import com.mapwithplan.mapplan.common.exception.JwtCommonException;
 import io.jsonwebtoken.ExpiredJwtException;
 
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.HttpStatus;
