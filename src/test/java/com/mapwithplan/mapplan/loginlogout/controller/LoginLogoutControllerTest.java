@@ -7,22 +7,17 @@ import com.mapwithplan.mapplan.loginlogout.domain.RefreshToken;
 import com.mapwithplan.mapplan.member.domain.EMemberRole;
 import com.mapwithplan.mapplan.member.domain.EMemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
-import com.mapwithplan.mapplan.mock.FakeBindingResult;
 import com.mapwithplan.mapplan.mock.TestClockHolder;
 import com.mapwithplan.mapplan.mock.TestContainer;
 import com.mapwithplan.mapplan.mock.TestUuidHolder;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class LoginLogoutControllerTest {
 

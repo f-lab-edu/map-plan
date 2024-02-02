@@ -22,6 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+/**
+ * 로그인, 로그아웃을 다루는 Service 입니다.
+ * LoginService 인터페이스를 구현했습니다.
+ */
 @Builder
 @Slf4j
 @Service
@@ -34,15 +39,23 @@ public class LoginServiceImpl implements LoginService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final TimeClockHolder timeClockHolder;
 
+    /**
+     * 회원에 대한 login 를 주입 받은후 조회합니다. 조회 불가능시 ResourceNotFoundException 을 호출합니다.
+     * 회원의 INACTIVE PENDING 상태를 검증합니다.
+     * 회원의 역할 MEMBER 또는 ADMIN 을 리스트에 저장하고 토큰을 생성시 사용합니다.
+     * jwtTokenizer 을 통해 accessToken, refreshToken 생성하고 refreshToken 만료시 재접속이면 업데이트를 실행하고
+     * 만료후 다시로그인 시 새로 저장을 합니다.
+     * @param login email, password 를 담고 있습니다.
+     * @return
+     */
     @Override
     @Transactional
     public LoginResponse login(Login login){
         Member member = memberRepository.findByEmail(login.getEmail())
                 .filter(findMember -> encoder.matches(login.getPassword(), findMember.getPassword()))
                 .orElseThrow(() -> new ResourceNotFoundException("member", login.getEmail()));
-        if(member.getMemberStatus() == EMemberStatus.INACTIVE || member.getMemberStatus() ==EMemberStatus.PENDING){
-            throw new IllegalArgumentException("접근 불가능한 계정입니다.");
-        }
+
+        memberStatusVerification(member.getMemberStatus());
 
         String memberRoles = member.getEMemberRole().toString();
         List<String> Roles  = new ArrayList<>();
@@ -52,6 +65,37 @@ public class LoginServiceImpl implements LoginService {
         String accessToken = jwtTokenizer.createAccessToken(member.getId(), member.getEmail(), Roles,timeClockHolder);
         String refreshToken = jwtTokenizer.createRefreshToken(member.getId(), member.getEmail(), Roles,timeClockHolder);
 
+        saveOrUpdateRefreshToken(member,refreshToken);
+
+        return LoginResponse.from(member,accessToken,refreshToken);
+    }
+
+    /**
+     * 로그아웃 시도 시 DB 에 refreshToken 정보를 삭제 요청합니다.
+     * @param refreshToken
+     */
+    @Override
+    public void logout(String refreshToken) {
+        log.info("refreshToken = {}", refreshToken);
+        refreshTokenRepository.delete(refreshToken);
+    }
+
+    /**
+     * 회원의 상태를 검증하는 내부 메서드 입니다.
+     * @param eMemberStatus
+     */
+    private void memberStatusVerification(EMemberStatus eMemberStatus){
+        if(eMemberStatus == EMemberStatus.INACTIVE || eMemberStatus ==EMemberStatus.PENDING){
+            throw new IllegalArgumentException("접근 불가능한 계정입니다.");
+        }
+    }
+
+    /**
+     * 토근에 대한 저장 업데이트를 진행합  니다.
+     * @param member
+     * @param refreshToken
+     */
+    private void saveOrUpdateRefreshToken(Member member, String refreshToken){
         Optional<RefreshToken> findToken = refreshTokenRepository.findByMember(member);
         if (findToken.isPresent()){
             findToken.get().update(refreshToken);
@@ -60,13 +104,5 @@ public class LoginServiceImpl implements LoginService {
             refreshTokenRepository
                     .save(RefreshToken.from(member, refreshToken));
         }
-
-        return LoginResponse.from(member,accessToken,refreshToken);
-    }
-
-    @Override
-    public void logout(String refreshToken) {
-        log.info("refreshToken = {}", refreshToken);
-        refreshTokenRepository.delete(refreshToken);
     }
 }

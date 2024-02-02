@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 
 
 /**
+ * RefreshTokenEntity 는 JPA 사용을 위한 엔티티 입니다.
  * 회원 한명당 1개의 리프레시 토큰만 가질 수 있게 할 것이므로 RefreshToken과 Member를 1:1 연관관계를 맺어줍니다.
- * 그리고 연관된 회원ID를 외래키 겸 기본키로 지정해주며,
- * 재발급 횟수를 제한할 것이기 때문에 리프레시 토큰마다 재발급 횟수를 저장할 프로퍼티도 추가한 엔티티입니다.
+ * RefreshToken 도메인과 함께 매칭해서 사용합니다.
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity

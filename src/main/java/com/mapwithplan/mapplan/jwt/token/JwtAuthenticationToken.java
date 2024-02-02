@@ -6,6 +6,9 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
+/**
+ * 토큰에 대한 정보를 담는 역할을 합니다. 주로 필터와 토큰 생성시 사용됩니다.
+ */
 @Getter
 public class JwtAuthenticationToken extends AbstractAuthenticationToken {
     private String token;
@@ -13,8 +16,7 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
     private Object credentials;
 
     /**
-     * Creates a token with the supplied array of authorities.
-     *
+     * 제공된 권한 배열을 사용하여 토큰을 만듭니다.
      * @param authorities the collection of <tt>GrantedAuthority</tt>s for the principal
      *                    represented by this authentication object.
      */

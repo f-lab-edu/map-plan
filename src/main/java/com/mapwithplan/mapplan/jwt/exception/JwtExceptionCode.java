@@ -2,6 +2,9 @@ package com.mapwithplan.mapplan.jwt.exception;
 
 import lombok.Getter;
 
+/**
+ * 예외에 대한 값을 담아둔 Enum 입니다.
+ */
 public enum JwtExceptionCode {
 
     UNKNOWN_ERROR("UNKNOWN_ERROR", "UNKNOWN_ERROR"),

@@ -16,23 +16,32 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
+
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-
+/**
+ * JwtAuthenticationFilter 는 요청으로 들어온 것을 토큰에 대한 값을 검증하는 필터 입니다.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final AuthenticationManager authenticationManager ;
 
+    /**
+     *  요청으로 들어온 필터를 분류 후 검증한 다음 예외를 처리하는 필터입니다.
+     * @param request
+     * @param response
+     * @param filterChain
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-
 
         String token="";
         try {
@@ -75,6 +84,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
+    /**
+     * 토큰이 없는 경우 예외를 발생 시키며 권한도 분류합니다.
+     * @param token
+     */
     private void getAuthentication(String token) {
         JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(token);
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
@@ -82,6 +95,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .setAuthentication(authenticate);
     }
 
+    /**
+     * 토큰 값을 getHeader 통해 받은후 Bearer와 분리합니다.
+     * 그후 토큰값을 받습니다.
+     * @param request
+     * @return
+     */
     private String getToken(HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");
         if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer")){

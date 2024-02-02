@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 
+/**
+ * 이메일, 패스워드를 검증하고 로그인시 정보를 전달하는 DTO 입니다.
+ */
 @Getter
 public class Login {
 
