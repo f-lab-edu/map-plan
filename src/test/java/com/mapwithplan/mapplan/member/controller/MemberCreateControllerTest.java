@@ -23,7 +23,7 @@ class MemberCreateControllerTest {
     void MemberCreateControllerTestMemberCreate() {
         //Given
         MemberCreate memberCreate =
-                new MemberCreate("test", "test", "test", "test");
+                new MemberCreate("testAOP", "testAOP", "testAOP", "testAOP");
         TestContainer testContainer = TestContainer.builder()
                 .clockHolder(new TestClockHolder(Instant.now().toEpochMilli()))
                 .uuidHolder(() -> "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
@@ -35,7 +35,7 @@ class MemberCreateControllerTest {
         //Then
         assertThat(result.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
         assertThat(result.getClass()).isNotNull();
-        assertThat(result.getBody().getEmail()).isEqualTo("test");
+        assertThat(result.getBody().getEmail()).isEqualTo("testAOP");
     }
 
 }

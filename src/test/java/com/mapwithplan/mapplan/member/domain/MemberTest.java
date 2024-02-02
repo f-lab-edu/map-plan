@@ -20,7 +20,7 @@ class MemberTest {
     void MemberCreateTest() {
         //Given
         MemberCreate memberCreate = MemberCreate.builder()
-                .email("test@gmail.com")
+                .email("testAOP@gmail.com")
                 .password("test123")
                 .phone("010-1234-1234")
                 .name("테스트")
@@ -50,7 +50,7 @@ class MemberTest {
         //Given
         Member member = Member.builder()
                 .id(1L)
-                .email("test@gmail.com")
+                .email("testAOP@gmail.com")
                 .password("test123")
                 .phone("010-1234-1234")
                 .name("테스트")
@@ -70,7 +70,7 @@ class MemberTest {
         //Given
         Member member = Member.builder()
                 .id(1L)
-                .email("test@gmail.com")
+                .email("testAOP@gmail.com")
                 .password("test123")
                 .phone("010-1234-1234")
                 .name("테스트")

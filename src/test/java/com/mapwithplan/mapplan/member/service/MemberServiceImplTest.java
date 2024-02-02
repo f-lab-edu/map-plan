@@ -38,7 +38,7 @@ class MemberServiceImplTest {
 
         fakeMemberRepository.saveMember(Member.builder()
                 .id(1L)
-                .email("test@gmail.com")
+                .email("testAOP@gmail.com")
                 .password("test123")
                 .phone("010-1234-1234")
                 .name("테스트")
@@ -66,7 +66,7 @@ class MemberServiceImplTest {
     void MemberServiceSaveTest() {
         //Given
         MemberCreate memberCreate = MemberCreate.builder()
-                .name("test")
+                .name("testAOP")
                 .email("test12@gmail.com")
                 .phone("test1123")
                 .password("test123")
@@ -85,8 +85,8 @@ class MemberServiceImplTest {
     void MemberServiceDontSaveDuplicateMemberTest() {
         //Given
         MemberCreate memberCreate = MemberCreate.builder()
-                .name("test")
-                .email("test@gmail.com")
+                .name("testAOP")
+                .email("testAOP@gmail.com")
                 .phone("test1123")
                 .password("test123")
                 .build();

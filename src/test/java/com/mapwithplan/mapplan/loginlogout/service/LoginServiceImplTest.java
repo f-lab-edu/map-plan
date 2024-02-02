@@ -41,7 +41,7 @@ class LoginServiceImplTest {
 
         Member member = Member.builder()
                 .id(1L)
-                .email("test@gmail.com")
+                .email("testAOP@gmail.com")
                 .password("test123")
                 .phone("010-1234-1234")
                 .name("테스트")
@@ -77,7 +77,7 @@ class LoginServiceImplTest {
         fakeRefreshTokenRepository.save(
                 RefreshToken.builder()
                         .member(member3)
-                        .token("test")
+                        .token("testAOP")
                         .id(1L).build()
         );
         fakeMemberRepository.saveMember(member2);
@@ -97,7 +97,7 @@ class LoginServiceImplTest {
     @DisplayName("로그인시 휴면 계정은 막는 테스트 합니다.")
     void loginTest() {
         //Given
-        Login login = new Login("test@gmail.com", "test123");
+        Login login = new Login("testAOP@gmail.com", "test123");
         //When
         //Then
         assertThatThrownBy(()->loginService.login(login))
@@ -141,7 +141,7 @@ class LoginServiceImplTest {
     @DisplayName("로그아웃 시 리프레시 토큰을 삭제합니다.")
     void logoutTest() {
         //Given
-        String refreshToken = "test";
+        String refreshToken = "testAOP";
         //When
         loginService.logout(refreshToken);
         //Then

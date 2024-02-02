@@ -23,8 +23,8 @@ class MemberControllerTest {
     void MemberControllerTestVerifyEmail() {
         //Given
         Member member = Member.builder()
-                .email("test@gmail.com")
-                .name("test")
+                .email("testAOP@gmail.com")
+                .name("testAOP")
                 .memberStatus(EMemberStatus.PENDING)
                 .password("123123")
                 .phone("123123123")
@@ -47,8 +47,8 @@ class MemberControllerTest {
     void MemberControllerTestNotVerifyEmail() {
         //Given
         Member member = Member.builder()
-                .email("test@gmail.com")
-                .name("test")
+                .email("testAOP@gmail.com")
+                .name("testAOP")
                 .memberStatus(EMemberStatus.PENDING)
                 .password("123123")
                 .phone("123123123")

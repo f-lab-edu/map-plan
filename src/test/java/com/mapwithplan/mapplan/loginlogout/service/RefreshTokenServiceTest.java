@@ -28,7 +28,7 @@ class RefreshTokenServiceTest {
 
     String refreshSecret = "abcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefg";
     String accessSecret= "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest";
-    String email = "test@gmail.com";
+    String email = "testAOP@gmail.com";
     List<String> roles = List.of("MEMBER");
     Long id = 1L;
     final Long REFRESH_TOKEN_EXPIRE_COUNT = 7 * 24 * 60 * 60 * 1000L;
@@ -47,7 +47,7 @@ class RefreshTokenServiceTest {
         fakeRefreshTokenRepository.save(RefreshToken.builder()
                 .token("TEST")
                 .id(1L)
-                .member(Member.builder().name("test").build())
+                .member(Member.builder().name("testAOP").build())
                 .build());
         this.refreshTokenService =new RefreshTokenService(fakeRefreshTokenRepository);
 
@@ -59,8 +59,8 @@ class RefreshTokenServiceTest {
     void addRefreshTokenTest() {
         //Given
         MemberCreate memberCreate = MemberCreate.builder()
-                .name("test")
-                .email("test@gmail.com")
+                .name("testAOP")
+                .email("testAOP@gmail.com")
                 .phone("test1123")
                 .password("test123")
                 .build();

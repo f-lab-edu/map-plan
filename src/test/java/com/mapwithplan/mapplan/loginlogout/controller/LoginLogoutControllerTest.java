@@ -26,8 +26,8 @@ class LoginLogoutControllerTest {
     void LoginLogoutControllerLoginTest() {
         //Given
         Member member = Member.builder()
-                .email("test@gmail.com")
-                .name("test")
+                .email("testAOP@gmail.com")
+                .name("testAOP")
                 .memberStatus(EMemberStatus.ACTIVE)
                 .password("123123")
                 .phone("123123123")
@@ -42,7 +42,7 @@ class LoginLogoutControllerTest {
                 .build();
         testContainer.memberRepository.saveMember(member);
 
-        Login login = new Login("test@gmail.com", "123123");
+        Login login = new Login("testAOP@gmail.com", "123123");
         //When
         ResponseEntity<?> loginMember = testContainer.loginLogoutController.login(login);
 
@@ -55,8 +55,8 @@ class LoginLogoutControllerTest {
     void LoginLogoutControllerWrongPasswordFailTest() {
         //Given
         Member member = Member.builder()
-                .email("test@gmail.com")
-                .name("test")
+                .email("testAOP@gmail.com")
+                .name("testAOP")
                 .memberStatus(EMemberStatus.ACTIVE)
                 .password("123123")
                 .phone("123123123")
@@ -71,7 +71,7 @@ class LoginLogoutControllerTest {
                 .build();
         testContainer.memberRepository.saveMember(member);
 
-        Login login = new Login("test@gmail.com", "1233");
+        Login login = new Login("testAOP@gmail.com", "1233");
         //When
 
 
@@ -85,8 +85,8 @@ class LoginLogoutControllerTest {
     void LoginLogoutControllerWrongEmailFailTest() {
         //Given
         Member member = Member.builder()
-                .email("test@gmail.com")
-                .name("test")
+                .email("testAOP@gmail.com")
+                .name("testAOP")
                 .memberStatus(EMemberStatus.ACTIVE)
                 .password("123123")
                 .phone("123123123")
@@ -101,7 +101,7 @@ class LoginLogoutControllerTest {
                 .build();
         testContainer.memberRepository.saveMember(member);
 
-        Login login = new Login("test@gail.com", "123123");
+        Login login = new Login("testAOP@gail.com", "123123");
         //When
 
 
@@ -115,8 +115,8 @@ class LoginLogoutControllerTest {
     void LoginLogoutControllerPENDINGFailTest() {
         //Given
         Member member = Member.builder()
-                .email("test@gmail.com")
-                .name("test")
+                .email("testAOP@gmail.com")
+                .name("testAOP")
                 .memberStatus(EMemberStatus.PENDING)
                 .password("123123")
                 .phone("123123123")
@@ -131,7 +131,7 @@ class LoginLogoutControllerTest {
                 .build();
         testContainer.memberRepository.saveMember(member);
 
-        Login login = new Login("test@gmail.com", "123123");
+        Login login = new Login("testAOP@gmail.com", "123123");
         //When
 
 
@@ -144,8 +144,8 @@ class LoginLogoutControllerTest {
     void LoginLogoutControllerINACTIVEFailTest() {
         //Given
         Member member = Member.builder()
-                .email("test@gmail.com")
-                .name("test")
+                .email("testAOP@gmail.com")
+                .name("testAOP")
                 .memberStatus(EMemberStatus.INACTIVE)
                 .password("123123")
                 .phone("123123123")
@@ -160,7 +160,7 @@ class LoginLogoutControllerTest {
                 .build();
         testContainer.memberRepository.saveMember(member);
 
-        Login login = new Login("test@gmail.com", "123123");
+        Login login = new Login("testAOP@gmail.com", "123123");
         //When
 
 

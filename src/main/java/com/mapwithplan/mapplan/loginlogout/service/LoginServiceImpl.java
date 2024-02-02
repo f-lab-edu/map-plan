@@ -1,6 +1,7 @@
 package com.mapwithplan.mapplan.loginlogout.service;
 
 
+import com.mapwithplan.mapplan.common.aop.logparameteraop.annotation.LogInputTrace;
 import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
 import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
 import com.mapwithplan.mapplan.jwt.util.JwtTokenizer;
@@ -48,6 +49,7 @@ public class LoginServiceImpl implements LoginService {
      * @param login email, password 를 담고 있습니다.
      * @return
      */
+    @LogInputTrace
     @Override
     @Transactional
     public LoginResponse login(Login login){
@@ -76,7 +78,6 @@ public class LoginServiceImpl implements LoginService {
      */
     @Override
     public void logout(String refreshToken) {
-        log.info("refreshToken = {}", refreshToken);
         refreshTokenRepository.delete(refreshToken);
     }
 
