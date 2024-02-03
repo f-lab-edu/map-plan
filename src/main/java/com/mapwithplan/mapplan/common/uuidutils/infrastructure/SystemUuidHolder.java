@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+/**
+ * UUID 를 생성하는 클래스입니다.
+ */
 @Component
 public class SystemUuidHolder implements UuidHolder {
 
