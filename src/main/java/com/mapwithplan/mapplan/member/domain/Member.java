@@ -1,0 +1,81 @@
+package com.mapwithplan.mapplan.member.domain;
+
+
+import com.mapwithplan.mapplan.common.exception.CertificationCodeNotMatchedException;
+import com.mapwithplan.mapplan.common.timeutils.domain.BaseTime;
+import com.mapwithplan.mapplan.common.timeutils.service.port.LocalDateTimeClockHolder;
+import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
+import lombok.Builder;
+import lombok.Getter;
+
+import java.time.LocalDateTime;
+
+/**
+ * 회원 도메인 입니다.
+ */
+@Getter
+public class Member extends BaseTime {
+
+    private final Long id;
+
+    private final String email;
+
+    private final String password;
+
+    private final String name;
+
+    private final String phone;
+
+    private final String statusMessage;
+
+    private final String certificationCode;
+
+    private final EMemberStatus memberStatus;
+    @Builder
+    public Member(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String email, String password, String name, String phone, String statusMessage, String certificationCode, EMemberStatus memberStatus) {
+        super(createdAt, modifiedAt);
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+        this.statusMessage = statusMessage;
+        this.certificationCode = certificationCode;
+        this.memberStatus = memberStatus;
+    }
+
+
+
+    public static Member from(MemberCreate memberCreate, LocalDateTimeClockHolder clockHolder, UuidHolder uuidHolder){
+        return Member.builder()
+                .email(memberCreate.getEmail())
+                .name(memberCreate.getName())
+                .password(memberCreate.getPassword())
+                .memberStatus(EMemberStatus.PENDING)
+                .certificationCode(uuidHolder.random())
+                .phone(memberCreate.getPhone())
+                .createdAt(clockHolder.clockHold())
+                .modifiedAt(clockHolder.clockHold())
+                .build();
+    }
+
+    /**
+     * 현재 인증 코드와 들어온 인증 코드 파라미터의 일치 여부를 판단합니다.
+     * @param certificationCode 인증 코드입니다.
+     * @return
+     */
+    public Member certificate(String certificationCode) {
+        if (!this.certificationCode.equals(certificationCode)) {
+            throw new CertificationCodeNotMatchedException();
+        }
+        return Member.builder()
+                .id(id)
+                .email(email)
+                .name(name)
+                .password(password)
+                .memberStatus(EMemberStatus.ACTIVE)
+                .phone(phone)
+                .certificationCode(certificationCode)
+                .build();
+    }
+}
