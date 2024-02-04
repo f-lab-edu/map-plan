@@ -4,6 +4,9 @@ import com.mapwithplan.mapplan.member.domain.Member;
 
 import java.util.Optional;
 
+/**
+ * MemberRepository 는 MemberServiceImpl 과 함께 사용하는 Port 역할을 합니다.
+ */
 public interface MemberRepository {
 
     Member saveMember(Member member);

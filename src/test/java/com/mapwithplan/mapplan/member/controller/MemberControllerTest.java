@@ -39,7 +39,6 @@ class MemberControllerTest {
         //Then
         assertThat(voidResponseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(302));
         assertThat(testContainer.memberRepository.findById(1).get().getMemberStatus()).isEqualTo(EMemberStatus.ACTIVE);
-//        assertThat(voidResponseEntity.)
     }
 
     @Test
