@@ -190,7 +190,7 @@ class JwtTokenizerTest {
         //When
         Long userIdFromToken = jwtTokenizer.getUserIdFromToken("Bearer "+accessToken);
         //Then
-        System.out.println("userIdFromToken = " + userIdFromToken);
+
         assertThat(userIdFromToken).isEqualTo(1);
     }
 }

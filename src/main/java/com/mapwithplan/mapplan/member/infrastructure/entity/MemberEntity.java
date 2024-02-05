@@ -3,6 +3,7 @@ package com.mapwithplan.mapplan.member.infrastructure.entity;
 
 import com.mapwithplan.mapplan.member.domain.EMemberStatus;
 import com.mapwithplan.mapplan.member.domain.EMemberRole;
+import com.mapwithplan.mapplan.member.domain.EditMember;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.common.timeutils.entity.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -93,5 +94,12 @@ public class MemberEntity extends BaseTimeEntity {
                 .eMemberRole(memberRole)
                 .build();
     }
+
+    public void editFrom(Member editMember){
+        this.statusMessage = editMember.getStatusMessage();
+        this.phone = editMember.getPhone();
+        changeModifiedAt(editMember.getModifiedAt());
+    }
+
 
 }

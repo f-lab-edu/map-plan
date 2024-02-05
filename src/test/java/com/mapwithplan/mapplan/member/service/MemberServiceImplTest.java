@@ -2,13 +2,9 @@ package com.mapwithplan.mapplan.member.service;
 
 import com.mapwithplan.mapplan.common.exception.CertificationCodeNotMatchedException;
 import com.mapwithplan.mapplan.common.exception.DuplicateResourceException;
-import com.mapwithplan.mapplan.member.domain.EMemberStatus;
-import com.mapwithplan.mapplan.member.domain.Member;
-import com.mapwithplan.mapplan.member.domain.MemberCreate;
-import com.mapwithplan.mapplan.mock.FakeMailSender;
-import com.mapwithplan.mapplan.mock.FakeMemberRepository;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
-import com.mapwithplan.mapplan.mock.TestUuidHolder;
+import com.mapwithplan.mapplan.jwt.util.JwtTokenizer;
+import com.mapwithplan.mapplan.member.domain.*;
+import com.mapwithplan.mapplan.mock.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -24,16 +21,20 @@ import static org.assertj.core.api.Assertions.*;
 class MemberServiceImplTest {
 
     private MemberServiceImpl memberService;
+    private JwtTokenizer jwtTokenizer;
     @BeforeEach
     void init(){
         FakeMemberRepository fakeMemberRepository = new FakeMemberRepository();
         FakeMailSender fakeMailSender = new FakeMailSender();
+        this.jwtTokenizer = new JwtTokenizer("testsettsetsetsetsetestestsettsetsetsetsetestestsettsetsetsetsetes"
+                ,"lasdkfgaslkdjfhasldkjfsadlfknlkdajvnbsfdlkblasdkfgaslkdjfhasldkjfsadlfknlkdajvnbsfdlkb");
         this.memberService = MemberServiceImpl.builder()
                 .memberRepository(fakeMemberRepository)
                 .uuidHolder(new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab"))
                 .clockHolder(new TestClockHolder(Instant.now().toEpochMilli()))
                 .certificationService(new CertificationService(fakeMailSender))
                 .passwordEncoder(new BCryptPasswordEncoder())
+                .jwtTokenizer(this.jwtTokenizer)
                 .build();
 
         fakeMemberRepository.saveMember(Member.builder()
@@ -54,6 +55,18 @@ class MemberServiceImplTest {
                 .password("test333")
                 .phone("010-2222-2222")
                 .name("테스트333")
+                .memberStatus(EMemberStatus.ACTIVE)
+                .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
+                .createdAt(LocalDateTime.of(2024, 1, 24, 12, 30))
+                .modifiedAt(LocalDateTime.of(2024, 1, 24, 12, 30))
+                .build());
+        fakeMemberRepository.saveMember(Member.builder()
+                .id(3L)
+                .email("test3@naver.com")
+                .password("test333")
+                .phone("010-2222-2722")
+                .name("테스트333")
+                        .eMemberRole(EMemberRole.MEMBER)
                 .memberStatus(EMemberStatus.ACTIVE)
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .createdAt(LocalDateTime.of(2024, 1, 24, 12, 30))
@@ -120,5 +133,44 @@ class MemberServiceImplTest {
         assertThatThrownBy(()-> memberService.verifyEmail(2,"123123"))
                 .isInstanceOf(CertificationCodeNotMatchedException.class);
 
+    }
+
+
+    @Test
+    @DisplayName("헤더에 있는 AccessToken 에서 이메일을 사용해 회원을 찾아온다.")
+    void findEmailByAccessToken() {
+        //Given
+
+        Member byId = memberService.findById(3L);
+        ArrayList<String> roles = new ArrayList<>();
+        roles.add(byId.getEMemberRole().toString());
+        String accessToken = jwtTokenizer.createAccessToken(byId.getId(), byId.getEmail(), roles, new TestClockHolder(900000000000000L));
+        //When
+        accessToken = "Bearer "+accessToken;
+
+        Member emailUseAccessToken = memberService
+                .findByEmailUseAccessToken(accessToken);
+
+        //then
+        assertThat(emailUseAccessToken).isEqualTo(byId);
+
+    }
+
+    @Test
+    @DisplayName("MemberService 를 이용해 회원 정보를 수정할 수 있다.")
+    void editMemberServiceTest() {
+        //Given
+        Member byId = memberService.findById(3L);
+        ArrayList<String> roles = new ArrayList<>();
+        roles.add(byId.getEMemberRole().toString());
+        String accessToken = jwtTokenizer.createAccessToken(byId.getId(), byId.getEmail(), roles, new TestClockHolder(900000000000000L));
+        EditMember editMember = new EditMember("1234", "010-2313-1234");
+        //When
+        accessToken = "Bearer "+accessToken;
+        Member member = memberService.editMemberDetail(accessToken, editMember);
+
+        //Then
+        assertThat(member.getStatusMessage()).isEqualTo(editMember.getStatusMessage());
+        assertThat(member.getPhone()).isEqualTo(editMember.getPhone());
     }
 }

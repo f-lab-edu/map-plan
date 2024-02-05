@@ -5,10 +5,13 @@ import com.mapwithplan.mapplan.common.exception.DuplicateResourceException;
 import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
 import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
 import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
+import com.mapwithplan.mapplan.jwt.util.JwtTokenizer;
 import com.mapwithplan.mapplan.member.controller.port.MemberService;
+import com.mapwithplan.mapplan.member.domain.EditMember;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.domain.MemberCreate;
 import com.mapwithplan.mapplan.member.service.port.MemberRepository;
+import io.jsonwebtoken.Claims;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +40,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final JwtTokenizer jwtTokenizer;
 
 
     /**
@@ -81,6 +85,32 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member findById(long id) {
         return memberRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Member",id));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Member findByEmailUseAccessToken(String accessToken) {
+        String email = getEmailFrom(accessToken);
+        return memberRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Member", email));
+    }
+
+    @Override
+    @Transactional
+    public Member editMemberDetail(String authorizationHeader, EditMember editMember) {
+        String email = getEmailFrom(authorizationHeader);
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Member", email));
+        Member changeMember = member.edit(editMember, clockHolder);
+
+        return  memberRepository.editMemberDetail(changeMember);
+    }
+
+    private String getEmailFrom(String authorizationHeader) {
+        String jwtToken = authorizationHeader.replace("Bearer ", "");
+        Claims claims = jwtTokenizer.parseAccessToken(jwtToken);
+        return claims.getSubject();
     }
 
 

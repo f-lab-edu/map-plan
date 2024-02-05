@@ -1,5 +1,6 @@
 package com.mapwithplan.mapplan.member.controller.port;
 
+import com.mapwithplan.mapplan.member.domain.EditMember;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.domain.MemberCreate;
 
@@ -30,4 +31,12 @@ public interface MemberService {
      */
     Member findById(long id);
 
+    /**
+     * accessToken 을 parser 를 통해 정보를 찾아오는 메서드입니다.
+     * @param accessToken 헤더에 있는 정보를 활용합니다.
+     * @return
+     */
+    Member findByEmailUseAccessToken(String accessToken);
+
+    Member editMemberDetail(String authorizationHeader, EditMember editMember);
 }

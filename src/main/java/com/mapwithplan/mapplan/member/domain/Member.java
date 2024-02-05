@@ -84,4 +84,21 @@ public class Member extends BaseTime {
                 .certificationCode(certificationCode)
                 .build();
     }
+
+
+    public Member edit(EditMember editMember,TimeClockHolder clockHolder){
+        return Member.builder()
+                .id(id)
+                .email(email)
+                .name(name)
+                .password(password)
+                .memberStatus(EMemberStatus.ACTIVE)
+                .phone(editMember.getPhone())
+                .eMemberRole(eMemberRole)
+                .certificationCode(certificationCode)
+                .statusMessage(editMember.getStatusMessage())
+                .createdAt(getCreatedAt())
+                .modifiedAt(clockHolder.clockHold())
+                .build();
+    }
 }

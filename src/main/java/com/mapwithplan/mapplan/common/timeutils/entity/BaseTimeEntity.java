@@ -34,4 +34,9 @@ public class BaseTimeEntity {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
+
+
+    public void changeModifiedAt(LocalDateTime modifiedAt){
+        this.modifiedAt = modifiedAt;
+    }
 }
