@@ -85,7 +85,12 @@ public class Member extends BaseTime {
                 .build();
     }
 
-
+    /**
+     * 회원 정보를 수정하는 도메인입니다.
+     * @param editMember 번호와 상태메세지를 담고 있고 변경에 활용합니다.
+     * @param clockHolder 수정 시간을 기록하기 위한 객체입니다.
+     * @return
+     */
     public Member edit(EditMember editMember,TimeClockHolder clockHolder){
         return Member.builder()
                 .id(id)

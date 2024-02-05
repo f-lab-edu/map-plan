@@ -36,6 +36,11 @@ public class BaseTimeEntity {
     }
 
 
+    /**
+     * 수정 시간을 기록하기위해 사용하는 메서드입니다.
+     * private LocalDateTime modifiedAt; 에 접근하기 위해 사용합니다.
+     * @param modifiedAt
+     */
     public void changeModifiedAt(LocalDateTime modifiedAt){
         this.modifiedAt = modifiedAt;
     }

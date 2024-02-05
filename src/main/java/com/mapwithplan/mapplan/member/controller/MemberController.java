@@ -44,6 +44,12 @@ public class MemberController {
                 .body(MemberCreateResponse.from(member));
     }
 
+
+    /**
+     * 회원 상세 페이지에 들어가기전에 있는 페이지 API 를 구현합니다.
+     * @param authorizationHeader 에서 이메일을 사용해 인증 받은 사용자를 조회합니다.
+     * @return
+     */
     @GetMapping("/myPage")
     public ResponseEntity<MemberMyPageResponse> myPage(@RequestHeader("Authorization") String authorizationHeader ){
 
@@ -53,6 +59,11 @@ public class MemberController {
 
     }
 
+    /**
+     * 회원의 상세 정보를 가져옵니다.
+     * @param authorizationHeader 에서 이메일을 사용해 인증 받은 사용자를 조회합니다.
+     * @return
+     */
     @GetMapping("/myPage/detail")
     public ResponseEntity<MemberMyPageDetailResponse> myPageDetail(@RequestHeader("Authorization") String authorizationHeader ){
 
@@ -61,6 +72,13 @@ public class MemberController {
                 .body(MemberMyPageDetailResponse.from(member));
 
     }
+
+    /**
+     * 회원의 정보를 수정합니다.
+     * @param authorizationHeader 에서 이메일을 사용해 인증 받은 사용자를 조회합니다.
+     * @param editMember 회원 정보 수정 DTO 입니다. 상태 메세지와 핸드폰 번호를 가지고 있습니다.
+     * @return
+     */
     @PatchMapping("/myPage/detail/edit")
     public ResponseEntity<MemberMyPageDetailResponse> myPageDetailEdit(@RequestHeader("Authorization") String authorizationHeader,
                                                                        @RequestBody @Validated EditMember editMember){

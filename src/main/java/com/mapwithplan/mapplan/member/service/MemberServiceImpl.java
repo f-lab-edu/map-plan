@@ -87,6 +87,11 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Member",id));
     }
 
+    /**
+     * 토큰에 담겨있는 이메일을 통해 회원의 정보를 조회합니다.
+     * @param accessToken 헤더에 있는 정보를 활용합니다.
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public Member findByEmailUseAccessToken(String accessToken) {
@@ -96,6 +101,13 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new ResourceNotFoundException("Member", email));
     }
 
+    /**
+     * 큰에 담겨있는 이메일을 통해 회원의 정보를 조회합니다.
+     * 회원의 상세 정보를 수정합니다. 수정된 시간과 정보를 수정합니다.
+     * @param authorizationHeader 헤더에 있는 정보를 활용합니다.
+     * @param editMember
+     * @return
+     */
     @Override
     @Transactional
     public Member editMemberDetail(String authorizationHeader, EditMember editMember) {
@@ -107,6 +119,12 @@ public class MemberServiceImpl implements MemberService {
         return  memberRepository.editMemberDetail(changeMember);
     }
 
+
+    /**
+     * 헤더 토큰을 활용해 이메일을 찾아내는 메서드 입니다.
+     * @param authorizationHeader
+     * @return
+     */
     private String getEmailFrom(String authorizationHeader) {
         String jwtToken = authorizationHeader.replace("Bearer ", "");
         Claims claims = jwtTokenizer.parseAccessToken(jwtToken);
