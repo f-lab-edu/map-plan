@@ -4,6 +4,7 @@ package com.mapwithplan.mapplan.common.exception.controller;
 import com.mapwithplan.mapplan.common.exception.CertificationCodeNotMatchedException;
 import com.mapwithplan.mapplan.common.exception.DuplicateResourceException;
 import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
+import com.mapwithplan.mapplan.common.exception.UnauthorizedServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -45,6 +46,13 @@ public class ExceptionControllerAdvice {
         return exception.getMessage();
     }
 
+
+    @ResponseBody
+    @ResponseStatus(FORBIDDEN)
+    @ExceptionHandler(DuplicateResourceException.class)
+    public String unauthorizedServiceException(UnauthorizedServiceException exception) {
+        return exception.getMessage();
+    }
 
 
 }

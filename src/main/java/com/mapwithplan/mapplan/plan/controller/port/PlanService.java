@@ -6,4 +6,6 @@ import com.mapwithplan.mapplan.plan.domain.PlanCreate;
 public interface PlanService {
 
     Plan savePlan(PlanCreate planCreate, String authorizationHeader);
+
+    Plan findPlan(Long planId,String authorizationHeader);
 }

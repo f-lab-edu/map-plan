@@ -7,6 +7,10 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+
+/**
+ * 회원 생성에 사용되는 DTO 입니다. Controller 에서 request 에 사용됩니다.
+ */
 @Getter
 public class PlanCreate {
 

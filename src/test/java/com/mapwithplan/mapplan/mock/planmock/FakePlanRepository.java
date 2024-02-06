@@ -1,6 +1,7 @@
 package com.mapwithplan.mapplan.mock.planmock;
 
 
+import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
 import com.mapwithplan.mapplan.member.domain.EMemberRole;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.plan.domain.Plan;
@@ -39,5 +40,14 @@ public class FakePlanRepository implements PlanRepository {
             return plan;
         }
 
+    }
+
+    @Override
+    public Plan findPlanDetail(Long planId) {
+        return data.stream()
+                .filter(test -> test.getId()
+                .equals(planId))
+                .findAny()
+                .orElseThrow(() -> new ResourceNotFoundException("Plan", planId));
     }
 }

@@ -8,6 +8,9 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+/**
+ * plan domain 입니다.
+ */
 @Getter
 public class Plan extends BaseTime {
 
@@ -38,7 +41,13 @@ public class Plan extends BaseTime {
         this.category = category;
     }
 
-
+    /**
+     * plan 을 생성하는 static 메서드 입니다.
+     * @param planCreate
+     * @param member
+     * @param clockHolder
+     * @return
+     */
     public static Plan from(PlanCreate planCreate, Member member,TimeClockHolder clockHolder){
         return Plan.builder()
                 .title(planCreate.getTitle())

@@ -7,6 +7,8 @@ import com.mapwithplan.mapplan.mock.TestClockHolder;
 import com.mapwithplan.mapplan.mock.TestContainer;
 import com.mapwithplan.mapplan.mock.planmock.TestPlanContainer;
 import com.mapwithplan.mapplan.plan.controller.response.PlanCreateResponse;
+import com.mapwithplan.mapplan.plan.controller.response.PlanDetailResponse;
+import com.mapwithplan.mapplan.plan.domain.Plan;
 import com.mapwithplan.mapplan.plan.domain.PlanCreate;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -80,6 +82,47 @@ class PlanControllerTest {
         assertThat(plan.getBody().getAppointmentDate()).isEqualTo(planCreate.getAppointmentDate());
         assertThat(plan.getBody().getAuthorName()).isEqualTo("테스트333");
 
+
+
+    }
+
+    @Test
+    @DisplayName("PlanDetailResponse 을 응답 받는다.")
+    void planDetailPlanControllerTest() {
+        //Given
+        ArrayList<String> roles = new ArrayList<>();
+        roles.add(EMemberRole.MEMBER.toString());
+        String accessToken = testContainer
+                .jwtTokenizer
+                .createAccessToken(3L, "test3@naver.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+        accessToken = "Bearer "+accessToken;
+        PlanCreate planCreate = PlanCreate.builder()
+                .title("test 입니다.")
+                .content("내용입니다.")
+                .appointmentDate(new TestClockHolder(9L).clockHold())
+                .category("카테고리입니다.")
+                .location("서울입니다.")
+                .build();
+        Plan plan = testContainer
+                .planService.savePlan(planCreate, accessToken);
+
+        //When
+        ResponseEntity<PlanDetailResponse> planDetail = testContainer.planController.planDetail(accessToken, plan.getId());
+        //Then
+        assertThat(planDetail.getStatusCode())
+                .isEqualTo(HttpStatusCode.valueOf(200));
+
+        assertThat(planDetail.getBody().getTitle())
+                .isEqualTo(planCreate.getTitle());
+
+        assertThat(planDetail.getBody().getAppointmentDate())
+                .isEqualTo(planCreate.getAppointmentDate());
+        assertThat(planDetail.getBody().getLocation())
+                .isEqualTo(planCreate.getLocation());
+        assertThat(planDetail.getBody().getContent())
+                .isEqualTo(planCreate.getContent());
+        assertThat(planDetail.getBody().getCategory())
+                .isEqualTo(planCreate.getCategory());
 
 
     }

@@ -32,8 +32,5 @@ class PlanTest {
         assertThat(planCreate.getAppointmentDate()).isEqualTo(plan.getAppointmentDate());
         assertThat(planCreate.getCategory()).isEqualTo(plan.getCategory());
         assertThat(planCreate.getLocation()).isEqualTo(plan.getLocation());
-
-
-
     }
 }

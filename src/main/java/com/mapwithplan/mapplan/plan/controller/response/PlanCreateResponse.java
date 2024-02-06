@@ -8,6 +8,10 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+
+/**
+ * 일정을 생성한 후 응답에 사용되는 Response 입니다.
+ */
 @Getter
 public class PlanCreateResponse {
 
