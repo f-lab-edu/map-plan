@@ -39,10 +39,10 @@ public class Plan extends BaseTime {
     }
 
 
-    public static Plan from(PlanCreate planCreate, TimeClockHolder clockHolder){
+    public static Plan from(PlanCreate planCreate, Member member,TimeClockHolder clockHolder){
         return Plan.builder()
                 .title(planCreate.getTitle())
-                .author(planCreate.getAuthor())
+                .author(member)
                 .content(planCreate.getContent())
                 .location(planCreate.getLocation())
                 .category(planCreate.getCategory())

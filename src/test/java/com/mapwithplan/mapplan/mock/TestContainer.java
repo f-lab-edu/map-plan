@@ -13,6 +13,11 @@ import com.mapwithplan.mapplan.member.service.CertificationService;
 import com.mapwithplan.mapplan.member.service.MemberServiceImpl;
 import com.mapwithplan.mapplan.member.service.port.MailSender;
 import com.mapwithplan.mapplan.member.service.port.MemberRepository;
+import com.mapwithplan.mapplan.mock.planmock.FakePlanRepository;
+import com.mapwithplan.mapplan.plan.controller.PlanController;
+import com.mapwithplan.mapplan.plan.controller.port.PlanService;
+import com.mapwithplan.mapplan.plan.service.PlanServiceImpl;
+import com.mapwithplan.mapplan.plan.service.port.PlanRepository;
 import lombok.Builder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -36,7 +41,10 @@ public class TestContainer {
     public final RefreshTokenRepository refreshTokenRepository;
 
     public final JwtTokenizer jwtTokenizer;
+    public final PlanRepository planRepository;
+    public final PlanService planService;
 
+    public final PlanController planController;
 
     @Builder
     public TestContainer(TimeClockHolder clockHolder, UuidHolder uuidHolder) {
@@ -73,6 +81,20 @@ public class TestContainer {
                 .build();
         this.refreshTokenService = RefreshTokenService.builder()
                 .refreshTokenRepository(this.refreshTokenRepository)
+                .build();
+
+
+        //planContainer
+        this.planRepository = new FakePlanRepository();
+        this.planService = PlanServiceImpl.builder()
+                .planRepository(this.planRepository)
+                .clockHolder(clockHolder)
+                .jwtTokenizer(this.jwtTokenizer)
+                .memberRepository(this.memberRepository)
+                .build();
+
+        this.planController = PlanController.builder()
+                .planService(this.planService)
                 .build();
     }
 }

@@ -14,8 +14,6 @@ public class PlanCreate {
 
     private LocalDateTime appointmentDate;
 
-    private Member author;
-
     private String content;
 
     private String location;
@@ -25,13 +23,11 @@ public class PlanCreate {
     @Builder
     public PlanCreate(@JsonProperty("title") String title,
                       @JsonProperty("appointmentDate") LocalDateTime appointmentDate,
-                      @JsonProperty("author") Member author,
                       @JsonProperty("content") String content,
                       @JsonProperty("location") String location,
                       @JsonProperty("category") String category) {
         this.title = title;
         this.appointmentDate = appointmentDate;
-        this.author = author;
         this.content = content;
         this.location = location;
         this.category = category;

@@ -18,20 +18,18 @@ class PlanTest {
                 .title("test 입니다.")
                 .content("내용입니다.")
                 .appointmentDate(new TestClockHolder(1L).clockHold())
-                .author(Member.builder()
-                        .id(1L)
-                        .name("작가입니다.").build())
                 .category("카테고리입니다.")
                 .location("서울입니다.")
                 .build();
-
-        Plan plan = Plan.from(planCreate, new TestClockHolder(9L));
+        Member member = Member.builder()
+                .id(1L)
+                .name("test").build();
+        Plan plan = Plan.from(planCreate,member,new TestClockHolder(9L));
 
 
         assertThat(planCreate.getTitle()).isEqualTo(plan.getTitle());
         assertThat(planCreate.getContent()).isEqualTo(plan.getContent());
         assertThat(planCreate.getAppointmentDate()).isEqualTo(plan.getAppointmentDate());
-        assertThat(planCreate.getAuthor()).isEqualTo(plan.getAuthor());
         assertThat(planCreate.getCategory()).isEqualTo(plan.getCategory());
         assertThat(planCreate.getLocation()).isEqualTo(plan.getLocation());
 
