@@ -1,9 +1,9 @@
 package com.mapwithplan.mapplan.mock;
 
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
 import com.mapwithplan.mapplan.jwt.util.JwtTokenizer;
-import com.mapwithplan.mapplan.loginlogout.controller.LoginLogoutController;
+import com.mapwithplan.mapplan.loginlogout.controller.AuthController;
 import com.mapwithplan.mapplan.loginlogout.controller.port.LoginService;
 import com.mapwithplan.mapplan.loginlogout.service.LoginServiceImpl;
 import com.mapwithplan.mapplan.loginlogout.service.RefreshTokenService;
@@ -31,12 +31,12 @@ public class TestContainer {
 
     public final LoginService loginService;
 
-    public final LoginLogoutController loginLogoutController;
+    public final AuthController authController;
 
     public final RefreshTokenService refreshTokenService;
     public final RefreshTokenRepository refreshTokenRepository;
     @Builder
-    public TestContainer(TimeClockHolder clockHolder, UuidHolder uuidHolder) {
+    public TestContainer(TimeClockProvider clockHolder, UuidHolder uuidHolder) {
         this.mailSender = new FakeMailSender();
         this.memberRepository = new FakeMemberRepository();
         this.certificationService = new CertificationService(this.mailSender);
@@ -61,10 +61,10 @@ public class TestContainer {
                 .refreshTokenRepository(this.refreshTokenRepository)
                 .jwtTokenizer(new JwtTokenizer(accessSecret, refreshSecret))
                 .encoder(new FakePasswordEncoder())
-                .timeClockHolder(clockHolder)
+                .timeClockProvider(clockHolder)
                 .memberRepository(this.memberRepository)
                 .build();
-        this.loginLogoutController = LoginLogoutController.builder()
+        this.authController = AuthController.builder()
                 .loginService(loginService)
                 .build();
         this.refreshTokenService = RefreshTokenService.builder()

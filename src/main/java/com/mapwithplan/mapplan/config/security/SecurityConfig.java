@@ -82,17 +82,5 @@ public class SecurityConfig  {
 
         return http.build();
     }
-    // <<Advanced>> Security Cors로 변경 시도
-    public CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-         config.setAllowCredentials(true); // 이거 빼면 된다
-        // https://gareen.tistory.com/66
-        config.addAllowedOrigin("*");
-        config.addAllowedMethod("*");
-        config.setAllowedMethods(List.of("GET","POST","DELETE","PATCH","OPTION","PUT"));
-        source.registerCorsConfiguration("/**", config);
 
-        return source;
-    }
 }

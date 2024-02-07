@@ -8,9 +8,9 @@ import java.util.Date;
  * 시간을 기록할때 사용하는 인터페이스입니다.
  */
 
-public interface TimeClockHolder {
+public interface TimeClockProvider {
 
-    LocalDateTime clockHold();
+    LocalDateTime clockProvider();
 
-    Date dateClockHold();
+    Date dateClockProvider();
 }

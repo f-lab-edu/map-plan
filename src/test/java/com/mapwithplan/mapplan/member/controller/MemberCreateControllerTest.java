@@ -2,16 +2,14 @@ package com.mapwithplan.mapplan.member.controller;
 
 import com.mapwithplan.mapplan.member.controller.response.MemberCreateResponse;
 import com.mapwithplan.mapplan.member.domain.MemberCreate;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -25,7 +23,7 @@ class MemberCreateControllerTest {
         MemberCreate memberCreate =
                 new MemberCreate("test", "test", "test", "test");
         TestContainer testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(Instant.now().toEpochMilli()))
+                .clockHolder(new TestClockProvider(Instant.now().toEpochMilli()))
                 .uuidHolder(() -> "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .build();
         //When

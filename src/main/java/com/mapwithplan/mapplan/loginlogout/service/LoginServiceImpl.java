@@ -2,7 +2,7 @@ package com.mapwithplan.mapplan.loginlogout.service;
 
 
 import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.jwt.util.JwtTokenizer;
 import com.mapwithplan.mapplan.loginlogout.controller.port.LoginService;
 import com.mapwithplan.mapplan.loginlogout.controller.response.LoginResponse;
@@ -37,7 +37,7 @@ public class LoginServiceImpl implements LoginService {
     private final PasswordEncoder encoder;
     private final JwtTokenizer jwtTokenizer;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final TimeClockHolder timeClockHolder;
+    private final TimeClockProvider timeClockProvider;
 
     /**
      * 회원에 대한 login 를 주입 받은후 조회합니다. 조회 불가능시 ResourceNotFoundException 을 호출합니다.
@@ -62,8 +62,8 @@ public class LoginServiceImpl implements LoginService {
         Roles.add(memberRoles);
 
         //토큰 생성
-        String accessToken = jwtTokenizer.createAccessToken(member.getId(), member.getEmail(), Roles,timeClockHolder);
-        String refreshToken = jwtTokenizer.createRefreshToken(member.getId(), member.getEmail(), Roles,timeClockHolder);
+        String accessToken = jwtTokenizer.createAccessToken(member.getId(), member.getEmail(), Roles, timeClockProvider);
+        String refreshToken = jwtTokenizer.createRefreshToken(member.getId(), member.getEmail(), Roles, timeClockProvider);
 
         saveOrUpdateRefreshToken(member,refreshToken);
 
@@ -75,6 +75,7 @@ public class LoginServiceImpl implements LoginService {
      * @param refreshToken
      */
     @Override
+    @Transactional
     public void logout(String refreshToken) {
         log.info("refreshToken = {}", refreshToken);
         refreshTokenRepository.delete(refreshToken);
@@ -91,7 +92,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     /**
-     * 토근에 대한 저장 업데이트를 진행합  니다.
+     * 토근에 대한 저장 업데이트를 진행합니다.
      * @param member
      * @param refreshToken
      */

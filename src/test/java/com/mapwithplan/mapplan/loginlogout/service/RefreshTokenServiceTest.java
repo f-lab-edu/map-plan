@@ -8,7 +8,6 @@ import com.mapwithplan.mapplan.member.domain.MemberCreate;
 import com.mapwithplan.mapplan.member.service.CertificationService;
 import com.mapwithplan.mapplan.member.service.MemberServiceImpl;
 import com.mapwithplan.mapplan.mock.*;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,6 @@ import java.time.Instant;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class RefreshTokenServiceTest {
 
@@ -39,7 +37,7 @@ class RefreshTokenServiceTest {
         this.memberService = MemberServiceImpl.builder()
                 .memberRepository(fakeMemberRepository)
                 .uuidHolder(new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab"))
-                .clockHolder(new TestClockHolder(Instant.now().toEpochMilli()))
+                .clockHolder(new TestClockProvider(Instant.now().toEpochMilli()))
                 .certificationService(new CertificationService(fakeMailSender))
                 .passwordEncoder(new BCryptPasswordEncoder())
                 .build();
@@ -67,7 +65,7 @@ class RefreshTokenServiceTest {
         Member member = memberService.saveMember(memberCreate);
 
         String refresh = jwtTokenizer
-                .createRefreshToken(id, email, roles, new TestClockHolder(9999999999999999L));
+                .createRefreshToken(id, email, roles, new TestClockProvider(9999999999999999L));
 
         RefreshToken refreshToken1 = RefreshToken.from(member, refresh);
 

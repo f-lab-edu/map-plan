@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * 고객의 권한 접근 에외를 검증하는 클래스 입니다.
+ * 서비스 사용자의 권한 접근 에외를 검증하는 클래스 입니다.
  */
 @Slf4j
 @Component
