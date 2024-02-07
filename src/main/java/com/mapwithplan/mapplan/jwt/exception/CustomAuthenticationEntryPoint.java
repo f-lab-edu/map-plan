@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * 고객의 권한 접근 에외를 검증하는 클래스 입니다.
+ * 고객의 권한 접근 예외를 검증하는 클래스 입니다.
  */
 @Slf4j
 @Component
@@ -23,7 +23,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         String exception = (String) request.getAttribute("exception");
         log.error("Commence Get Exception : {}", exception);
-
 
         if(exception == null) {
             log.error("entry point >> exception is null");

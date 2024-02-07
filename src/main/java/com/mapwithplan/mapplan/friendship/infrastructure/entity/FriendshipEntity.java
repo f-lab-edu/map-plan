@@ -1,6 +1,6 @@
 package com.mapwithplan.mapplan.friendship.infrastructure.entity;
 
-import com.mapwithplan.mapplan.friendship.domain.EfriendStatus;
+import com.mapwithplan.mapplan.friendship.domain.EFriendStatus;
 import com.mapwithplan.mapplan.friendship.domain.Friendship;
 import com.mapwithplan.mapplan.member.infrastructure.entity.MemberEntity;
 import jakarta.persistence.*;
@@ -36,10 +36,11 @@ public class FriendshipEntity {
     private LocalDateTime friendshipDate;
 
     @Column(name = "friend_status")
-    private EfriendStatus efriendStatus;
+    @Enumerated(EnumType.STRING)
+    private EFriendStatus efriendStatus;
 
     @Builder
-    public FriendshipEntity(Long id, MemberEntity memberId, MemberEntity friendMemberId, String friendNickname, LocalDateTime friendshipDate, EfriendStatus efriendStatus) {
+    public FriendshipEntity(Long id, MemberEntity memberId, MemberEntity friendMemberId, String friendNickname, LocalDateTime friendshipDate, EFriendStatus efriendStatus) {
         this.id = id;
         this.memberId = memberId;
         this.friendMemberId = friendMemberId;
@@ -47,8 +48,6 @@ public class FriendshipEntity {
         this.friendshipDate = friendshipDate;
         this.efriendStatus = efriendStatus;
     }
-
-
 
 
     public static FriendshipEntity from(Friendship friendship){
@@ -71,5 +70,9 @@ public class FriendshipEntity {
                 .friendshipDate(friendshipDate)
                 .efriendStatus(efriendStatus)
                 .build();
+    }
+
+    public void approve(){
+        this.efriendStatus = EFriendStatus.ACTIVE;
     }
 }

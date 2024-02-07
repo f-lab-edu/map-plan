@@ -5,6 +5,7 @@ import com.mapwithplan.mapplan.common.exception.DuplicateResourceException;
 import com.mapwithplan.mapplan.jwt.util.JwtTokenizer;
 import com.mapwithplan.mapplan.member.domain.*;
 import com.mapwithplan.mapplan.mock.*;
+import com.mapwithplan.mapplan.mock.membermock.FakeMemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -1,4 +1,4 @@
-package com.mapwithplan.mapplan.mock;
+package com.mapwithplan.mapplan.mock.membermock;
 
 import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
 import com.mapwithplan.mapplan.member.domain.EMemberRole;
@@ -6,6 +6,7 @@ import com.mapwithplan.mapplan.member.domain.EMemberStatus;
 import com.mapwithplan.mapplan.member.domain.EditMember;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.service.port.MemberRepository;
+import com.mapwithplan.mapplan.mock.TestClockHolder;
 
 import java.time.LocalDateTime;
 import java.util.*;
