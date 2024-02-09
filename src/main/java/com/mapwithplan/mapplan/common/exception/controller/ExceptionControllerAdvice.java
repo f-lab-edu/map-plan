@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import static org.springframework.http.HttpStatus.*;
 
+/**
+ *  이 클래스에서는 공통으로 적용할 수 있는 예외를 담는 클래스입니다.
+ *  - DB 에서 조회 불가능한 데이터
+ *  - 인증이 일치하지 않을때
+ */
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor

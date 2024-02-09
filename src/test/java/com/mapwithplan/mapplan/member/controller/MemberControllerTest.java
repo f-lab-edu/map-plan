@@ -3,10 +3,7 @@ package com.mapwithplan.mapplan.member.controller;
 import com.mapwithplan.mapplan.common.exception.CertificationCodeNotMatchedException;
 import com.mapwithplan.mapplan.member.domain.EMemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
-import com.mapwithplan.mapplan.member.domain.MemberCreate;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
 import com.mapwithplan.mapplan.mock.TestContainer;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatusCode;
@@ -15,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MemberControllerTest {
     @Test
@@ -39,7 +35,6 @@ class MemberControllerTest {
         //Then
         assertThat(voidResponseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(302));
         assertThat(testContainer.memberRepository.findById(1).get().getMemberStatus()).isEqualTo(EMemberStatus.ACTIVE);
-//        assertThat(voidResponseEntity.)
     }
 
     @Test

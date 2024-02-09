@@ -1,6 +1,6 @@
 package com.mapwithplan.mapplan.common.timeutils.infrastructure;
 
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -8,11 +8,14 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
 
+/**
+ * localDate 시간을 지정하는 클래스입니다.
+ */
 @Component
-public class ClockHolder implements TimeClockHolder {
+public class ClockProvider implements TimeClockProvider {
 
     @Override
-    public LocalDateTime clockHold() {
+    public LocalDateTime clockProvider() {
 
         // 현재 UTC 기준의 시간을 가져오기
         Instant currentUtcTime = Instant.now();
@@ -21,7 +24,7 @@ public class ClockHolder implements TimeClockHolder {
     }
 
     @Override
-    public Date dateClockHold() {
+    public Date dateClockProvider() {
         return new Date(System.currentTimeMillis());
     }
 

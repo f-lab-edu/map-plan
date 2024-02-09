@@ -3,7 +3,7 @@ package com.mapwithplan.mapplan.member.domain;
 
 import com.mapwithplan.mapplan.common.exception.CertificationCodeNotMatchedException;
 import com.mapwithplan.mapplan.common.timeutils.domain.BaseTime;
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 
+/**
+ * 회원 도메인 입니다.
+ */
 @Getter
 public class Member extends BaseTime {
 
@@ -47,7 +50,7 @@ public class Member extends BaseTime {
 
 
 
-    public static Member from(MemberCreate memberCreate, TimeClockHolder clockHolder, UuidHolder uuidHolder, PasswordEncoder encoder){
+    public static Member from(MemberCreate memberCreate, TimeClockProvider clockHolder, UuidHolder uuidHolder, PasswordEncoder encoder){
         return Member.builder()
                 .email(memberCreate.getEmail())
                 .name(memberCreate.getName())
@@ -55,12 +58,17 @@ public class Member extends BaseTime {
                 .memberStatus(EMemberStatus.PENDING)
                 .certificationCode(uuidHolder.random())
                 .phone(memberCreate.getPhone())
-                .createdAt(clockHolder.clockHold())
-                .modifiedAt(clockHolder.clockHold())
+                .createdAt(clockHolder.clockProvider())
+                .modifiedAt(clockHolder.clockProvider())
                 .eMemberRole(EMemberRole.MEMBER)
                 .build();
     }
 
+    /**
+     * 현재 인증 코드와 들어온 인증 코드 파라미터의 일치 여부를 판단합니다.
+     * @param certificationCode 인증 코드입니다.
+     * @return
+     */
     public Member certificate(String certificationCode) {
         if (!this.certificationCode.equals(certificationCode)) {
             throw new CertificationCodeNotMatchedException();
