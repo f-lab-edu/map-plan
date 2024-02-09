@@ -3,6 +3,7 @@ package com.mapwithplan.mapplan.friendship.service.port;
 import com.mapwithplan.mapplan.friendship.domain.Friendship;
 import com.mapwithplan.mapplan.friendship.domain.FriendshipCreate;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -33,6 +34,7 @@ public interface FriendshipRepository {
     Optional<Friendship> approveFriendship(Long friendshipId);
 
 
+    List<Friendship> findAllById(List<Long> friendshipIds);
 
 
 }

@@ -54,7 +54,7 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public Plan findPlan(Long planId, String authorizationHeader) {
 
-        Plan planDetail = planRepository.findPlanDetail(planId);
+        Plan planDetail = planRepository.findById(planId);
 
         Member member = getEmailAndFindMember(authorizationHeader);
 

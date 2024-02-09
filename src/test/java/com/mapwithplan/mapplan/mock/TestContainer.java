@@ -1,5 +1,9 @@
 package com.mapwithplan.mapplan.mock;
 
+import com.mapwithplan.mapplan.PlanShareFriendship.controller.PlanShareFriendshipController;
+import com.mapwithplan.mapplan.PlanShareFriendship.controller.port.PlanShareFriendshipService;
+import com.mapwithplan.mapplan.PlanShareFriendship.service.PlanShareFriendshipServiceImpl;
+import com.mapwithplan.mapplan.PlanShareFriendship.service.port.PlanShareFriendshipRepository;
 import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
 import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
 import com.mapwithplan.mapplan.friendship.controller.FriendshipController;
@@ -20,13 +24,16 @@ import com.mapwithplan.mapplan.member.service.port.MemberRepository;
 import com.mapwithplan.mapplan.mock.friendshipmock.FakeFriendshipRepository;
 import com.mapwithplan.mapplan.mock.membermock.FakeMemberRepository;
 import com.mapwithplan.mapplan.mock.planmock.FakePlanRepository;
+import com.mapwithplan.mapplan.mock.plansharefriendshipmock.FakePlanShareFriendshipRepository;
 import com.mapwithplan.mapplan.plan.controller.PlanController;
 import com.mapwithplan.mapplan.plan.controller.port.PlanService;
 import com.mapwithplan.mapplan.plan.service.PlanServiceImpl;
 import com.mapwithplan.mapplan.plan.service.port.PlanRepository;
 import lombok.Builder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+@Slf4j
 public class TestContainer {
 
     public final MailSender mailSender;
@@ -47,9 +54,11 @@ public class TestContainer {
     public final RefreshTokenRepository refreshTokenRepository;
 
     public final JwtTokenizer jwtTokenizer;
+
+
+    // plan
     public final PlanRepository planRepository;
     public final PlanService planService;
-
     public final PlanController planController;
 
 
@@ -58,6 +67,16 @@ public class TestContainer {
     public final FriendshipService friendshipService;
 
     public final FriendshipController friendshipController;
+
+
+
+
+    // PlanShareFriendship
+    public final PlanShareFriendshipRepository planShareFriendshipRepository;
+    public final PlanShareFriendshipService planShareFriendshipService;
+    public final PlanShareFriendshipController planShareFriendshipController;
+
+
 
     @Builder
     public TestContainer(TimeClockHolder clockHolder, UuidHolder uuidHolder) {
@@ -97,7 +116,9 @@ public class TestContainer {
                 .build();
 
 
+
         //planContainer
+
         this.planRepository = new FakePlanRepository();
         this.planService = PlanServiceImpl.builder()
                 .planRepository(this.planRepository)
@@ -123,6 +144,20 @@ public class TestContainer {
 
         this.friendshipController = FriendshipController.builder()
                 .friendshipService(this.friendshipService)
+                .build();
+
+
+        // PlanShareFriendship
+
+        this.planShareFriendshipRepository = new FakePlanShareFriendshipRepository();
+        this.planShareFriendshipService = PlanShareFriendshipServiceImpl.builder()
+                .planShareFriendshipRepository(this.planShareFriendshipRepository)
+                .friendshipRepository(this.friendshipRepository)
+                .planRepository(this.planRepository)
+                .timeClockHolder(clockHolder)
+                .build();
+        this.planShareFriendshipController= PlanShareFriendshipController.builder()
+                .planShareFriendshipService(this.planShareFriendshipService)
                 .build();
     }
 }

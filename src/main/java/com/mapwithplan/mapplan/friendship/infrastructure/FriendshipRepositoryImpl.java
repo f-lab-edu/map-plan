@@ -9,6 +9,7 @@ import com.mapwithplan.mapplan.friendship.service.port.FriendshipRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -58,5 +59,19 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
                 return friendshipEntity;
                 })
                 .map(FriendshipEntity::toModel);
+    }
+
+    /**
+     * FriendshipId 리스트를 이용해 한번에 여러 개의 Friendship 객체를 찾아옵니다.
+     * @param friendshipIds 입력받은 Ids 리스트입니다.
+     * @return FriendshipEntity 를 toModel 로 Friendship 으로 변경하려 return 합니다.
+     */
+    @Override
+    public List<Friendship> findAllById(List<Long> friendshipIds) {
+        return  friendshipJPARepository
+                .findAllById(friendshipIds)
+                .stream()
+                .map(FriendshipEntity::toModel)
+                .toList();
     }
 }

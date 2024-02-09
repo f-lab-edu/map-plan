@@ -6,7 +6,6 @@ import com.mapwithplan.mapplan.member.domain.EMemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.mock.TestClockHolder;
 import com.mapwithplan.mapplan.mock.TestContainer;
-import com.mapwithplan.mapplan.mock.planmock.TestPlanContainer;
 import com.mapwithplan.mapplan.plan.domain.Plan;
 import com.mapwithplan.mapplan.plan.domain.PlanCreate;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Optional;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

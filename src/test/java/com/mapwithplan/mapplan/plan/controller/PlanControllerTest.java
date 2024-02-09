@@ -5,7 +5,6 @@ import com.mapwithplan.mapplan.member.domain.EMemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.mock.TestClockHolder;
 import com.mapwithplan.mapplan.mock.TestContainer;
-import com.mapwithplan.mapplan.mock.planmock.TestPlanContainer;
 import com.mapwithplan.mapplan.plan.controller.response.PlanCreateResponse;
 import com.mapwithplan.mapplan.plan.controller.response.PlanDetailResponse;
 import com.mapwithplan.mapplan.plan.domain.Plan;
