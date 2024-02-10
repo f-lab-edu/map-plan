@@ -183,11 +183,13 @@ class AuthControllerTest {
 
         RefreshToken token = RefreshToken.builder()
                 .token(refresh)
-                .member(Member.builder().build())
+                .member(Member.builder()
+                        .id(1L)
+                        .build())
                 .build();
         testContainer
                 .refreshTokenService
-                .addRefreshToken(token);
+                .saveRefreshToken(token);
         DeleteRefreshToken refreshToken = new DeleteRefreshToken(refresh);
 
 

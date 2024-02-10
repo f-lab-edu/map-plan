@@ -57,18 +57,18 @@ public class TestContainer {
         String accessSecret = "testtesttesttesttesttesttesttesttesttesttesttest";
         String refreshSecret = "testtesttesttesttesttesttesttesttesttesttesttest";
         this.refreshTokenRepository = new FakeRefreshTokenRepository();
-        this.loginService = LoginServiceImpl.builder()
+        this.refreshTokenService = RefreshTokenService.builder()
                 .refreshTokenRepository(this.refreshTokenRepository)
+                .build();
+        this.loginService = LoginServiceImpl.builder()
                 .jwtTokenizer(new JwtTokenizer(accessSecret, refreshSecret))
                 .encoder(new FakePasswordEncoder())
                 .timeClockProvider(clockHolder)
                 .memberRepository(this.memberRepository)
+                .refreshTokenService(this.refreshTokenService)
                 .build();
         this.authController = AuthController.builder()
                 .loginService(loginService)
-                .build();
-        this.refreshTokenService = RefreshTokenService.builder()
-                .refreshTokenRepository(this.refreshTokenRepository)
                 .build();
     }
 }

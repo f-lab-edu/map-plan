@@ -90,7 +90,7 @@ class LoginServiceImplTest {
                 .jwtTokenizer(new JwtTokenizer("testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest",
                         "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest"))
                 .timeClockProvider(new TestClockProvider(123L))
-                .refreshTokenRepository(fakeRefreshTokenRepository)
+                .refreshTokenService(new RefreshTokenService(fakeRefreshTokenRepository))
                 .build();
     }
     @Test
