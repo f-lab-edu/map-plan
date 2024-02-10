@@ -3,7 +3,7 @@ package com.mapwithplan.mapplan.member.service;
 
 import com.mapwithplan.mapplan.common.exception.DuplicateResourceException;
 import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
 import com.mapwithplan.mapplan.jwt.util.JwtTokenizer;
 import com.mapwithplan.mapplan.member.controller.port.MemberService;
@@ -34,7 +34,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final CertificationService certificationService;
 
-    private final TimeClockHolder clockHolder;
+    private final TimeClockProvider clockHolder;
 
     private final UuidHolder uuidHolder;
 

@@ -1,7 +1,7 @@
 package com.mapwithplan.mapplan.member.domain;
 
 import com.mapwithplan.mapplan.common.exception.CertificationCodeNotMatchedException;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestUuidHolder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ class MemberTest {
         long epochMilli = Instant.parse("2022-01-01T12:00:00Z").toEpochMilli();
         //When
         Member from = Member.from(memberCreate ,
-                new TestClockHolder(epochMilli),
+                new TestClockProvider(epochMilli),
                 new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                 new BCryptPasswordEncoder());
         //Then

@@ -1,11 +1,8 @@
 package com.mapwithplan.mapplan.member.controller;
 
 import com.mapwithplan.mapplan.common.exception.CertificationCodeNotMatchedException;
-import com.mapwithplan.mapplan.member.controller.response.MemberCreateResponse;
-import com.mapwithplan.mapplan.member.controller.response.MemberMyPageDetailResponse;
-import com.mapwithplan.mapplan.member.controller.response.MemberMyPageResponse;
-import com.mapwithplan.mapplan.member.domain.*;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+import com.mapwithplan.mapplan.member.domain.EMemberStatus;
+import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.mock.TestContainer;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,12 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MemberControllerTest {
 

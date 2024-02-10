@@ -3,7 +3,7 @@ package com.mapwithplan.mapplan.member.domain;
 
 import com.mapwithplan.mapplan.common.exception.CertificationCodeNotMatchedException;
 import com.mapwithplan.mapplan.common.timeutils.domain.BaseTime;
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,7 +50,7 @@ public class Member extends BaseTime {
 
 
 
-    public static Member from(MemberCreate memberCreate, TimeClockHolder clockHolder, UuidHolder uuidHolder, PasswordEncoder encoder){
+    public static Member from(MemberCreate memberCreate, TimeClockProvider clockHolder, UuidHolder uuidHolder, PasswordEncoder encoder){
         return Member.builder()
                 .email(memberCreate.getEmail())
                 .name(memberCreate.getName())
@@ -58,8 +58,8 @@ public class Member extends BaseTime {
                 .memberStatus(EMemberStatus.PENDING)
                 .certificationCode(uuidHolder.random())
                 .phone(memberCreate.getPhone())
-                .createdAt(clockHolder.clockHold())
-                .modifiedAt(clockHolder.clockHold())
+                .createdAt(clockHolder.clockProvider())
+                .modifiedAt(clockHolder.clockProvider())
                 .eMemberRole(EMemberRole.MEMBER)
                 .build();
     }
