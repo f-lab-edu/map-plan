@@ -34,7 +34,8 @@ public class Member extends BaseTime {
     private final EMemberStatus memberStatus;
 
     private final EMemberRole eMemberRole;
-    @Builder
+
+    @Builder(toBuilder = true)
     public Member(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String email, String password, String name, String phone, String statusMessage, String certificationCode, EMemberStatus memberStatus, EMemberRole eMemberRole) {
         super(createdAt, modifiedAt);
         this.id = id;
@@ -88,22 +89,15 @@ public class Member extends BaseTime {
     /**
      * 회원 정보를 수정하는 도메인입니다.
      * @param editMember 번호와 상태메세지를 담고 있고 변경에 활용합니다.
-     * @param clockHolder 수정 시간을 기록하기 위한 객체입니다.
+     * @param clockProvider 수정 시간을 기록하기 위한 객체입니다.
      * @return
      */
-    public Member edit(EditMember editMember,TimeClockHolder clockHolder){
-        return Member.builder()
-                .id(id)
-                .email(email)
-                .name(name)
-                .password(password)
-                .memberStatus(EMemberStatus.ACTIVE)
-                .phone(editMember.getPhone())
-                .eMemberRole(eMemberRole)
-                .certificationCode(certificationCode)
+    public Member edit(Member member,EditMember editMember,TimeClockProvider clockProvider){
+        return member.toBuilder()
                 .statusMessage(editMember.getStatusMessage())
-                .createdAt(getCreatedAt())
-                .modifiedAt(clockHolder.clockHold())
+                .phone(editMember.getPhone())
+                .modifiedAt(clockProvider.clockProvider())
                 .build();
+
     }
 }

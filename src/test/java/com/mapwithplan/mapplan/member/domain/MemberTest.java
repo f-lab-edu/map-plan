@@ -93,8 +93,8 @@ class MemberTest {
                 .email("testAOP@gmail.com")
                 .eMemberRole(EMemberRole.MEMBER)
                 .statusMessage("하이")
-                .createdAt(new TestClockHolder(1L).clockHold())
-                .modifiedAt(new TestClockHolder(1L).clockHold())
+                .createdAt(new TestClockProvider(1L).clockProvider())
+                .modifiedAt(new TestClockProvider(1L).clockProvider())
                 .password("test123")
                 .phone("010-1234-1234")
                 .name("테스트")
@@ -103,11 +103,11 @@ class MemberTest {
                 .build();
         EditMember editMember = new EditMember("안녕하세요", "010-2222-3333");
         //When
-        Member edit = member.edit(editMember, new TestClockHolder(3L));
+        Member edit = member.edit(member, editMember, new TestClockProvider(3L));
         //Then
         assertThat(edit.getStatusMessage()).isEqualTo(editMember.getStatusMessage());
         assertThat(edit.getPhone()).isEqualTo(editMember.getPhone());
-        assertThat(edit.getModifiedAt()).isEqualTo(new TestClockHolder(3L).clockHold());
+        assertThat(edit.getModifiedAt()).isEqualTo(new TestClockProvider(3L).clockProvider());
 
     }
 }

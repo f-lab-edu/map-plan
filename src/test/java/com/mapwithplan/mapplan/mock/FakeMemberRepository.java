@@ -57,7 +57,7 @@ public class FakeMemberRepository implements MemberRepository {
         Member member = data.stream()
                 .filter(test -> test.getId().equals(editMember.getId()))
                 .findAny().map(test ->
-                        test.edit(editMember1, new TestClockHolder(3L))
+                        test.edit(test, editMember1, new TestClockProvider(3L))
                 )
                 .orElseThrow(() -> new ResourceNotFoundException("Member", editMember.getEmail()));
 

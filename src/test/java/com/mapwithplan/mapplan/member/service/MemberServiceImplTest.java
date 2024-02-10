@@ -151,7 +151,7 @@ class MemberServiceImplTest {
         Member byId = memberService.findById(3L);
         ArrayList<String> roles = new ArrayList<>();
         roles.add(byId.getEMemberRole().toString());
-        String accessToken = jwtTokenizer.createAccessToken(byId.getId(), byId.getEmail(), roles, new TestClockHolder(900000000000000L));
+        String accessToken = jwtTokenizer.createAccessToken(byId.getId(), byId.getEmail(), roles, new TestClockProvider(900000000000000L));
         //When
         accessToken = "Bearer "+accessToken;
 
@@ -170,7 +170,7 @@ class MemberServiceImplTest {
         Member byId = memberService.findById(3L);
         ArrayList<String> roles = new ArrayList<>();
         roles.add(byId.getEMemberRole().toString());
-        String accessToken = jwtTokenizer.createAccessToken(byId.getId(), byId.getEmail(), roles, new TestClockHolder(900000000000000L));
+        String accessToken = jwtTokenizer.createAccessToken(byId.getId(), byId.getEmail(), roles, new TestClockProvider(900000000000000L));
         EditMember editMember = new EditMember("1234", "010-2313-1234");
         //When
         accessToken = "Bearer "+accessToken;
