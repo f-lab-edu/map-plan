@@ -9,7 +9,6 @@ import com.mapwithplan.mapplan.loginlogout.controller.port.LoginService;
 import com.mapwithplan.mapplan.loginlogout.controller.response.LoginResponse;
 import com.mapwithplan.mapplan.loginlogout.domain.Login;
 import com.mapwithplan.mapplan.loginlogout.domain.RefreshToken;
-import com.mapwithplan.mapplan.loginlogout.service.port.RefreshTokenRepository;
 import com.mapwithplan.mapplan.member.domain.EMemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.service.port.MemberRepository;
@@ -37,8 +36,8 @@ public class LoginServiceImpl implements LoginService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder encoder;
     private final JwtTokenizer jwtTokenizer;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final TimeClockProvider timeClockProvider;
+    private final RefreshTokenService refreshTokenService;
 
     /**
      * 회원에 대한 login 를 주입 받은후 조회합니다. 조회 불가능시 ResourceNotFoundException 을 호출합니다.
@@ -79,7 +78,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     @Transactional
     public void logout(String refreshToken) {
-        refreshTokenRepository.delete(refreshToken);
+        refreshTokenService.deleteToken(refreshToken);
     }
 
     /**
@@ -98,13 +97,13 @@ public class LoginServiceImpl implements LoginService {
      * @param refreshToken
      */
     private void saveOrUpdateRefreshToken(Member member, String refreshToken){
-        Optional<RefreshToken> findToken = refreshTokenRepository.findByMember(member);
+
+        Optional<RefreshToken> findToken = refreshTokenService.findByMember(member);
         if (findToken.isPresent()){
             findToken.get().update(refreshToken);
-            refreshTokenRepository.update(findToken.get());
+            refreshTokenService.updateRefreshToken(findToken.get());
         } else {
-            refreshTokenRepository
-                    .save(RefreshToken.from(member, refreshToken));
+            refreshTokenService.saveRefreshToken(RefreshToken.from(member, refreshToken));
         }
     }
 }

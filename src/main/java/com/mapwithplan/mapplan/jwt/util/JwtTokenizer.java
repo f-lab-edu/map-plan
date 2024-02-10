@@ -85,6 +85,12 @@ public class JwtTokenizer {
         }
         String extractedToken = tokenArr[1];
         Claims claims = parseToken(extractedToken, accessSecret);
+        Object userId = claims.get("userId");
+
+        if (userId == null){
+            throw new IllegalArgumentException("토큰에서 userId를 찾을 수 없습니다.");
+        }
+
         return Long.valueOf((Integer)claims.get("userId"));
     }
 
