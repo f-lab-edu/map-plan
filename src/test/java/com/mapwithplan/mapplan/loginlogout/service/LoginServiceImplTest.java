@@ -34,7 +34,7 @@ class LoginServiceImplTest {
         this.memberService = MemberServiceImpl.builder()
                 .memberRepository(fakeMemberRepository)
                 .uuidHolder(new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab"))
-                .clockHolder(new TestClockHolder(Instant.now().toEpochMilli()))
+                .clockHolder(new TestClockProvider(Instant.now().toEpochMilli()))
                 .certificationService(new CertificationService(fakeMailSender))
                 .passwordEncoder(new BCryptPasswordEncoder())
                 .build();
@@ -89,8 +89,8 @@ class LoginServiceImplTest {
                 .memberRepository(fakeMemberRepository)
                 .jwtTokenizer(new JwtTokenizer("testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest",
                         "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest"))
-                .timeClockHolder(new TestClockHolder(123L))
-                .refreshTokenRepository(fakeRefreshTokenRepository)
+                .timeClockProvider(new TestClockProvider(123L))
+                .refreshTokenService(new RefreshTokenService(fakeRefreshTokenRepository))
                 .build();
     }
     @Test

@@ -23,7 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 /**
- * JwtAuthenticationFilter 는 요청으로 들어온 것을 토큰에 대한 값을 검증하는 필터 입니다.
+ * JwtAuthenticationFilter 는 요청으로 들어온 토큰에 대한 값을 검증하는 필터 입니다.
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -86,7 +86,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     /**
      * 토큰이 없는 경우 예외를 발생 시키며 권한도 분류합니다.
-     * @param token
+     * @param token  http 헤더를 통해 들어온 token 입니다. 권한 인증에 사용됩니다.
      */
     private void getAuthentication(String token) {
         JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(token);
@@ -96,16 +96,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     /**
-     * 토큰 값을 getHeader 통해 받은후 Bearer와 분리합니다.
+     * 토큰 값을 getHeader 통해 받은후 Bearer 와 분리합니다.
      * 그후 토큰값을 받습니다.
      * @param request
-     * @return
+     * @return 헤더에 있는 토큰 값을 분리하고 return 합니다.
      */
     private String getToken(HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");
         if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer")){
-            String[] arr = authorization.split(" ");
-            return arr[1];
+            String[] token = authorization.split(" ");
+            if(token.length <= 1 ){
+                throw new IllegalArgumentException("유효하지 않은 값 입니다.");
+            }
+            return token[1];
         }
         return null;
     }

@@ -5,7 +5,7 @@ import com.mapwithplan.mapplan.member.controller.response.MemberCreateResponse;
 import com.mapwithplan.mapplan.member.controller.response.MemberMyPageDetailResponse;
 import com.mapwithplan.mapplan.member.controller.response.MemberMyPageResponse;
 import com.mapwithplan.mapplan.member.domain.*;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MemberControllerTest {
 
@@ -28,7 +27,7 @@ class MemberControllerTest {
     @BeforeEach
     void init(){
         testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(Instant.now().toEpochMilli()))
+                .clockHolder(new TestClockProvider(Instant.now().toEpochMilli()))
                 .uuidHolder(() -> "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .build();
 
@@ -119,7 +118,7 @@ class MemberControllerTest {
         roles.add(EMemberRole.MEMBER.toString());
         String accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(3L, "test3@naver.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(3L, "test3@naver.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
         //When
         accessToken = "Bearer "+accessToken;
         ResponseEntity<MemberMyPageResponse> memberMyPageResponseResponseEntity = testContainer.memberController.myPage(accessToken);
@@ -140,7 +139,7 @@ class MemberControllerTest {
         roles.add(EMemberRole.MEMBER.toString());
         String accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(3L, "test3@naver.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(3L, "test3@naver.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
         //When
         accessToken = "Bearer "+accessToken;
         ResponseEntity<MemberMyPageDetailResponse> memberMyPageDetailResponseResponseEntity = testContainer
@@ -164,7 +163,7 @@ class MemberControllerTest {
         roles.add(EMemberRole.MEMBER.toString());
         String accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(3L, "test3@naver.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(3L, "test3@naver.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
         //When
         accessToken = "Bearer "+accessToken;
 

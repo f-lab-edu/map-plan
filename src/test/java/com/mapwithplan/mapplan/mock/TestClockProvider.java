@@ -1,7 +1,7 @@
 package com.mapwithplan.mapplan.mock;
 
 
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;
@@ -10,12 +10,12 @@ import java.time.ZoneId;
 import java.util.Date;
 
 @RequiredArgsConstructor
-public class TestClockHolder implements TimeClockHolder {
+public class TestClockProvider implements TimeClockProvider {
 
     private final Long longValue ;
 
     @Override
-    public LocalDateTime clockHold() {
+    public LocalDateTime clockProvider() {
         // Long을 Instant으로 변환
         Instant instant = Instant.ofEpochMilli(longValue);
 
@@ -24,7 +24,7 @@ public class TestClockHolder implements TimeClockHolder {
     }
 
     @Override
-    public Date dateClockHold() {
+    public Date dateClockProvider() {
         return new Date(longValue);
     }
 }

@@ -5,6 +5,13 @@ import com.mapwithplan.mapplan.common.exception.DuplicateResourceException;
 import com.mapwithplan.mapplan.jwt.util.JwtTokenizer;
 import com.mapwithplan.mapplan.member.domain.*;
 import com.mapwithplan.mapplan.mock.*;
+import com.mapwithplan.mapplan.member.domain.EMemberStatus;
+import com.mapwithplan.mapplan.member.domain.Member;
+import com.mapwithplan.mapplan.member.domain.MemberCreate;
+import com.mapwithplan.mapplan.mock.FakeMailSender;
+import com.mapwithplan.mapplan.mock.FakeMemberRepository;
+import com.mapwithplan.mapplan.mock.TestClockProvider;
+import com.mapwithplan.mapplan.mock.TestUuidHolder;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,7 +38,7 @@ class MemberServiceImplTest {
         this.memberService = MemberServiceImpl.builder()
                 .memberRepository(fakeMemberRepository)
                 .uuidHolder(new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab"))
-                .clockHolder(new TestClockHolder(Instant.now().toEpochMilli()))
+                .clockHolder(new TestClockProvider(Instant.now().toEpochMilli()))
                 .certificationService(new CertificationService(fakeMailSender))
                 .passwordEncoder(new BCryptPasswordEncoder())
                 .jwtTokenizer(this.jwtTokenizer)
@@ -144,7 +151,7 @@ class MemberServiceImplTest {
         Member byId = memberService.findById(3L);
         ArrayList<String> roles = new ArrayList<>();
         roles.add(byId.getEMemberRole().toString());
-        String accessToken = jwtTokenizer.createAccessToken(byId.getId(), byId.getEmail(), roles, new TestClockHolder(900000000000000L));
+        String accessToken = jwtTokenizer.createAccessToken(byId.getId(), byId.getEmail(), roles, new TestClockProvider(900000000000000L));
         //When
         accessToken = "Bearer "+accessToken;
 
@@ -163,7 +170,7 @@ class MemberServiceImplTest {
         Member byId = memberService.findById(3L);
         ArrayList<String> roles = new ArrayList<>();
         roles.add(byId.getEMemberRole().toString());
-        String accessToken = jwtTokenizer.createAccessToken(byId.getId(), byId.getEmail(), roles, new TestClockHolder(900000000000000L));
+        String accessToken = jwtTokenizer.createAccessToken(byId.getId(), byId.getEmail(), roles, new TestClockProvider(900000000000000L));
         EditMember editMember = new EditMember("1234", "010-2313-1234");
         //When
         accessToken = "Bearer "+accessToken;

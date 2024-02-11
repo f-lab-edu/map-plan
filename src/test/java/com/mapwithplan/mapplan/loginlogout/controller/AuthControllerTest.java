@@ -7,7 +7,7 @@ import com.mapwithplan.mapplan.loginlogout.domain.RefreshToken;
 import com.mapwithplan.mapplan.member.domain.EMemberRole;
 import com.mapwithplan.mapplan.member.domain.EMemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
 import com.mapwithplan.mapplan.mock.TestUuidHolder;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
 
-class LoginLogoutControllerTest {
+class AuthControllerTest {
 
     @Test
     @DisplayName("로그인 정보를 보낼때  로그인에 성공한다.")
@@ -37,14 +37,14 @@ class LoginLogoutControllerTest {
                 .modifiedAt(LocalDateTime.of(2024, 12, 13, 12, 13))
                 .build();
         TestContainer testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(9000000000000L))
+                .clockHolder(new TestClockProvider(9000000000000L))
                 .uuidHolder(new TestUuidHolder("123123asd"))
                 .build();
         testContainer.memberRepository.saveMember(member);
 
         Login login = new Login("testAOP@gmail.com", "123123");
         //When
-        ResponseEntity<?> loginMember = testContainer.loginLogoutController.login(login);
+        ResponseEntity<?> loginMember = testContainer.authController.login(login);
 
         //Then
         assertThat(loginMember.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(200));
@@ -66,7 +66,7 @@ class LoginLogoutControllerTest {
                 .modifiedAt(LocalDateTime.of(2024, 12, 13, 12, 13))
                 .build();
         TestContainer testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(9000000000000L))
+                .clockHolder(new TestClockProvider(9000000000000L))
                 .uuidHolder(new TestUuidHolder("123123asd"))
                 .build();
         testContainer.memberRepository.saveMember(member);
@@ -76,7 +76,7 @@ class LoginLogoutControllerTest {
 
 
         //Then
-        assertThatThrownBy(()->testContainer.loginLogoutController.login(login))
+        assertThatThrownBy(()->testContainer.authController.login(login))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
@@ -96,7 +96,7 @@ class LoginLogoutControllerTest {
                 .modifiedAt(LocalDateTime.of(2024, 12, 13, 12, 13))
                 .build();
         TestContainer testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(9000000000000L))
+                .clockHolder(new TestClockProvider(9000000000000L))
                 .uuidHolder(new TestUuidHolder("123123asd"))
                 .build();
         testContainer.memberRepository.saveMember(member);
@@ -106,7 +106,7 @@ class LoginLogoutControllerTest {
 
 
         //Then
-        assertThatThrownBy(()->testContainer.loginLogoutController.login(login))
+        assertThatThrownBy(()->testContainer.authController.login(login))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
@@ -126,7 +126,7 @@ class LoginLogoutControllerTest {
                 .modifiedAt(LocalDateTime.of(2024, 12, 13, 12, 13))
                 .build();
         TestContainer testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(9000000000000L))
+                .clockHolder(new TestClockProvider(9000000000000L))
                 .uuidHolder(new TestUuidHolder("123123asd"))
                 .build();
         testContainer.memberRepository.saveMember(member);
@@ -136,7 +136,7 @@ class LoginLogoutControllerTest {
 
 
         //Then
-        assertThatThrownBy(()->testContainer.loginLogoutController.login(login))
+        assertThatThrownBy(()->testContainer.authController.login(login))
                 .isInstanceOf(IllegalArgumentException.class);
     }
     @Test
@@ -155,7 +155,7 @@ class LoginLogoutControllerTest {
                 .modifiedAt(LocalDateTime.of(2024, 12, 13, 12, 13))
                 .build();
         TestContainer testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(9000000000000L))
+                .clockHolder(new TestClockProvider(9000000000000L))
                 .uuidHolder(new TestUuidHolder("123123asd"))
                 .build();
         testContainer.memberRepository.saveMember(member);
@@ -165,7 +165,7 @@ class LoginLogoutControllerTest {
 
 
         //Then
-        assertThatThrownBy(()->testContainer.loginLogoutController.login(login))
+        assertThatThrownBy(()->testContainer.authController.login(login))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -175,7 +175,7 @@ class LoginLogoutControllerTest {
         //Given
 
         TestContainer testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(9000000000000L))
+                .clockHolder(new TestClockProvider(9000000000000L))
                 .uuidHolder(new TestUuidHolder("123123asd"))
                 .build();
         String refresh = "TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST";
@@ -183,11 +183,13 @@ class LoginLogoutControllerTest {
 
         RefreshToken token = RefreshToken.builder()
                 .token(refresh)
-                .member(Member.builder().build())
+                .member(Member.builder()
+                        .id(1L)
+                        .build())
                 .build();
         testContainer
                 .refreshTokenService
-                .addRefreshToken(token);
+                .saveRefreshToken(token);
         DeleteRefreshToken refreshToken = new DeleteRefreshToken(refresh);
 
 
@@ -195,7 +197,7 @@ class LoginLogoutControllerTest {
 
 
         //Then
-        ResponseEntity<DeleteRefreshToken> logout = testContainer.loginLogoutController.logout(refreshToken);
+        ResponseEntity<DeleteRefreshToken> logout = testContainer.authController.logout(refreshToken);
         assertThat(logout.getStatusCode())
                 .isEqualTo(HttpStatusCode.valueOf(200));
         assertThat(logout.getBody())

@@ -56,6 +56,8 @@ public class FakeRefreshTokenRepository implements RefreshTokenRepository {
 
     @Override
     public void update(RefreshToken refreshToken) {
-
+        data.stream()
+                .filter(item -> item.getMember().equals(refreshToken.getMember()))
+                .forEach(item -> item.update(refreshToken.getToken()));
     }
 }
