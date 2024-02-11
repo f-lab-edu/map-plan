@@ -1,7 +1,8 @@
 package com.mapwithplan.mapplan.mock.planmock;
 
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
 
+
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.plan.controller.PlanController;
 import com.mapwithplan.mapplan.plan.controller.port.PlanService;
 import com.mapwithplan.mapplan.plan.service.PlanServiceImpl;
@@ -17,7 +18,7 @@ public class TestPlanContainer {
     public final PlanController planController;
 
     @Builder
-    public TestPlanContainer(TimeClockHolder clockHolder) {
+    public TestPlanContainer(TimeClockProvider clockHolder) {
         this.planRepository = new FakePlanRepository();
         this.planService = PlanServiceImpl.builder()
                 .planRepository(this.planRepository)

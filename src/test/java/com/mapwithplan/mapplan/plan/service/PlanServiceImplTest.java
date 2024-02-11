@@ -4,7 +4,8 @@ import com.mapwithplan.mapplan.common.exception.UnauthorizedServiceException;
 import com.mapwithplan.mapplan.member.domain.EMemberRole;
 import com.mapwithplan.mapplan.member.domain.EMemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
 import com.mapwithplan.mapplan.mock.planmock.TestPlanContainer;
 import com.mapwithplan.mapplan.plan.domain.Plan;
@@ -28,7 +29,7 @@ class PlanServiceImplTest {
     @BeforeEach
     void init(){
         testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(1L))
+                .clockHolder(new TestClockProvider(1L))
                 .uuidHolder(() -> "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .build();
         Member member1 = Member.builder()
@@ -73,14 +74,14 @@ class PlanServiceImplTest {
 
         String accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(3L, "test3@naver.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(3L, "test3@naver.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
 
 
         accessToken = "Bearer "+accessToken;
         PlanCreate planCreate = PlanCreate.builder()
                 .title("test 입니다.")
                 .content("내용입니다.")
-                .appointmentDate(new TestClockHolder(9L).clockHold())
+                .appointmentDate(new TestClockProvider(9L).clockProvider())
                 .category("카테고리입니다.")
                 .location("서울입니다.")
                 .build();
@@ -95,8 +96,8 @@ class PlanServiceImplTest {
         assertThat(planCreate.getAppointmentDate()).isEqualTo(plan.getAppointmentDate());
         assertThat(planCreate.getCategory()).isEqualTo(plan.getCategory());
         assertThat(planCreate.getLocation()).isEqualTo(plan.getLocation());
-        assertThat(plan.getCreatedAt()).isEqualTo(new TestClockHolder(1L).clockHold());
-        assertThat(plan.getModifiedAt()).isEqualTo(new TestClockHolder(1L).clockHold());
+        assertThat(plan.getCreatedAt()).isEqualTo(new TestClockProvider(1L).clockProvider());
+        assertThat(plan.getModifiedAt()).isEqualTo(new TestClockProvider(1L).clockProvider());
     }
 
     @Test
@@ -108,14 +109,14 @@ class PlanServiceImplTest {
 
         String accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(3L, "test3@naver.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(3L, "test3@naver.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
 
 
         accessToken = "Bearer "+accessToken;
         PlanCreate planCreate = PlanCreate.builder()
                 .title("test 입니다.")
                 .content("내용입니다.")
-                .appointmentDate(new TestClockHolder(9L).clockHold())
+                .appointmentDate(new TestClockProvider(9L).clockProvider())
                 .category("카테고리입니다.")
                 .location("서울입니다.")
                 .build();
@@ -142,14 +143,14 @@ class PlanServiceImplTest {
 
         String accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(3L, "test3@naver.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(3L, "test3@naver.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
 
 
         accessToken = "Bearer "+accessToken;
         PlanCreate planCreate = PlanCreate.builder()
                 .title("test 입니다.")
                 .content("내용입니다.")
-                .appointmentDate(new TestClockHolder(9L).clockHold())
+                .appointmentDate(new TestClockProvider(9L).clockProvider())
                 .category("카테고리입니다.")
                 .location("서울입니다.")
                 .build();
@@ -159,7 +160,7 @@ class PlanServiceImplTest {
         //When
         String anotherAccessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(4L, "test@naver.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(4L, "test@naver.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
         anotherAccessToken = "Bearer "+anotherAccessToken;
         //Then
         String finalAccessToken = anotherAccessToken;

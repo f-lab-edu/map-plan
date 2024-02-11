@@ -3,7 +3,8 @@ package com.mapwithplan.mapplan.plan.controller;
 import com.mapwithplan.mapplan.member.domain.EMemberRole;
 import com.mapwithplan.mapplan.member.domain.EMemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
 import com.mapwithplan.mapplan.mock.planmock.TestPlanContainer;
 import com.mapwithplan.mapplan.plan.controller.response.PlanCreateResponse;
@@ -31,7 +32,7 @@ class PlanControllerTest {
     @BeforeEach
     void init(){
         testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(1L))
+                .clockHolder(new TestClockProvider(1L))
                 .uuidHolder(() -> "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .build();
 
@@ -57,13 +58,13 @@ class PlanControllerTest {
         roles.add(EMemberRole.MEMBER.toString());
         String accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(3L, "test3@naver.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(3L, "test3@naver.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
         //Given
         accessToken = "Bearer "+accessToken;
         PlanCreate planCreate = PlanCreate.builder()
                 .title("test 입니다.")
                 .content("내용입니다.")
-                .appointmentDate(new TestClockHolder(9L).clockHold())
+                .appointmentDate(new TestClockProvider(9L).clockProvider())
                 .category("카테고리입니다.")
                 .location("서울입니다.")
                 .build();
@@ -94,12 +95,12 @@ class PlanControllerTest {
         roles.add(EMemberRole.MEMBER.toString());
         String accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(3L, "test3@naver.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(3L, "test3@naver.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
         accessToken = "Bearer "+accessToken;
         PlanCreate planCreate = PlanCreate.builder()
                 .title("test 입니다.")
                 .content("내용입니다.")
-                .appointmentDate(new TestClockHolder(9L).clockHold())
+                .appointmentDate(new TestClockProvider(9L).clockProvider())
                 .category("카테고리입니다.")
                 .location("서울입니다.")
                 .build();

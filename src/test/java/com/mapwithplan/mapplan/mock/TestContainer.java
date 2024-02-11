@@ -44,6 +44,7 @@ public class TestContainer {
     public final PlanRepository planRepository;
     public final PlanService planService;
 
+    public final PlanController planController;
 
     @Builder
     public TestContainer(TimeClockProvider clockHolder, UuidHolder uuidHolder) {

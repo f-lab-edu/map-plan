@@ -3,7 +3,8 @@ package com.mapwithplan.mapplan.plan.service;
 
 import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
 import com.mapwithplan.mapplan.common.exception.UnauthorizedServiceException;
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.jwt.util.JwtTokenizer;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.service.port.MemberRepository;
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlanServiceImpl implements PlanService {
 
     private final PlanRepository planRepository;
-    private final TimeClockHolder clockHolder;
+    private final TimeClockProvider clockHolder;
     private final JwtTokenizer jwtTokenizer;
     private final MemberRepository memberRepository;
 

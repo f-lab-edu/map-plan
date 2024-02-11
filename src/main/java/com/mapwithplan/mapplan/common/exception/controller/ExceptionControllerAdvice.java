@@ -49,7 +49,7 @@ public class ExceptionControllerAdvice {
 
     @ResponseBody
     @ResponseStatus(FORBIDDEN)
-    @ExceptionHandler(DuplicateResourceException.class)
+    @ExceptionHandler(UnauthorizedServiceException.class)
     public String unauthorizedServiceException(UnauthorizedServiceException exception) {
         return exception.getMessage();
     }

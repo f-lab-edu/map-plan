@@ -1,6 +1,7 @@
 package com.mapwithplan.mapplan.friendship.domain;
 
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,13 +36,13 @@ public class Friendship {
 
 
 
-    public static Friendship from(FriendshipCreate friendshipCreate, TimeClockHolder clockHolder){
+    public static Friendship from(FriendshipCreate friendshipCreate, TimeClockProvider clockHolder){
         return Friendship.builder()
                 .memberId(friendshipCreate.getMemberId())
                 .friendMemberId(friendshipCreate.getFriendMemberId())
                 .friendNickName(friendshipCreate.getFriendNickName())
                 .efriendStatus(EfriendStatus.PENDING)
-                .friendshipDate(clockHolder.clockHold())
+                .friendshipDate(clockHolder.clockProvider())
                 .build();
 
     }
