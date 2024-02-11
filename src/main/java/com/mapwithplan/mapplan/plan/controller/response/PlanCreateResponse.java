@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 public class PlanCreateResponse {
 
 
+    private Long planId;
+
     private String title;
 
     private LocalDateTime appointmentDate;
@@ -28,7 +30,8 @@ public class PlanCreateResponse {
 
     private String category;
     @Builder
-    public PlanCreateResponse(String title, LocalDateTime appointmentDate, String authorName, String content, String location, String category) {
+    public PlanCreateResponse(Long planId, String title, LocalDateTime appointmentDate, String authorName, String content, String location, String category) {
+        this.planId = planId;
         this.title = title;
         this.appointmentDate = appointmentDate;
         this.authorName = authorName;
@@ -40,6 +43,7 @@ public class PlanCreateResponse {
 
     public static PlanCreateResponse from(Plan plan){
         return PlanCreateResponse.builder()
+                .planId(plan.getId())
                 .title(plan.getTitle())
                 .appointmentDate(plan.getAppointmentDate())
                 .authorName(plan.getAuthor().getName())

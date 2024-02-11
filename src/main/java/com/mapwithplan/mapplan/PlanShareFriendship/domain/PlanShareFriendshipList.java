@@ -2,6 +2,7 @@ package com.mapwithplan.mapplan.PlanShareFriendship.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,10 +15,11 @@ import java.util.List;
 @Getter
 public class PlanShareFriendshipList {
 
-    private final List<Long> friendshipsIds;
+    private List<Long> friendshipsIds;
 
     @Builder
     public PlanShareFriendshipList(@JsonProperty("friendshipsIds") List<Long> friendshipsIds) {
         this.friendshipsIds = friendshipsIds;
     }
+
 }
