@@ -39,4 +39,5 @@ public interface MemberService {
     Member findByEmailUseAccessToken(String accessToken);
 
     Member editMemberDetail(String authorizationHeader, EditMember editMember);
+
 }
