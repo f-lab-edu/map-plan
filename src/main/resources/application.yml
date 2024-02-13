@@ -9,6 +9,7 @@ spring:
     multipart:
       max-file-size: 1MB
       max-request-size: 10MB
+      enabled: true
   sql:
     init:
       data-locations: classpath*:data.sql

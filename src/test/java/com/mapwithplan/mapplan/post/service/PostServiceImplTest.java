@@ -4,15 +4,22 @@ import com.mapwithplan.mapplan.member.domain.EMemberRole;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.mock.TestClockHolder;
 import com.mapwithplan.mapplan.mock.TestContainer;
+import com.mapwithplan.mapplan.mock.TestUuidHolder;
+import com.mapwithplan.mapplan.mock.postmock.FakeMultipartFile;
 import com.mapwithplan.mapplan.post.domain.Post;
 import com.mapwithplan.mapplan.post.domain.PostCreate;
+import com.mapwithplan.mapplan.post.domain.PostDetail;
+import com.mapwithplan.mapplan.post.domain.PostImg;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +32,9 @@ class PostServiceImplTest {
     @BeforeEach
     void init(){
         this.testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(1L)).build();
+                .clockHolder(new TestClockHolder(1L))
+                .uuidHolder(new TestUuidHolder("hj-this-is-uuid"))
+                .build();
         member = Member.builder()
                 .name("test 이름")
                 .phone("010-1234-1234")
@@ -47,8 +56,8 @@ class PostServiceImplTest {
                 .jwtTokenizer
                 .createAccessToken(1L, "test@test.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
 
-
         accessToken = "Bearer "+accessToken;
+
         //Given
         PostCreate postCreate = PostCreate.builder()
                 .title("Post")
@@ -56,12 +65,19 @@ class PostServiceImplTest {
                 .content("아무 내용")
                 .location("서울")
                 .build();
+        List<MultipartFile> testFile = new ArrayList<>();
+        FakeMultipartFile fakeMultipartFile = FakeMultipartFile.builder()
+                .originalFilename("test.png")
+                .name("test.png").build();
+
+        testFile.add(fakeMultipartFile);
+
         //When
-        Post post = testContainer.postService.createPost(postCreate, accessToken);
+        PostDetail post = testContainer.postService.createPost(postCreate, testFile, accessToken);
 
         //Then
-        assertThat(post.getContent()).isEqualTo(postCreate.getContent());
-        assertThat(post.getMember().getEmail()).isEqualTo(member.getEmail());
+        assertThat(post.getPost().getMember().getEmail()).isEqualTo(member.getEmail());
+        assertThat(post.getPostImgList().size()).isEqualTo(1);
     }
 
 

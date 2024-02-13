@@ -25,6 +25,7 @@ import com.mapwithplan.mapplan.mock.friendshipmock.FakeFriendshipRepository;
 import com.mapwithplan.mapplan.mock.membermock.FakeMemberRepository;
 import com.mapwithplan.mapplan.mock.planmock.FakePlanRepository;
 import com.mapwithplan.mapplan.mock.plansharefriendshipmock.FakePlanShareFriendshipRepository;
+import com.mapwithplan.mapplan.mock.postmock.FakePostImgRepository;
 import com.mapwithplan.mapplan.mock.postmock.FakePostRepository;
 import com.mapwithplan.mapplan.plan.controller.PlanController;
 import com.mapwithplan.mapplan.plan.controller.port.PlanService;
@@ -32,7 +33,9 @@ import com.mapwithplan.mapplan.plan.service.PlanServiceImpl;
 import com.mapwithplan.mapplan.plan.service.port.PlanRepository;
 import com.mapwithplan.mapplan.post.controller.PostController;
 import com.mapwithplan.mapplan.post.controller.port.PostService;
+import com.mapwithplan.mapplan.post.service.PostImgStore;
 import com.mapwithplan.mapplan.post.service.PostServiceImpl;
+import com.mapwithplan.mapplan.post.service.port.PostImgRepository;
 import com.mapwithplan.mapplan.post.service.port.PostRepository;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
@@ -88,6 +91,8 @@ public class TestContainer {
 
     public final PostController postController;
 
+    public final PostImgStore postImgStore;
+    public final PostImgRepository postImgRepository;
 
     @Builder
     public TestContainer(TimeClockHolder clockHolder, UuidHolder uuidHolder) {
@@ -173,10 +178,15 @@ public class TestContainer {
 
 
         //post
+        this.postImgRepository = new FakePostImgRepository();
+        this.postImgStore = new PostImgStore();
         this.postRepository = new FakePostRepository();
         this.postService = PostServiceImpl.builder()
+                .postImgStore(this.postImgStore)
                 .postRepository(this.postRepository)
                 .memberService(this.memberService)
+                .postImgRepository(this.postImgRepository)
+                .uuidHolder(uuidHolder)
                 .clockHolder(clockHolder).build();
         this.postController = PostController.builder()
                 .postService(this.postService)
