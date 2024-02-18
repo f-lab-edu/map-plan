@@ -22,7 +22,7 @@ class JwtTokenizerTest {
     String accessSecret= "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest";
     String refreshToken= "abcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefg";
 
-    String email = "test@gmail.com";
+    String email = "testAOP@gmail.com";
     List<String> roles = List.of("MEMBER");
     Long id = 1L;
     TestClockProvider testClockHolder;
@@ -190,7 +190,7 @@ class JwtTokenizerTest {
         //When
         Long userIdFromToken = jwtTokenizer.getUserIdFromToken("Bearer "+accessToken);
         //Then
-        System.out.println("userIdFromToken = " + userIdFromToken);
+
         assertThat(userIdFromToken).isEqualTo(1);
     }
 }

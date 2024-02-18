@@ -1,6 +1,7 @@
 package com.mapwithplan.mapplan.loginlogout.controller;
 
 
+import com.mapwithplan.mapplan.common.aop.logparameteraop.annotation.LogInputTrace;
 import com.mapwithplan.mapplan.loginlogout.controller.port.LoginService;
 import com.mapwithplan.mapplan.loginlogout.controller.response.LoginResponse;
 import com.mapwithplan.mapplan.loginlogout.domain.DeleteRefreshToken;
@@ -32,10 +33,9 @@ public class AuthController {
      * @param login email password 에 대한 정보를 담고 있습니다.
      * @return
      */
+    @LogInputTrace
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid Login login){
-
-        log.info("getEmail = {}, getPassword = {}",login.getEmail(),login.getPassword());
         LoginResponse loginResponse = loginService.login(login);
 
         return ResponseEntity
@@ -49,9 +49,9 @@ public class AuthController {
      * @param deleteRefreshToken refreshToken 에 대한 JWT 를 담고 있습니다.
      * @return
      */
+
     @DeleteMapping("/logout")
     public ResponseEntity<DeleteRefreshToken> logout(@RequestBody DeleteRefreshToken deleteRefreshToken){
-        log.info("deleteLogout {} ", deleteRefreshToken.getRefreshToken());
         loginService.logout(deleteRefreshToken.getRefreshToken());
         return ResponseEntity
                 .status(HttpStatus.OK)

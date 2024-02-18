@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 /**
  * 회원 인증과 관련된 클래스입니다.
  */
+
 @Builder
 @Service
 @RequiredArgsConstructor

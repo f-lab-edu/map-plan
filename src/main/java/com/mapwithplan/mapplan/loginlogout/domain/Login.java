@@ -25,4 +25,9 @@ public class Login {
         this.email = email;
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Login { email='%s' , password= '%s' }",email,password);
+    }
 }

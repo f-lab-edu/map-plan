@@ -5,10 +5,13 @@ import com.mapwithplan.mapplan.common.exception.DuplicateResourceException;
 import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
 import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
+import com.mapwithplan.mapplan.jwt.util.JwtTokenizer;
 import com.mapwithplan.mapplan.member.controller.port.MemberService;
+import com.mapwithplan.mapplan.member.domain.EditMember;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.domain.MemberCreate;
 import com.mapwithplan.mapplan.member.service.port.MemberRepository;
+import io.jsonwebtoken.Claims;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +40,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final JwtTokenizer jwtTokenizer;
 
 
     /**
@@ -81,6 +85,49 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member findById(long id) {
         return memberRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Member",id));
+    }
+
+    /**
+     * 토큰에 담겨있는 이메일을 통해 회원의 정보를 조회합니다.
+     * @param accessToken 헤더에 있는 정보를 활용합니다.
+     * @return
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Member findByEmailUseAccessToken(String accessToken) {
+        String email = getEmailFrom(accessToken);
+        return memberRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Member", email));
+    }
+
+    /**
+     * 토큰에 담겨있는 이메일을 통해 회원의 정보를 조회합니다.
+     * 회원의 상세 정보를 수정합니다. 수정된 시간과 정보를 수정합니다.
+     * @param authorizationHeader 헤더에 있는 정보를 활용합니다.
+     * @param editMember
+     * @return
+     */
+    @Override
+    @Transactional
+    public Member editMemberDetail(String authorizationHeader, EditMember editMember) {
+        String email = getEmailFrom(authorizationHeader);
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Member", email));
+        Member changeMember = member.edit(member, editMember, clockHolder);
+        return  memberRepository.editMemberDetail(changeMember);
+    }
+
+
+    /**
+     * 헤더 토큰을 활용해 이메일을 찾아내는 메서드 입니다.
+     * @param authorizationHeader
+     * @return
+     */
+    private String getEmailFrom(String authorizationHeader) {
+        String jwtToken = authorizationHeader.replace("Bearer ", "");
+        Claims claims = jwtTokenizer.parseAccessToken(jwtToken);
+        return claims.getSubject();
     }
 
 

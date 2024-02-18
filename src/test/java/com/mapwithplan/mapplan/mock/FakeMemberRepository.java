@@ -1,10 +1,13 @@
 package com.mapwithplan.mapplan.mock;
 
+import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
 import com.mapwithplan.mapplan.member.domain.EMemberRole;
 import com.mapwithplan.mapplan.member.domain.EMemberStatus;
+import com.mapwithplan.mapplan.member.domain.EditMember;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.service.port.MemberRepository;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -46,4 +49,19 @@ public class FakeMemberRepository implements MemberRepository {
         return data.stream().filter(item -> item.getEmail().equals(email)).findAny();
 
     }
+
+    @Override
+    public Member editMemberDetail(Member editMember) {
+
+        EditMember editMember1 = new EditMember(editMember.getStatusMessage(), editMember.getPhone());
+        Member member = data.stream()
+                .filter(test -> test.getId().equals(editMember.getId()))
+                .findAny().map(test ->
+                        test.edit(test, editMember1, new TestClockProvider(3L))
+                )
+                .orElseThrow(() -> new ResourceNotFoundException("Member", editMember.getEmail()));
+
+        return member;
+    }
+
 }
