@@ -2,6 +2,7 @@ package com.mapwithplan.mapplan.common.exception.controller;
 
 
 import com.mapwithplan.mapplan.common.exception.CertificationCodeNotMatchedException;
+import com.mapwithplan.mapplan.common.exception.DuplicateResourceException;
 import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.Ordered;
@@ -11,8 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 /**
  *  이 클래스에서는 공통으로 적용할 수 있는 예외를 담는 클래스입니다.
@@ -37,5 +37,14 @@ public class ExceptionControllerAdvice {
     public String certificationCodeNotMatchedException(CertificationCodeNotMatchedException exception) {
         return exception.getMessage();
     }
+
+    @ResponseBody
+    @ResponseStatus(CONFLICT)
+    @ExceptionHandler(DuplicateResourceException.class)
+    public String duplicateResourceException(DuplicateResourceException exception) {
+        return exception.getMessage();
+    }
+
+
 
 }
