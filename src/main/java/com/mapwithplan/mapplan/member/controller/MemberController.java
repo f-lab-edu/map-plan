@@ -21,8 +21,8 @@ public class MemberController {
 
     @GetMapping("/{id}/verify")
     public ResponseEntity<Void> verifyEmail(
-            @PathVariable long id,
-            @RequestParam String certificationCode) {
+            @PathVariable("id") long id,
+            @RequestParam("certificationCode") String certificationCode) {
         memberService.verifyEmail(id, certificationCode);
         return ResponseEntity.status(HttpStatus.FOUND)
                 .location(URI.create("http://localhost:3000"))

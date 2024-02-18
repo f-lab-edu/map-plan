@@ -1,17 +1,21 @@
 package com.mapwithplan.mapplan.member.service;
 
 import com.mapwithplan.mapplan.common.exception.CertificationCodeNotMatchedException;
+import com.mapwithplan.mapplan.common.exception.DuplicateResourceException;
 import com.mapwithplan.mapplan.member.domain.EMemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.domain.MemberCreate;
 import com.mapwithplan.mapplan.mock.FakeMailSender;
 import com.mapwithplan.mapplan.mock.FakeMemberRepository;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestUuidHolder;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
@@ -27,8 +31,9 @@ class MemberServiceImplTest {
         this.memberService = MemberServiceImpl.builder()
                 .memberRepository(fakeMemberRepository)
                 .uuidHolder(new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab"))
-                .clockHolder(new TestClockHolder(LocalDateTime.of(2024, 1, 24, 12, 30)))
+                .clockHolder(new TestClockProvider(Instant.now().toEpochMilli()))
                 .certificationService(new CertificationService(fakeMailSender))
+                .passwordEncoder(new BCryptPasswordEncoder())
                 .build();
 
         fakeMemberRepository.saveMember(Member.builder()
@@ -62,7 +67,7 @@ class MemberServiceImplTest {
         //Given
         MemberCreate memberCreate = MemberCreate.builder()
                 .name("test")
-                .email("test@gmail.com")
+                .email("test12@gmail.com")
                 .phone("test1123")
                 .password("test123")
                 .build();
@@ -70,9 +75,26 @@ class MemberServiceImplTest {
         Member member = memberService.saveMember(memberCreate);
         //Then
         assertThat(member.getId()).isNotNull();
-        assertThat(member.getPassword()).isEqualTo(memberCreate.getPassword());
+        assertThat(member.getPassword()).isNotEqualTo(memberCreate.getPassword());
         assertThat(member.getMemberStatus()).isEqualTo(EMemberStatus.PENDING);
         assertThat(member.getCertificationCode()).isEqualTo("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab");
+    }
+
+    @Test
+    @DisplayName("MemberService 객체로 중복 회원은 저장할 수 없다.")
+    void MemberServiceDontSaveDuplicateMemberTest() {
+        //Given
+        MemberCreate memberCreate = MemberCreate.builder()
+                .name("test")
+                .email("test@gmail.com")
+                .phone("test1123")
+                .password("test123")
+                .build();
+        //When
+        //Then
+        Assertions.assertThatThrownBy(()->memberService.saveMember(memberCreate))
+                .isInstanceOf(DuplicateResourceException.class);
+
     }
     @Test
     @DisplayName("회원 서비스로 이메일을 검증하면 회원의 상태가 ACTIVE 가 된다.")

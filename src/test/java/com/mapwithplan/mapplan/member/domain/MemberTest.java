@@ -1,12 +1,15 @@
 package com.mapwithplan.mapplan.member.domain;
 
 import com.mapwithplan.mapplan.common.exception.CertificationCodeNotMatchedException;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestUuidHolder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -22,19 +25,21 @@ class MemberTest {
                 .phone("010-1234-1234")
                 .name("테스트")
                 .build();
+        long epochMilli = Instant.parse("2022-01-01T12:00:00Z").toEpochMilli();
         //When
-        Member from = Member.from(memberCreate,
-                new TestClockHolder(LocalDateTime.of(2024, 1, 24, 12, 30)),
-                new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"));
+        Member from = Member.from(memberCreate ,
+                new TestClockProvider(epochMilli),
+                new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                new BCryptPasswordEncoder());
         //Then
         assertThat(from.getId()).isNull();
         assertThat(from.getEmail()).isEqualTo(memberCreate.getEmail());
-        assertThat(from.getPassword()).isEqualTo(memberCreate.getPassword());
+        assertThat(from.getPassword()).isNotEqualTo(memberCreate.getPassword());
         assertThat(from.getPhone()).isEqualTo(memberCreate.getPhone());
         assertThat(from.getName()).isEqualTo(memberCreate.getName());
         assertThat(from.getCertificationCode()).isEqualTo("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
         assertThat(from.getMemberStatus()).isEqualTo(EMemberStatus.PENDING);
-        assertThat(from.getCreatedAt()).isEqualTo(LocalDateTime.of(2024, 1, 24, 12, 30));
+        assertThat(from.getCreatedAt()).isEqualTo(LocalDateTime.ofInstant(Instant.parse("2022-01-01T12:00:00Z"), ZoneId.systemDefault()));
 
 
     }

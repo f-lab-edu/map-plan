@@ -39,4 +39,6 @@ public class MemberCreate {
         this.name = name;
         this.phone = phone;
     }
+
+
 }

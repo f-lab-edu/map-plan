@@ -3,10 +3,11 @@ package com.mapwithplan.mapplan.member.domain;
 
 import com.mapwithplan.mapplan.common.exception.CertificationCodeNotMatchedException;
 import com.mapwithplan.mapplan.common.timeutils.domain.BaseTime;
-import com.mapwithplan.mapplan.common.timeutils.service.port.LocalDateTimeClockHolder;
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 
@@ -31,8 +32,10 @@ public class Member extends BaseTime {
     private final String certificationCode;
 
     private final EMemberStatus memberStatus;
+
+    private final EMemberRole eMemberRole;
     @Builder
-    public Member(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String email, String password, String name, String phone, String statusMessage, String certificationCode, EMemberStatus memberStatus) {
+    public Member(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String email, String password, String name, String phone, String statusMessage, String certificationCode, EMemberStatus memberStatus, EMemberRole eMemberRole) {
         super(createdAt, modifiedAt);
         this.id = id;
         this.email = email;
@@ -42,20 +45,22 @@ public class Member extends BaseTime {
         this.statusMessage = statusMessage;
         this.certificationCode = certificationCode;
         this.memberStatus = memberStatus;
+        this.eMemberRole = eMemberRole;
     }
 
 
 
-    public static Member from(MemberCreate memberCreate, LocalDateTimeClockHolder clockHolder, UuidHolder uuidHolder){
+    public static Member from(MemberCreate memberCreate, TimeClockProvider clockHolder, UuidHolder uuidHolder, PasswordEncoder encoder){
         return Member.builder()
                 .email(memberCreate.getEmail())
                 .name(memberCreate.getName())
-                .password(memberCreate.getPassword())
+                .password(encoder.encode(memberCreate.getPassword()))
                 .memberStatus(EMemberStatus.PENDING)
                 .certificationCode(uuidHolder.random())
                 .phone(memberCreate.getPhone())
-                .createdAt(clockHolder.clockHold())
-                .modifiedAt(clockHolder.clockHold())
+                .createdAt(clockHolder.clockProvider())
+                .modifiedAt(clockHolder.clockProvider())
+                .eMemberRole(EMemberRole.MEMBER)
                 .build();
     }
 
@@ -75,6 +80,7 @@ public class Member extends BaseTime {
                 .password(password)
                 .memberStatus(EMemberStatus.ACTIVE)
                 .phone(phone)
+                .eMemberRole(eMemberRole)
                 .certificationCode(certificationCode)
                 .build();
     }

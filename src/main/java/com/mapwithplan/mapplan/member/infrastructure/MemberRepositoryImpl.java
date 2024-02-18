@@ -19,11 +19,19 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     @Override
     public Member saveMember(Member member) {
-        return memberJPARepository.save(MemberEntity.from(member)).toModel();
+        return memberJPARepository
+                .save(MemberEntity.from(member))
+                .toModel();
     }
 
     @Override
     public Optional<Member> findById(long id) {
         return memberJPARepository.findById(id).map(MemberEntity::toModel);
+    }
+
+    @Override
+    public Optional<Member> findByEmail(String email) {
+        return memberJPARepository.findByEmail(email).map(MemberEntity::toModel);
+
     }
 }
