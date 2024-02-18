@@ -6,10 +6,7 @@ import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
 import com.mapwithplan.mapplan.member.controller.port.MemberService;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.post.controller.port.PostService;
-import com.mapwithplan.mapplan.post.domain.Post;
-import com.mapwithplan.mapplan.post.domain.PostCreate;
-import com.mapwithplan.mapplan.post.domain.PostDetail;
-import com.mapwithplan.mapplan.post.domain.PostImg;
+import com.mapwithplan.mapplan.post.domain.*;
 import com.mapwithplan.mapplan.post.service.port.PostImgRepository;
 import com.mapwithplan.mapplan.post.service.port.PostRepository;
 
@@ -64,6 +61,29 @@ public class PostServiceImpl implements PostService {
             List<PostImg> postImgList = postImgStore.storeFiles(postImgFiles, savePost, clockHolder, uuidHolder);
             List<PostImg> postImgs = postImgRepository.saveAll(postImgList);
             postDetail = postDetail.addPostImg(postDetail, postImgs);
+        }
+
+        return postDetail;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public DownloadPostFile findFile(Long postId,String storeFileName) {
+        PostImg postImg = postImgRepository.findByPostIdAndStoreFileName(postId, storeFileName);
+        String postImgStoreFileName = postImg.getStoreFileName();
+        String uploadFileName = postImg.getUploadFileName();
+        String fullPath = postImgStore.getFullPath(postImgStoreFileName);
+        return DownloadPostFile.from(uploadFileName, postImgStoreFileName, fullPath);
+
+    }
+
+    @Override
+    public PostDetail getPostDetail(Long postId) {
+
+        Post post = postRepository.findPostWithImagesById(postId);
+        PostDetail postDetail = PostDetail.from(post);
+        if (post.getPostImgList() != null){
+            postDetail= postDetail.addPostImg(postDetail,post.getPostImgList());
         }
 
         return postDetail;

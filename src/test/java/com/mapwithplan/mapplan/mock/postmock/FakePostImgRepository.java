@@ -32,4 +32,11 @@ public class FakePostImgRepository implements PostImgRepository {
         }
         return postImgList;
     }
+
+    @Override
+    public PostImg findByPostIdAndStoreFileName(Long postId, String storeFileName) {
+        return null;
+    }
+
+
 }

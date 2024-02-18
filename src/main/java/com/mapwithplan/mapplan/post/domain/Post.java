@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class Post  extends BaseTime {
@@ -30,8 +32,10 @@ public class Post  extends BaseTime {
 
     private EPostStatus ePostStatus;
 
-    @Builder
-    public Post(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, Member member, String title, String content, String anonymousName, Integer countLike, String location, EPostStatus ePostStatus) {
+    private List<PostImg> postImgList;
+
+    @Builder(toBuilder = true)
+    public Post(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, Member member, String title, String content, String anonymousName, Integer countLike, String location, EPostStatus ePostStatus,List<PostImg> postImgList) {
         super(createdAt, modifiedAt);
         this.id = id;
         this.member = member;
@@ -41,6 +45,7 @@ public class Post  extends BaseTime {
         this.countLike = countLike;
         this.location = location;
         this.ePostStatus = ePostStatus;
+        this.postImgList = postImgList;
     }
 
     public static Post from(PostCreate postCreate , Member member, TimeClockHolder clockHolder){
@@ -59,4 +64,10 @@ public class Post  extends BaseTime {
                 .ePostStatus(EPostStatus.ACTIVE)
                 .build();
     }
+
+    public Post createPostImg(Post post, List<PostImg> postImgList){
+        return post.toBuilder()
+                .postImgList(postImgList).build();
+    }
+
 }

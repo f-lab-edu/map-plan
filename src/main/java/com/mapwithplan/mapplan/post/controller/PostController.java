@@ -3,16 +3,25 @@ package com.mapwithplan.mapplan.post.controller;
 
 import com.mapwithplan.mapplan.post.controller.port.PostService;
 import com.mapwithplan.mapplan.post.controller.response.PostCreateResponse;
+import com.mapwithplan.mapplan.post.controller.response.PostDetailResponse;
+import com.mapwithplan.mapplan.post.domain.DownloadPostFile;
 import com.mapwithplan.mapplan.post.domain.PostCreate;
 import com.mapwithplan.mapplan.post.domain.PostDetail;
+import com.mapwithplan.mapplan.post.domain.PostImg;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriUtils;
 
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Slf4j
@@ -44,6 +53,37 @@ public class PostController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostDetailResponse> getPostContents(@PathVariable Long postId){
+
+        PostDetail postDetail = postService.getPostDetail(postId);
+
+
+        return ResponseEntity.ok().body(null);
+    }
+
+
+    @GetMapping("/{postId}/{filename}")
+    public ResponseEntity<Resource> downloadAttach(@PathVariable Long postId,
+                                                   @PathVariable String filename) {
+
+        DownloadPostFile file = postService.findFile(postId, filename);
+        String contentDisposition;
+        UrlResource urlResource;
+        try {
+            urlResource = new UrlResource("file:" + file.getFullPath());
+            String encodedUploadFileName = UriUtils.encode(file.getUploadFileName(), StandardCharsets.UTF_8);
+            contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,contentDisposition)
+                .body(urlResource);
 
     }
 }

@@ -16,10 +16,13 @@ public class PostDetail {
 
     private List<PostImg> postImgList;
 
+    private List<DownloadPostFile> downloadPostFiles;
+
     @Builder(toBuilder = true)
-    public PostDetail(Post post, List<PostImg> postImgList) {
+    public PostDetail(Post post, List<PostImg> postImgList,List<DownloadPostFile> downloadPostFiles) {
         this.post = post;
         this.postImgList = postImgList;
+        this.downloadPostFiles = downloadPostFiles;
     }
 
     /**

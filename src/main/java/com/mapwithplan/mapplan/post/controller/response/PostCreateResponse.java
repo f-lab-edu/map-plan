@@ -16,6 +16,7 @@ import java.util.List;
 @Getter
 public class PostCreateResponse {
 
+    private Long id;
     private String title;
 
     private String content;
@@ -32,7 +33,9 @@ public class PostCreateResponse {
 
     private List<PostImgResponse> postImgResponses;
     @Builder(toBuilder = true)
-    public PostCreateResponse(String title, String content, String anonymousName, Integer countLike, String location, LocalDateTime createdAt, LocalDateTime modifiedAt, List<PostImgResponse> postImgResponses) {
+    public PostCreateResponse(Long id, String title, String content, String anonymousName, Integer countLike, String location, LocalDateTime createdAt, LocalDateTime modifiedAt, List<PostImgResponse> postImgResponses) {
+
+        this.id = id;
         this.title = title;
         this.content = content;
         this.anonymousName = anonymousName;
@@ -45,6 +48,7 @@ public class PostCreateResponse {
 
     public static PostCreateResponse from(Post post){
         return PostCreateResponse.builder()
+                .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .anonymousName(post.getAnonymousName())

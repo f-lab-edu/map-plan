@@ -1,9 +1,6 @@
 package com.mapwithplan.mapplan.post.controller.port;
 
-import com.mapwithplan.mapplan.post.domain.Post;
-import com.mapwithplan.mapplan.post.domain.PostCreate;
-import com.mapwithplan.mapplan.post.domain.PostDetail;
-import com.mapwithplan.mapplan.post.domain.PostImg;
+import com.mapwithplan.mapplan.post.domain.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
@@ -22,4 +19,9 @@ public interface PostService {
      * @return
      */
     PostDetail createPost(PostCreate postCreate, List<MultipartFile> postImgFiles, String authorizationHeader);
+
+
+    DownloadPostFile findFile(Long postId, String storeFileName);
+
+    PostDetail getPostDetail(Long postId);
 }
