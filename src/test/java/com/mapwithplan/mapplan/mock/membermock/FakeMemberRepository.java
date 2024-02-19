@@ -5,7 +5,8 @@ import com.mapwithplan.mapplan.member.domain.MemberRole;
 import com.mapwithplan.mapplan.member.domain.EditMember;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.service.port.MemberRepository;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+import com.mapwithplan.mapplan.mock.TestClockProvider;
+
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;

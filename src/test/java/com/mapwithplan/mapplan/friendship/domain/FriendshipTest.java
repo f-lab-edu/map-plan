@@ -1,7 +1,8 @@
 package com.mapwithplan.mapplan.friendship.domain;
 
 import com.mapwithplan.mapplan.member.domain.Member;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,13 +25,13 @@ class FriendshipTest {
                 .phone("010-2222-2222")
                 .build();
         //When
-        Friendship friendship = Friendship.from(friend, member, new TestClockHolder(9L));
+        Friendship friendship = Friendship.from(friend, member, new TestClockProvider(9L));
 
         //Then
         Assertions.assertThat(member).isEqualTo(friendship.getMemberId());
         Assertions.assertThat(friendship.getFriendMemberId()).isEqualTo(friend);
         Assertions.assertThat(friend.getName()).isEqualTo(friendship.getFriendNickName());
-        Assertions.assertThat(friendship.getEfriendStatus()).isEqualTo(EFriendStatus.PENDING);
-        Assertions.assertThat(friendship.getFriendshipDate()).isEqualTo(new TestClockHolder(9L).clockHold());
+        Assertions.assertThat(friendship.getFriendStatus()).isEqualTo(FriendStatus.PENDING);
+        Assertions.assertThat(friendship.getFriendshipDate()).isEqualTo(new TestClockProvider(9L).clockProvider());
     }
 }

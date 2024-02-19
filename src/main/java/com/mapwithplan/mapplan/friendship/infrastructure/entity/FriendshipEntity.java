@@ -75,6 +75,6 @@ public class FriendshipEntity {
     }
 
     public void approve(){
-        this.efriendStatus = EFriendStatus.ACTIVE;
+        this.friendStatus = FriendStatus.ACTIVE;
     }
 }

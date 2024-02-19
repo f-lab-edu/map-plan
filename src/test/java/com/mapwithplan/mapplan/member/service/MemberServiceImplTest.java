@@ -8,7 +8,7 @@ import com.mapwithplan.mapplan.member.domain.MemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.domain.MemberCreate;
 import com.mapwithplan.mapplan.mock.FakeMailSender;
-import com.mapwithplan.mapplan.mock.FakeMemberRepository;
+
 import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestUuidHolder;
 import com.mapwithplan.mapplan.mock.*;

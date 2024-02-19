@@ -2,7 +2,7 @@ package com.mapwithplan.mapplan.friendship.service;
 
 
 import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.friendship.controller.port.FriendshipService;
 import com.mapwithplan.mapplan.friendship.domain.Friendship;
 import com.mapwithplan.mapplan.friendship.domain.FriendshipCreate;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class FriendshipServiceImpl implements FriendshipService {
 
     private final FriendshipRepository friendshipRepository;
-    private final TimeClockHolder clockHolder;
+    private final TimeClockProvider clockHolder;
     private final JwtTokenizer jwtTokenizer;
     private final MemberRepository memberRepository;
 
