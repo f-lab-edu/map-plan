@@ -1,6 +1,6 @@
 package com.mapwithplan.mapplan.friendship.domain;
 
-public enum EfriendStatus {
+public enum FriendStatus {
 
     PENDING, ACTIVE ,INACTIVE
 }

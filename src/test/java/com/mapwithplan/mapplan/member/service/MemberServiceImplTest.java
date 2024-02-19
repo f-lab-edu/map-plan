@@ -4,8 +4,7 @@ import com.mapwithplan.mapplan.common.exception.CertificationCodeNotMatchedExcep
 import com.mapwithplan.mapplan.common.exception.DuplicateResourceException;
 import com.mapwithplan.mapplan.jwt.util.JwtTokenizer;
 import com.mapwithplan.mapplan.member.domain.*;
-import com.mapwithplan.mapplan.mock.*;
-import com.mapwithplan.mapplan.member.domain.EMemberStatus;
+import com.mapwithplan.mapplan.member.domain.MemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.domain.MemberCreate;
 import com.mapwithplan.mapplan.mock.FakeMailSender;
@@ -50,7 +49,7 @@ class MemberServiceImplTest {
                 .password("test123")
                 .phone("010-1234-1234")
                 .name("테스트")
-                .memberStatus(EMemberStatus.PENDING)
+                .memberStatus(MemberStatus.PENDING)
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
                 .createdAt(LocalDateTime.of(2024, 1, 24, 12, 30))
                 .modifiedAt(LocalDateTime.of(2024, 1, 24, 12, 30))
@@ -62,7 +61,7 @@ class MemberServiceImplTest {
                 .password("test333")
                 .phone("010-2222-2222")
                 .name("테스트333")
-                .memberStatus(EMemberStatus.ACTIVE)
+                .memberStatus(MemberStatus.ACTIVE)
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .createdAt(LocalDateTime.of(2024, 1, 24, 12, 30))
                 .modifiedAt(LocalDateTime.of(2024, 1, 24, 12, 30))
@@ -73,8 +72,8 @@ class MemberServiceImplTest {
                 .password("test333")
                 .phone("010-2222-2722")
                 .name("테스트333")
-                        .eMemberRole(EMemberRole.MEMBER)
-                .memberStatus(EMemberStatus.ACTIVE)
+                        .memberRole(MemberRole.MEMBER)
+                .memberStatus(MemberStatus.ACTIVE)
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .createdAt(LocalDateTime.of(2024, 1, 24, 12, 30))
                 .modifiedAt(LocalDateTime.of(2024, 1, 24, 12, 30))
@@ -96,7 +95,7 @@ class MemberServiceImplTest {
         //Then
         assertThat(member.getId()).isNotNull();
         assertThat(member.getPassword()).isNotEqualTo(memberCreate.getPassword());
-        assertThat(member.getMemberStatus()).isEqualTo(EMemberStatus.PENDING);
+        assertThat(member.getMemberStatus()).isEqualTo(MemberStatus.PENDING);
         assertThat(member.getCertificationCode()).isEqualTo("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab");
     }
 
@@ -125,7 +124,7 @@ class MemberServiceImplTest {
 
         //Then
         Member byId = memberService.findById(2);
-        assertThat(byId.getMemberStatus()).isEqualTo(EMemberStatus.ACTIVE);
+        assertThat(byId.getMemberStatus()).isEqualTo(MemberStatus.ACTIVE);
 
     }
 
@@ -150,7 +149,7 @@ class MemberServiceImplTest {
 
         Member byId = memberService.findById(3L);
         ArrayList<String> roles = new ArrayList<>();
-        roles.add(byId.getEMemberRole().toString());
+        roles.add(byId.getMemberRole().toString());
         String accessToken = jwtTokenizer.createAccessToken(byId.getId(), byId.getEmail(), roles, new TestClockProvider(900000000000000L));
         //When
         accessToken = "Bearer "+accessToken;
@@ -169,7 +168,7 @@ class MemberServiceImplTest {
         //Given
         Member byId = memberService.findById(3L);
         ArrayList<String> roles = new ArrayList<>();
-        roles.add(byId.getEMemberRole().toString());
+        roles.add(byId.getMemberRole().toString());
         String accessToken = jwtTokenizer.createAccessToken(byId.getId(), byId.getEmail(), roles, new TestClockProvider(900000000000000L));
         EditMember editMember = new EditMember("1234", "010-2313-1234");
         //When

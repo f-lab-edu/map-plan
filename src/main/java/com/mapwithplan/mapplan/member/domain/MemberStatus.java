@@ -1,6 +1,6 @@
 package com.mapwithplan.mapplan.member.domain;
 
-public enum EMemberStatus {
+public enum MemberStatus {
 
     PENDING,INACTIVE, ACTIVE
 }

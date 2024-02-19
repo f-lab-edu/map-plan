@@ -4,8 +4,8 @@ import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
 import com.mapwithplan.mapplan.loginlogout.domain.DeleteRefreshToken;
 import com.mapwithplan.mapplan.loginlogout.domain.Login;
 import com.mapwithplan.mapplan.loginlogout.domain.RefreshToken;
-import com.mapwithplan.mapplan.member.domain.EMemberRole;
-import com.mapwithplan.mapplan.member.domain.EMemberStatus;
+import com.mapwithplan.mapplan.member.domain.MemberRole;
+import com.mapwithplan.mapplan.member.domain.MemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
@@ -28,10 +28,10 @@ class AuthControllerTest {
         Member member = Member.builder()
                 .email("testAOP@gmail.com")
                 .name("testAOP")
-                .memberStatus(EMemberStatus.ACTIVE)
+                .memberStatus(MemberStatus.ACTIVE)
                 .password("123123")
                 .phone("123123123")
-                .eMemberRole(EMemberRole.MEMBER)
+                .memberRole(MemberRole.MEMBER)
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .createdAt(LocalDateTime.of(2024, 12, 13, 12, 13))
                 .modifiedAt(LocalDateTime.of(2024, 12, 13, 12, 13))
@@ -57,10 +57,10 @@ class AuthControllerTest {
         Member member = Member.builder()
                 .email("testAOP@gmail.com")
                 .name("testAOP")
-                .memberStatus(EMemberStatus.ACTIVE)
+                .memberStatus(MemberStatus.ACTIVE)
                 .password("123123")
                 .phone("123123123")
-                .eMemberRole(EMemberRole.MEMBER)
+                .memberRole(MemberRole.MEMBER)
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .createdAt(LocalDateTime.of(2024, 12, 13, 12, 13))
                 .modifiedAt(LocalDateTime.of(2024, 12, 13, 12, 13))
@@ -87,10 +87,10 @@ class AuthControllerTest {
         Member member = Member.builder()
                 .email("testAOP@gmail.com")
                 .name("testAOP")
-                .memberStatus(EMemberStatus.ACTIVE)
+                .memberStatus(MemberStatus.ACTIVE)
                 .password("123123")
                 .phone("123123123")
-                .eMemberRole(EMemberRole.MEMBER)
+                .memberRole(MemberRole.MEMBER)
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .createdAt(LocalDateTime.of(2024, 12, 13, 12, 13))
                 .modifiedAt(LocalDateTime.of(2024, 12, 13, 12, 13))
@@ -117,10 +117,10 @@ class AuthControllerTest {
         Member member = Member.builder()
                 .email("testAOP@gmail.com")
                 .name("testAOP")
-                .memberStatus(EMemberStatus.PENDING)
+                .memberStatus(MemberStatus.PENDING)
                 .password("123123")
                 .phone("123123123")
-                .eMemberRole(EMemberRole.MEMBER)
+                .memberRole(MemberRole.MEMBER)
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .createdAt(LocalDateTime.of(2024, 12, 13, 12, 13))
                 .modifiedAt(LocalDateTime.of(2024, 12, 13, 12, 13))
@@ -146,10 +146,10 @@ class AuthControllerTest {
         Member member = Member.builder()
                 .email("testAOP@gmail.com")
                 .name("testAOP")
-                .memberStatus(EMemberStatus.INACTIVE)
+                .memberStatus(MemberStatus.INACTIVE)
                 .password("123123")
                 .phone("123123123")
-                .eMemberRole(EMemberRole.MEMBER)
+                .memberRole(MemberRole.MEMBER)
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .createdAt(LocalDateTime.of(2024, 12, 13, 12, 13))
                 .modifiedAt(LocalDateTime.of(2024, 12, 13, 12, 13))

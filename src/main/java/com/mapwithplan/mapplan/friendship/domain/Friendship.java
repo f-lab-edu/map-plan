@@ -21,16 +21,16 @@ public class Friendship {
     private String friendNickName;
 
     private LocalDateTime friendshipDate;
-    private EfriendStatus efriendStatus;
+    private FriendStatus friendStatus;
 
     @Builder
-    public Friendship(Long id, Member memberId, Member friendMemberId, String friendNickName, LocalDateTime friendshipDate, EfriendStatus efriendStatus) {
+    public Friendship(Long id, Member memberId, Member friendMemberId, String friendNickName, LocalDateTime friendshipDate, FriendStatus friendStatus) {
         this.id = id;
         this.memberId = memberId;
         this.friendMemberId = friendMemberId;
         this.friendNickName = friendNickName;
         this.friendshipDate = friendshipDate;
-        this.efriendStatus = efriendStatus;
+        this.friendStatus = friendStatus;
     }
 
 
@@ -41,7 +41,7 @@ public class Friendship {
                 .memberId(friendshipCreate.getMemberId())
                 .friendMemberId(friendshipCreate.getFriendMemberId())
                 .friendNickName(friendshipCreate.getFriendNickName())
-                .efriendStatus(EfriendStatus.PENDING)
+                .friendStatus(FriendStatus.PENDING)
                 .friendshipDate(clockHolder.clockProvider())
                 .build();
 

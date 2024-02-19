@@ -1,6 +1,6 @@
 package com.mapwithplan.mapplan.friendship.infrastructure.entity;
 
-import com.mapwithplan.mapplan.friendship.domain.EfriendStatus;
+import com.mapwithplan.mapplan.friendship.domain.FriendStatus;
 import com.mapwithplan.mapplan.friendship.domain.Friendship;
 import com.mapwithplan.mapplan.member.infrastructure.entity.MemberEntity;
 import jakarta.persistence.*;
@@ -36,16 +36,16 @@ public class FriendshipEntity {
     private LocalDateTime friendshipDate;
 
     @Column(name = "friend_status")
-    private EfriendStatus efriendStatus;
+    private FriendStatus friendStatus;
 
     @Builder
-    public FriendshipEntity(Long id, MemberEntity memberId, MemberEntity friendMemberId, String friendNickname, LocalDateTime friendshipDate, EfriendStatus efriendStatus) {
+    public FriendshipEntity(Long id, MemberEntity memberId, MemberEntity friendMemberId, String friendNickname, LocalDateTime friendshipDate, FriendStatus friendStatus) {
         this.id = id;
         this.memberId = memberId;
         this.friendMemberId = friendMemberId;
         this.friendNickname = friendNickname;
         this.friendshipDate = friendshipDate;
-        this.efriendStatus = efriendStatus;
+        this.friendStatus = friendStatus;
     }
 
 
@@ -58,7 +58,7 @@ public class FriendshipEntity {
                 .friendshipDate(friendship.getFriendshipDate())
                 .friendNickname(friendship.getFriendNickName())
                 .memberId(MemberEntity.from(friendship.getMemberId()))
-                .efriendStatus(friendship.getEfriendStatus())
+                .friendStatus(friendship.getFriendStatus())
                 .build();
     }
 
@@ -69,7 +69,7 @@ public class FriendshipEntity {
                 .friendNickName(friendNickname)
                 .friendMemberId(friendMemberId.toModel())
                 .friendshipDate(friendshipDate)
-                .efriendStatus(efriendStatus)
+                .friendStatus(friendStatus)
                 .build();
     }
 }

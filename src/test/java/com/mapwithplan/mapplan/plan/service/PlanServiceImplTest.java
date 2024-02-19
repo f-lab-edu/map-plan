@@ -1,13 +1,12 @@
 package com.mapwithplan.mapplan.plan.service;
 
 import com.mapwithplan.mapplan.common.exception.UnauthorizedServiceException;
-import com.mapwithplan.mapplan.member.domain.EMemberRole;
-import com.mapwithplan.mapplan.member.domain.EMemberStatus;
+import com.mapwithplan.mapplan.member.domain.MemberRole;
+import com.mapwithplan.mapplan.member.domain.MemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
 
 import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
-import com.mapwithplan.mapplan.mock.planmock.TestPlanContainer;
 import com.mapwithplan.mapplan.plan.domain.Plan;
 import com.mapwithplan.mapplan.plan.domain.PlanCreate;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,11 +16,9 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PlanServiceImplTest {
 
@@ -38,8 +35,8 @@ class PlanServiceImplTest {
                 .password("test333")
                 .phone("010-2222-2722")
                 .name("테스트333")
-                .eMemberRole(EMemberRole.MEMBER)
-                .memberStatus(EMemberStatus.ACTIVE)
+                .memberRole(MemberRole.MEMBER)
+                .memberStatus(MemberStatus.ACTIVE)
                 .statusMessage("안녕하세요?")
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .createdAt(LocalDateTime.of(2024, 1, 24, 12, 30))
@@ -51,8 +48,8 @@ class PlanServiceImplTest {
                 .password("test333")
                 .phone("010-2222-2722")
                 .name("테스트333")
-                .eMemberRole(EMemberRole.MEMBER)
-                .memberStatus(EMemberStatus.ACTIVE)
+                .memberRole(MemberRole.MEMBER)
+                .memberStatus(MemberStatus.ACTIVE)
                 .statusMessage("안녕하세요?")
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .createdAt(LocalDateTime.of(2024, 1, 24, 12, 30))
@@ -70,7 +67,7 @@ class PlanServiceImplTest {
 
         //Given
         ArrayList<String> roles = new ArrayList<>();
-        roles.add(EMemberRole.MEMBER.toString());
+        roles.add(MemberRole.MEMBER.toString());
 
         String accessToken = testContainer
                 .jwtTokenizer
@@ -105,7 +102,7 @@ class PlanServiceImplTest {
     void findPlanDetail() {
         //Given
         ArrayList<String> roles = new ArrayList<>();
-        roles.add(EMemberRole.MEMBER.toString());
+        roles.add(MemberRole.MEMBER.toString());
 
         String accessToken = testContainer
                 .jwtTokenizer
@@ -139,7 +136,7 @@ class PlanServiceImplTest {
     void UnauthorizedServiceExceptionPlanDetail() {
         //Given
         ArrayList<String> roles = new ArrayList<>();
-        roles.add(EMemberRole.MEMBER.toString());
+        roles.add(MemberRole.MEMBER.toString());
 
         String accessToken = testContainer
                 .jwtTokenizer
