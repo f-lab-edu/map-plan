@@ -1,5 +1,6 @@
 package com.mapwithplan.mapplan.plan.domain;
 
+import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
 import com.mapwithplan.mapplan.common.timeutils.domain.BaseTime;
 
 import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
@@ -43,13 +44,14 @@ public class Plan extends BaseTime {
     }
 
     /**
-     * plan 을 생성하는 static 메서드 입니다.
+     * PlanCreate 를 기반으로 plan 을 생성하는 static 메서드 입니다.
      * @param planCreate
      * @param member
      * @param clockHolder
      * @return
      */
     public static Plan from(PlanCreate planCreate, Member member, TimeClockProvider clockHolder){
+
         return Plan.builder()
                 .title(planCreate.getTitle())
                 .author(member)
