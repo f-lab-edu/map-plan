@@ -3,7 +3,6 @@ package com.mapwithplan.mapplan.mock;
 import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
 import com.mapwithplan.mapplan.loginlogout.domain.RefreshToken;
 import com.mapwithplan.mapplan.loginlogout.service.port.RefreshTokenRepository;
-import com.mapwithplan.mapplan.member.domain.EMemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
 
 import java.util.ArrayList;
@@ -56,6 +55,8 @@ public class FakeRefreshTokenRepository implements RefreshTokenRepository {
 
     @Override
     public void update(RefreshToken refreshToken) {
-
+        data.stream()
+                .filter(item -> item.getMember().equals(refreshToken.getMember()))
+                .forEach(item -> item.update(refreshToken.getToken()));
     }
 }

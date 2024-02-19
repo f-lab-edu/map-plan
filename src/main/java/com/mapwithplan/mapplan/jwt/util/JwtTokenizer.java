@@ -1,6 +1,6 @@
 package com.mapwithplan.mapplan.jwt.util;
 
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -41,15 +41,15 @@ public class JwtTokenizer {
     /**
      * AccessToken 생성
      */
-    public String createAccessToken(Long id, String email, List<String> roles, TimeClockHolder timeClockHolder) {
-        return createToken(id, email, roles, ACCESS_TOKEN_EXPIRE_COUNT, accessSecret, timeClockHolder);
+    public String createAccessToken(Long id, String email, List<String> roles, TimeClockProvider timeClockProvider) {
+        return createToken(id, email, roles, ACCESS_TOKEN_EXPIRE_COUNT, accessSecret, timeClockProvider);
     }
 
     /**
      * RefreshToken 생성
      */
-    public String createRefreshToken(Long id, String email, List<String> roles, TimeClockHolder timeClockHolder) {
-        return createToken(id, email, roles, REFRESH_TOKEN_EXPIRE_COUNT, refreshSecret,timeClockHolder);
+    public String createRefreshToken(Long id, String email, List<String> roles, TimeClockProvider timeClockProvider) {
+        return createToken(id, email, roles, REFRESH_TOKEN_EXPIRE_COUNT, refreshSecret, timeClockProvider);
     }
 
     /**
@@ -60,28 +60,37 @@ public class JwtTokenizer {
      * @param memberRoles
      * @param expire 토큰의 종류별로 다른 값을 현재 시간에 더해줍니다.
      * @param secretKey
-     * @param timeClockHolder
+     * @param timeClockProvider
      * @return
      */
     private String createToken(Long id, String email, List<String> memberRoles,
-                               Long expire, byte[] secretKey, TimeClockHolder timeClockHolder) {
+                               Long expire, byte[] secretKey, TimeClockProvider timeClockProvider) {
         return Jwts.builder()
                 .subject(email)
                 .claim("memberRoles",memberRoles)
                 .claim("userId",id)
-                .issuedAt(timeClockHolder.dateClockHold())
-                .expiration(new Date(timeClockHolder.dateClockHold().getTime() + expire))
+                .issuedAt(timeClockProvider.dateClockProvider())
+                .expiration(new Date(timeClockProvider.dateClockProvider().getTime() + expire))
                 .signWith(getSigningKey(secretKey))
                 .compact();
     }
 
     /**
-     * 토큰에서 유저의 아이디어를 얻는 메서드 입니다.
+     * 토큰에서 유저의 아이디를 얻는 메서드 입니다.
      */
     public Long getUserIdFromToken(String token) {
         String[] tokenArr = token.split(" ");
-        token = tokenArr[1];
-        Claims claims = parseToken(token, accessSecret);
+        if (tokenArr.length <= 1){
+           throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
+        }
+        String extractedToken = tokenArr[1];
+        Claims claims = parseToken(extractedToken, accessSecret);
+        Object userId = claims.get("userId");
+
+        if (userId == null){
+            throw new IllegalArgumentException("토큰에서 userId를 찾을 수 없습니다.");
+        }
+
         return Long.valueOf((Integer)claims.get("userId"));
     }
 

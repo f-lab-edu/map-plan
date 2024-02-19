@@ -2,6 +2,8 @@ package com.mapwithplan.mapplan.plan.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mapwithplan.mapplan.member.domain.Member;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,12 +16,16 @@ import java.time.LocalDateTime;
 @Getter
 public class PlanCreate {
 
+    @NotEmpty
     private String title;
 
+    @NotEmpty
     private LocalDateTime appointmentDate;
 
+    @NotEmpty
     private String content;
 
+    @NotEmpty
     private String location;
 
     private String category;

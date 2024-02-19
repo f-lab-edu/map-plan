@@ -1,7 +1,9 @@
 package com.mapwithplan.mapplan.plan.domain;
 
+import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
 import com.mapwithplan.mapplan.common.timeutils.domain.BaseTime;
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,13 +44,14 @@ public class Plan extends BaseTime {
     }
 
     /**
-     * plan 을 생성하는 static 메서드 입니다.
+     * PlanCreate 를 기반으로 plan 을 생성하는 static 메서드 입니다.
      * @param planCreate
      * @param member
      * @param clockHolder
      * @return
      */
-    public static Plan from(PlanCreate planCreate, Member member,TimeClockHolder clockHolder){
+    public static Plan from(PlanCreate planCreate, Member member, TimeClockProvider clockHolder){
+
         return Plan.builder()
                 .title(planCreate.getTitle())
                 .author(member)
@@ -56,8 +59,8 @@ public class Plan extends BaseTime {
                 .location(planCreate.getLocation())
                 .category(planCreate.getCategory())
                 .appointmentDate(planCreate.getAppointmentDate())
-                .createdAt(clockHolder.clockHold())
-                .modifiedAt(clockHolder.clockHold())
+                .createdAt(clockHolder.clockProvider())
+                .modifiedAt(clockHolder.clockProvider())
                 .build();
 
     }
