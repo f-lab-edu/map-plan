@@ -2,6 +2,7 @@ package com.mapwithplan.mapplan.friendship.controller.port;
 
 import com.mapwithplan.mapplan.friendship.domain.Friendship;
 import com.mapwithplan.mapplan.friendship.domain.FriendshipCreate;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 /**
  * Port 역할을 하며, Controller 에 사용하는 인터페이스입니다.
@@ -23,5 +24,5 @@ public interface FriendshipService {
      * @param friendshipId 변경할 friendship ID 입니다.
      * @return
      */
-    Friendship approveFriendship(Long friendshipId);
+    Friendship approveFriendship(String authorizationHeader,Long friendshipId);
 }

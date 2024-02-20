@@ -48,8 +48,9 @@ public class FriendshipController {
      */
     @LogInputTrace
     @PostMapping("/approve/{friendshipId}")
-    public ResponseEntity<FriendshipApproveResponse> approveFriendship(@PathVariable("friendshipId") Long friendshipId){
-        Friendship friendship = friendshipService.approveFriendship(friendshipId);
+    public ResponseEntity<FriendshipApproveResponse> approveFriendship(@RequestHeader("Authorization") String authorizationHeader,
+                                                                       @PathVariable("friendshipId") Long friendshipId){
+        Friendship friendship = friendshipService.approveFriendship(authorizationHeader, friendshipId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new FriendshipApproveResponse(friendship.getFriendMemberId().getName()));
     }

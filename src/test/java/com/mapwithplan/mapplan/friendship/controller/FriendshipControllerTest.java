@@ -108,7 +108,7 @@ class FriendshipControllerTest {
 
         ResponseEntity<FriendshipApproveResponse> response = testContainer
                 .friendshipController
-                .approveFriendship(1L);
+                .approveFriendship(accessToken,1L);
 
         //Then
 
