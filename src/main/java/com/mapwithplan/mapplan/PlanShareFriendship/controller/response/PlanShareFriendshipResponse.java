@@ -7,7 +7,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -24,10 +24,11 @@ public class PlanShareFriendshipResponse {
     }
 
     public static PlanShareFriendshipResponse from(Long planId, List<PlanShareFriendship> planShareFriendships){
-        List<String> nameList = new ArrayList<>();
 
-        planShareFriendships.forEach(item -> nameList
-                .add(item.getFriendship().getFriendNickName()));
+        List<String> nameList = planShareFriendships
+                .stream()
+                .map(item -> item.getFriendship().getFriendNickName())
+                .collect(Collectors.toList());
 
         return PlanShareFriendshipResponse.builder()
                 .friendshipNames(nameList)

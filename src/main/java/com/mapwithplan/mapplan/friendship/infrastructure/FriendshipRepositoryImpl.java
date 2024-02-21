@@ -67,7 +67,7 @@ public class FriendshipRepositoryImpl implements FriendshipRepository {
      * @return FriendshipEntity 를 toModel 로 Friendship 으로 변경하려 return 합니다.
      */
     @Override
-    public List<Friendship> findAllById(List<Long> friendshipIds) {
+    public List<Friendship> findAllByIds(List<Long> friendshipIds) {
         return  friendshipJPARepository
                 .findAllById(friendshipIds)
                 .stream()

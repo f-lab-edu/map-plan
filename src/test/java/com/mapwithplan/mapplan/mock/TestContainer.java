@@ -5,7 +5,7 @@ import com.mapwithplan.mapplan.PlanShareFriendship.controller.PlanShareFriendshi
 import com.mapwithplan.mapplan.PlanShareFriendship.controller.port.PlanShareFriendshipService;
 import com.mapwithplan.mapplan.PlanShareFriendship.service.PlanShareFriendshipServiceImpl;
 import com.mapwithplan.mapplan.PlanShareFriendship.service.port.PlanShareFriendshipRepository;
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+
 import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
 import com.mapwithplan.mapplan.friendship.controller.FriendshipController;
 import com.mapwithplan.mapplan.friendship.controller.port.FriendshipService;
@@ -155,7 +155,9 @@ public class TestContainer {
                 .planShareFriendshipRepository(this.planShareFriendshipRepository)
                 .friendshipRepository(this.friendshipRepository)
                 .planRepository(this.planRepository)
-                .timeClockHolder(clockHolder)
+                .timeClockProvider(clockHolder)
+                .jwtTokenizer(this.jwtTokenizer)
+                .memberRepository(this.memberRepository)
                 .build();
         this.planShareFriendshipController= PlanShareFriendshipController.builder()
                 .planShareFriendshipService(this.planShareFriendshipService)
