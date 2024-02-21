@@ -2,7 +2,8 @@ package com.mapwithplan.mapplan.post.domain;
 
 import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
 import com.mapwithplan.mapplan.common.timeutils.domain.BaseTime;
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.member.domain.Member;
 
 import lombok.Builder;
@@ -43,7 +44,7 @@ public class Post  extends BaseTime {
         this.postStatus = postStatus;
     }
 
-    public static Post from(PostCreate postCreate , Member member, TimeClockHolder clockHolder){
+    public static Post from(PostCreate postCreate , Member member, TimeClockProvider timeClockProvider){
 
         final Integer DEFAULT_LIKE = 0;
         if (member == null){
@@ -56,8 +57,8 @@ public class Post  extends BaseTime {
                 .content(postCreate.getContent())
                 .anonymousName(postCreate.getAnonymousName())
                 .location(postCreate.getLocation())
-                .createdAt(clockHolder.clockHold())
-                .modifiedAt(clockHolder.clockHold())
+                .createdAt(timeClockProvider.clockProvider())
+                .modifiedAt(timeClockProvider.clockProvider())
                 .countLike(DEFAULT_LIKE)
                 .postStatus(PostStatus.ACTIVE)
                 .build();

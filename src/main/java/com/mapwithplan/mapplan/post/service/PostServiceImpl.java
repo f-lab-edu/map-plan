@@ -1,7 +1,7 @@
 package com.mapwithplan.mapplan.post.service;
 
 
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.member.controller.port.MemberService;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.post.controller.port.PostService;
@@ -22,7 +22,7 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
 
-    private final TimeClockHolder clockHolder;
+    private final TimeClockProvider clockProvider;
 
     private final MemberService memberService;
 
@@ -38,7 +38,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post createPost(PostCreate postCreate, String authorizationHeader) {
         Member member = memberService.findByEmailUseAccessToken(authorizationHeader);
-        Post post = Post.from(postCreate, member, clockHolder);
+        Post post = Post.from(postCreate, member, clockProvider);
         return postRepository.createPost(post);
     }
 

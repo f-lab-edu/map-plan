@@ -180,7 +180,7 @@ public class TestContainer {
         this.postService = PostServiceImpl.builder()
                 .postRepository(this.postRepository)
                 .memberService(this.memberService)
-                .clockHolder(clockHolder).build();
+                .clockProvider(clockHolder).build();
         this.postController = PostController.builder()
                 .postService(this.postService)
                 .build();

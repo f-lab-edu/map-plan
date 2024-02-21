@@ -1,8 +1,10 @@
 package com.mapwithplan.mapplan.post.service;
 
-import com.mapwithplan.mapplan.member.domain.EMemberRole;
+
 import com.mapwithplan.mapplan.member.domain.Member;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+
+import com.mapwithplan.mapplan.member.domain.MemberRole;
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
 import com.mapwithplan.mapplan.post.domain.Post;
 import com.mapwithplan.mapplan.post.domain.PostCreate;
@@ -25,7 +27,7 @@ class PostServiceImplTest {
     @BeforeEach
     void init(){
         this.testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(1L)).build();
+                .clockHolder(new TestClockProvider(1L)).build();
         member = Member.builder()
                 .name("test 이름")
                 .phone("010-1234-1234")
@@ -41,11 +43,11 @@ class PostServiceImplTest {
     void PostServiceImplCreatePostTest() {
 
         ArrayList<String> roles = new ArrayList<>();
-        roles.add(EMemberRole.MEMBER.toString());
+        roles.add(MemberRole.MEMBER.toString());
 
         String accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(1L, "test@test.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(1L, "test@test.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
 
 
         accessToken = "Bearer "+accessToken;
