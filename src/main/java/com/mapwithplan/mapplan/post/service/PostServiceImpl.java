@@ -63,7 +63,7 @@ public class PostServiceImpl implements PostService {
         if (postImgFiles != null){
             List<PostImg> postImgList = postImgStore.storeFiles(postImgFiles, savePost, clockProvider, uuidHolder);
             List<PostImg> postImgs = postImgRepository.saveAll(postImgList);
-            postDetail = postDetail.addPostImg(postDetail, postImgs);
+            postDetail = postDetail.addPostImg(postImgs);
         }
 
         return postDetail;
