@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 @Builder
 @RestController
@@ -26,7 +27,7 @@ public class PostController {
      */
     @PostMapping("/create")
     public ResponseEntity<PostCreateResponse> createPost(@RequestHeader("Authorization") String authorizationHeader,
-                                                         @RequestBody PostCreate postCreate){
+                                                         @RequestBody @Validated PostCreate postCreate){
         Post post = postService.createPost(postCreate, authorizationHeader);
 
         return ResponseEntity

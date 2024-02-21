@@ -2,6 +2,8 @@ package com.mapwithplan.mapplan.post.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mapwithplan.mapplan.member.domain.Member;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,13 +13,18 @@ import lombok.Getter;
 @Getter
 public class PostCreate {
 
-
+    @NotEmpty
+    @Size(min = 1, max = 20)
     private String title;
 
+    @NotEmpty
     private String content;
 
+    @NotEmpty
+    @Size(min = 1, max = 10)
     private String anonymousName;
 
+    @NotEmpty
     private String location;
 
     @Builder

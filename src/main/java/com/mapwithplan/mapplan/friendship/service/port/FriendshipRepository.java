@@ -1,7 +1,6 @@
 package com.mapwithplan.mapplan.friendship.service.port;
 
 import com.mapwithplan.mapplan.friendship.domain.Friendship;
-import com.mapwithplan.mapplan.friendship.domain.FriendshipCreate;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,8 +32,12 @@ public interface FriendshipRepository {
      */
     Optional<Friendship> approveFriendship(Long friendshipId);
 
-
-    List<Friendship> findAllById(List<Long> friendshipIds);
+    /**
+     * 전달 받은 friendshipId 를 기반으로 Friendship 을 조회 합니다.
+     * @param friendshipIds 전달 받은 friendshipId 리스트 입니다.
+     * @return 조회 후 전달 받은 friendship 을 리턴합니다.
+     */
+    List<Friendship> findAllByIds(List<Long> friendshipIds);
 
 
 }

@@ -2,14 +2,12 @@ package com.mapwithplan.mapplan.PlanShareFriendship.service;
 
 
 import com.mapwithplan.mapplan.PlanShareFriendship.controller.port.PlanShareFriendshipService;
-import com.mapwithplan.mapplan.PlanShareFriendship.controller.response.PlanShareFriendshipResponse;
 import com.mapwithplan.mapplan.PlanShareFriendship.domain.PlanShareFriendship;
 import com.mapwithplan.mapplan.PlanShareFriendship.domain.PlanShareFriendshipCreate;
 import com.mapwithplan.mapplan.PlanShareFriendship.domain.PlanShareFriendshipList;
 import com.mapwithplan.mapplan.PlanShareFriendship.service.port.PlanShareFriendshipRepository;
 import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
 import com.mapwithplan.mapplan.friendship.domain.Friendship;
-import com.mapwithplan.mapplan.friendship.domain.FriendshipCreate;
 import com.mapwithplan.mapplan.friendship.service.port.FriendshipRepository;
 import com.mapwithplan.mapplan.plan.domain.Plan;
 import com.mapwithplan.mapplan.plan.service.port.PlanRepository;
@@ -59,7 +57,7 @@ public class PlanShareFriendshipServiceImpl implements PlanShareFriendshipServic
      * @return List<PlanShareFriendship> 공유될 일정이 담긴 리스트 입니다.
      */
     private List<PlanShareFriendship> getPlanShareFriendships(List<Long> friendshipsIds, Plan plan) {
-        List<Friendship> findFriendships = friendshipRepository.findAllById(friendshipsIds);
+        List<Friendship> findFriendships = friendshipRepository.findAllByIds(friendshipsIds);
         List<PlanShareFriendship> PlanShareFriendshipList = new ArrayList<>();
 
         for (Friendship findFriendship : findFriendships) {

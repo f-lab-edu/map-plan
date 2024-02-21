@@ -1,9 +1,8 @@
 package com.mapwithplan.mapplan.post.infrastructure.entity;
 
 import com.mapwithplan.mapplan.common.timeutils.entity.BaseTimeEntity;
-import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.infrastructure.entity.MemberEntity;
-import com.mapwithplan.mapplan.post.domain.EPostStatus;
+import com.mapwithplan.mapplan.post.domain.PostStatus;
 import com.mapwithplan.mapplan.post.domain.Post;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -38,10 +37,10 @@ public class PostEntity extends BaseTimeEntity {
 
     @Column(name = "post_status")
     @Enumerated(EnumType.STRING)
-    private EPostStatus ePostStatus;
+    private PostStatus postStatus;
 
     @Builder
-    public PostEntity(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, MemberEntity memberEntity, String title, String content, String anonymousName, Integer countLike, String location, EPostStatus ePostStatus) {
+    public PostEntity(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, MemberEntity memberEntity, String title, String content, String anonymousName, Integer countLike, String location, PostStatus postStatus) {
         super(createdAt, modifiedAt);
         this.id = id;
         this.memberEntity = memberEntity;
@@ -50,7 +49,7 @@ public class PostEntity extends BaseTimeEntity {
         this.anonymousName = anonymousName;
         this.countLike = countLike;
         this.location = location;
-        this.ePostStatus = ePostStatus;
+        this.postStatus = postStatus;
     }
 
     public static PostEntity from(Post post){
@@ -61,7 +60,7 @@ public class PostEntity extends BaseTimeEntity {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .countLike(post.getCountLike())
-                .ePostStatus(post.getEPostStatus())
+                .postStatus(post.getPostStatus())
                 .createdAt(post.getCreatedAt())
                 .modifiedAt(post.getModifiedAt())
                 .location(post.getLocation())
@@ -75,7 +74,7 @@ public class PostEntity extends BaseTimeEntity {
                 .content(content)
                 .anonymousName(anonymousName)
                 .countLike(countLike)
-                .ePostStatus(ePostStatus)
+                .postStatus(postStatus)
                 .createdAt(getCreatedAt())
                 .modifiedAt(getModifiedAt())
                 .location(location)
