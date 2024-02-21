@@ -1,7 +1,7 @@
 package com.mapwithplan.mapplan.member.domain;
 
 import com.mapwithplan.mapplan.common.exception.CertificationCodeNotMatchedException;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestUuidHolder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ class MemberTest {
         long epochMilli = Instant.parse("2022-01-01T12:00:00Z").toEpochMilli();
         //When
         Member from = Member.from(memberCreate ,
-                new TestClockHolder(epochMilli),
+                new TestClockProvider(epochMilli),
                 new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                 new BCryptPasswordEncoder());
         //Then
@@ -38,7 +38,7 @@ class MemberTest {
         assertThat(from.getPhone()).isEqualTo(memberCreate.getPhone());
         assertThat(from.getName()).isEqualTo(memberCreate.getName());
         assertThat(from.getCertificationCode()).isEqualTo("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
-        assertThat(from.getMemberStatus()).isEqualTo(EMemberStatus.PENDING);
+        assertThat(from.getMemberStatus()).isEqualTo(MemberStatus.PENDING);
         assertThat(from.getCreatedAt()).isEqualTo(LocalDateTime.ofInstant(Instant.parse("2022-01-01T12:00:00Z"), ZoneId.systemDefault()));
 
 
@@ -54,13 +54,13 @@ class MemberTest {
                 .password("test123")
                 .phone("010-1234-1234")
                 .name("테스트")
-                .memberStatus(EMemberStatus.PENDING)
+                .memberStatus(MemberStatus.PENDING)
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
                 .build();
         //When
         Member certificate = member.certificate("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
         //Then
-        assertThat(certificate.getMemberStatus()).isEqualTo(EMemberStatus.ACTIVE);
+        assertThat(certificate.getMemberStatus()).isEqualTo(MemberStatus.ACTIVE);
 
     }
 
@@ -74,7 +74,7 @@ class MemberTest {
                 .password("test123")
                 .phone("010-1234-1234")
                 .name("테스트")
-                .memberStatus(EMemberStatus.PENDING)
+                .memberStatus(MemberStatus.PENDING)
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
                 .build();
         //When
@@ -91,23 +91,23 @@ class MemberTest {
         Member member = Member.builder()
                 .id(1L)
                 .email("testAOP@gmail.com")
-                .eMemberRole(EMemberRole.MEMBER)
+                .memberRole(MemberRole.MEMBER)
                 .statusMessage("하이")
-                .createdAt(new TestClockHolder(1L).clockHold())
-                .modifiedAt(new TestClockHolder(1L).clockHold())
+                .createdAt(new TestClockProvider(1L).clockProvider())
+                .modifiedAt(new TestClockProvider(1L).clockProvider())
                 .password("test123")
                 .phone("010-1234-1234")
                 .name("테스트")
-                .memberStatus(EMemberStatus.PENDING)
+                .memberStatus(MemberStatus.PENDING)
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
                 .build();
         EditMember editMember = new EditMember("안녕하세요", "010-2222-3333");
         //When
-        Member edit = member.edit(editMember, new TestClockHolder(3L));
+        Member edit = member.edit(member, editMember, new TestClockProvider(3L));
         //Then
         assertThat(edit.getStatusMessage()).isEqualTo(editMember.getStatusMessage());
         assertThat(edit.getPhone()).isEqualTo(editMember.getPhone());
-        assertThat(edit.getModifiedAt()).isEqualTo(new TestClockHolder(3L).clockHold());
+        assertThat(edit.getModifiedAt()).isEqualTo(new TestClockProvider(3L).clockProvider());
 
     }
 }

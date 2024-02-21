@@ -26,7 +26,7 @@ public class FakeFriendshipRepository implements FriendshipRepository {
                     .friendMemberId(friendship.getFriendMemberId())
                     .friendNickName(friendship.getFriendNickName())
                     .friendshipDate(friendship.getFriendshipDate())
-                    .efriendStatus(friendship.getEfriendStatus())
+                    .friendStatus(friendship.getFriendStatus())
                     .build();
             data.add(newFriendship);
             return newFriendship;

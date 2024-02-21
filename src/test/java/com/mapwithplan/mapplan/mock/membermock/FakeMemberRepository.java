@@ -1,14 +1,13 @@
 package com.mapwithplan.mapplan.mock.membermock;
 
 import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
-import com.mapwithplan.mapplan.member.domain.EMemberRole;
-import com.mapwithplan.mapplan.member.domain.EMemberStatus;
+import com.mapwithplan.mapplan.member.domain.MemberRole;
 import com.mapwithplan.mapplan.member.domain.EditMember;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.service.port.MemberRepository;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 
-import java.time.LocalDateTime;
+
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -25,7 +24,7 @@ public class FakeMemberRepository implements MemberRepository {
                     .name(member.getName())
                     .password(member.getPassword())
                     .memberStatus(member.getMemberStatus())
-                    .eMemberRole(EMemberRole.MEMBER)
+                    .memberRole(MemberRole.MEMBER)
                     .certificationCode(member.getCertificationCode())
                     .phone(member.getPhone())
                     .createdAt(member.getCreatedAt())
@@ -58,7 +57,7 @@ public class FakeMemberRepository implements MemberRepository {
         Member member = data.stream()
                 .filter(test -> test.getId().equals(editMember.getId()))
                 .findAny().map(test ->
-                        test.edit(editMember1, new TestClockHolder(3L))
+                        test.edit(test, editMember1, new TestClockProvider(3L))
                 )
                 .orElseThrow(() -> new ResourceNotFoundException("Member", editMember.getEmail()));
 

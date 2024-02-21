@@ -5,9 +5,8 @@ import com.mapwithplan.mapplan.member.controller.response.MemberCreateResponse;
 import com.mapwithplan.mapplan.member.controller.response.MemberMyPageDetailResponse;
 import com.mapwithplan.mapplan.member.controller.response.MemberMyPageResponse;
 import com.mapwithplan.mapplan.member.domain.*;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MemberControllerTest {
 
@@ -28,7 +26,7 @@ class MemberControllerTest {
     @BeforeEach
     void init(){
         testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(Instant.now().toEpochMilli()))
+                .clockHolder(new TestClockProvider(Instant.now().toEpochMilli()))
                 .uuidHolder(() -> "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .build();
 
@@ -38,8 +36,8 @@ class MemberControllerTest {
                 .password("test333")
                 .phone("010-2222-2722")
                 .name("테스트333")
-                .eMemberRole(EMemberRole.MEMBER)
-                .memberStatus(EMemberStatus.ACTIVE)
+                .memberRole(MemberRole.MEMBER)
+                .memberStatus(MemberStatus.ACTIVE)
                 .statusMessage("안녕하세요?")
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .createdAt(LocalDateTime.of(2024, 1, 24, 12, 30))
@@ -54,7 +52,7 @@ class MemberControllerTest {
         Member member = Member.builder()
                 .email("testAOP@gmail.com")
                 .name("testAOP")
-                .memberStatus(EMemberStatus.PENDING)
+                .memberStatus(MemberStatus.PENDING)
                 .password("123123")
                 .phone("123123123")
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
@@ -67,7 +65,7 @@ class MemberControllerTest {
         ResponseEntity<Void> voidResponseEntity = testContainer.memberController.verifyEmail(1, "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab");
         //Then
         assertThat(voidResponseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(302));
-        assertThat(testContainer.memberRepository.findById(1).get().getMemberStatus()).isEqualTo(EMemberStatus.ACTIVE);
+        assertThat(testContainer.memberRepository.findById(1).get().getMemberStatus()).isEqualTo(MemberStatus.ACTIVE);
     }
 
     @Test
@@ -77,7 +75,7 @@ class MemberControllerTest {
         Member member = Member.builder()
                 .email("testAOP@gmail.com")
                 .name("testAOP")
-                .memberStatus(EMemberStatus.PENDING)
+                .memberStatus(MemberStatus.PENDING)
                 .password("123123")
                 .phone("010-1234-1234")
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
@@ -116,10 +114,10 @@ class MemberControllerTest {
     void myPage() {
         //Given
         ArrayList<String> roles = new ArrayList<>();
-        roles.add(EMemberRole.MEMBER.toString());
+        roles.add(MemberRole.MEMBER.toString());
         String accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(3L, "test3@naver.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(3L, "test3@naver.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
         //When
         accessToken = "Bearer "+accessToken;
         ResponseEntity<MemberMyPageResponse> memberMyPageResponseResponseEntity = testContainer.memberController.myPage(accessToken);
@@ -137,10 +135,10 @@ class MemberControllerTest {
     void GetMyPageDetail() {
         //Given
         ArrayList<String> roles = new ArrayList<>();
-        roles.add(EMemberRole.MEMBER.toString());
+        roles.add(MemberRole.MEMBER.toString());
         String accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(3L, "test3@naver.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(3L, "test3@naver.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
         //When
         accessToken = "Bearer "+accessToken;
         ResponseEntity<MemberMyPageDetailResponse> memberMyPageDetailResponseResponseEntity = testContainer
@@ -161,10 +159,10 @@ class MemberControllerTest {
     void EditMyPageDetail() {
         //Given
         ArrayList<String> roles = new ArrayList<>();
-        roles.add(EMemberRole.MEMBER.toString());
+        roles.add(MemberRole.MEMBER.toString());
         String accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(3L, "test3@naver.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(3L, "test3@naver.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
         //When
         accessToken = "Bearer "+accessToken;
 

@@ -15,7 +15,7 @@ public class LogParameterTraceAop {
      * @Around 애노테이션의 값인 annotation(com.mapwithplan.mapplan..annotation.LogInputTrace)) 는 포인트컷이 된다.
      * @Around 애노테이션의 메서드인 checkInputLog 는 어드바이스( Advice )가 된다.
      * 해당 메서드에 대한 Input 파라미터의 값을 출력한다.
-     * 다만 해당
+     * 다만 해당 어노테이션을 사용하기 위해서는 로그 추적을 원하는 도메인에 toString 을 구현해야한다.
      * @param joinPoint
      * @return
      * @throws Throwable

@@ -2,8 +2,6 @@ package com.mapwithplan.mapplan.mock.planmock;
 
 
 import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
-import com.mapwithplan.mapplan.member.domain.EMemberRole;
-import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.plan.domain.Plan;
 import com.mapwithplan.mapplan.plan.service.port.PlanRepository;
 

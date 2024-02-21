@@ -33,9 +33,9 @@ public interface FriendshipRepository {
     Optional<Friendship> approveFriendship(Long friendshipId);
 
     /**
-     * 전달 받은 friendshipId 를 기반으로 Friendship 을 조회 합니다.
-     * @param friendshipIds 전달 받은 friendshipId 리스트 입니다.
-     * @return 조회 후 전달 받은 friendship 을 리턴합니다.
+     * FriendshipId 리스트를 이용해 한번에 여러 개의 Friendship 객체를 찾아옵니다.
+     * @param friendshipIds 친구 관계  id 를 담은 리스트 입니다.
+     * @return 찾은 친구를 return 합니다.
      */
     List<Friendship> findAllByIds(List<Long> friendshipIds);
 

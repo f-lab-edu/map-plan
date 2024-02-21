@@ -1,7 +1,8 @@
 package com.mapwithplan.mapplan.PlanShareFriendship.domain;
 
 import com.mapwithplan.mapplan.common.timeutils.domain.BaseTime;
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.friendship.domain.Friendship;
 import com.mapwithplan.mapplan.plan.domain.Plan;
 import jakarta.validation.ClockProvider;
@@ -35,12 +36,12 @@ public class PlanShareFriendship extends BaseTime {
         this.plan = plan;
     }
 
-    public static PlanShareFriendship from(PlanShareFriendshipCreate planShareFriendshipCreate, TimeClockHolder timeClockHolder){
+    public static PlanShareFriendship from(PlanShareFriendshipCreate planShareFriendshipCreate, TimeClockProvider timeClockProvider){
         return PlanShareFriendship.builder()
                 .plan(planShareFriendshipCreate.getPlan())
                 .friendship(planShareFriendshipCreate.getFriendship())
-                .modifiedAt(timeClockHolder.clockHold())
-                .createdAt(timeClockHolder.clockHold())
+                .modifiedAt(timeClockProvider.clockProvider())
+                .createdAt(timeClockProvider.clockProvider())
                 .build();
     }
 
