@@ -2,7 +2,8 @@ package com.mapwithplan.mapplan.friendship.service;
 
 
 import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+import com.mapwithplan.mapplan.common.exception.UnauthorizedServiceException;
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.friendship.controller.port.FriendshipService;
 import com.mapwithplan.mapplan.friendship.domain.Friendship;
 import com.mapwithplan.mapplan.friendship.domain.FriendshipCreate;
@@ -16,13 +17,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Builder
 @Service
 @RequiredArgsConstructor
 public class FriendshipServiceImpl implements FriendshipService {
 
     private final FriendshipRepository friendshipRepository;
-    private final TimeClockHolder clockHolder;
+    private final TimeClockProvider clockHolder;
     private final JwtTokenizer jwtTokenizer;
     private final MemberRepository memberRepository;
 
@@ -46,13 +49,20 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     /**
      * 친구 요청 받은 회원이 승인을 하게 됩니다. 친구 관계가 PENDING 에서 ACTIVE 로 변경 됩니다.
+     * @param authorizationHeader 승인 요청을 받은 회원의 정보를 파악하기 위한 헤더 값입니다.
      * @param friendshipId 친구 요청의 ID 입니다.
      * @return Friendship 객체를 return 합니다.
      */
     @Transactional
     @Override
-    public Friendship approveFriendship(Long friendshipId) {
-
+    public Friendship approveFriendship(String authorizationHeader,Long friendshipId) {
+        Member member = getEmailAndFindMember(authorizationHeader);
+        Friendship friendship = friendshipRepository
+                .findById(friendshipId)
+                .orElseThrow(() -> new ResourceNotFoundException("Friend", friendshipId));
+        if (!friendship.getMemberId().getId().equals(member.getId())){
+            throw new UnauthorizedServiceException("잘못된 요청입니다");
+        }
         return friendshipRepository
                 .approveFriendship(friendshipId)
                 .orElseThrow(() -> new ResourceNotFoundException("Friend", friendshipId));

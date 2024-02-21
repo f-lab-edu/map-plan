@@ -13,11 +13,7 @@ import lombok.Getter;
 public class FriendshipCreate {
 
 
-
-
     private Long friendMemberId;
-
-
 
     @Builder
     public FriendshipCreate(@JsonProperty("friendMemberId") Long friendMemberId) {

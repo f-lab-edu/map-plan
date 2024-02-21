@@ -28,9 +28,6 @@ public class Login {
 
     @Override
     public String toString() {
-        return "Login{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return String.format("Login { email='%s' , password= '%s' }",email,password);
     }
 }

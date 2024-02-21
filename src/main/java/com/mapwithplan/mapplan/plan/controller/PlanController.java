@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Builder
@@ -29,7 +30,7 @@ public class PlanController {
      */
     @PostMapping("/create")
     public ResponseEntity<PlanCreateResponse> createPlan(@RequestHeader("Authorization") String authorizationHeader,
-                                                         @RequestBody PlanCreate planCreate){
+                                                         @RequestBody @Validated PlanCreate planCreate){
         Plan plan = planService.savePlan(planCreate, authorizationHeader);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(PlanCreateResponse.from(plan));

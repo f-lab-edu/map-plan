@@ -5,8 +5,8 @@ import com.mapwithplan.mapplan.jwt.util.JwtTokenizer;
 import com.mapwithplan.mapplan.loginlogout.controller.response.LoginResponse;
 import com.mapwithplan.mapplan.loginlogout.domain.Login;
 import com.mapwithplan.mapplan.loginlogout.domain.RefreshToken;
-import com.mapwithplan.mapplan.member.domain.EMemberRole;
-import com.mapwithplan.mapplan.member.domain.EMemberStatus;
+import com.mapwithplan.mapplan.member.domain.MemberRole;
+import com.mapwithplan.mapplan.member.domain.MemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.service.CertificationService;
 import com.mapwithplan.mapplan.member.service.MemberServiceImpl;
@@ -35,7 +35,7 @@ class LoginServiceImplTest {
         this.memberService = MemberServiceImpl.builder()
                 .memberRepository(fakeMemberRepository)
                 .uuidHolder(new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab"))
-                .clockHolder(new TestClockHolder(Instant.now().toEpochMilli()))
+                .clockHolder(new TestClockProvider(Instant.now().toEpochMilli()))
                 .certificationService(new CertificationService(fakeMailSender))
                 .passwordEncoder(new BCryptPasswordEncoder())
                 .build();
@@ -46,7 +46,7 @@ class LoginServiceImplTest {
                 .password("test123")
                 .phone("010-1234-1234")
                 .name("테스트")
-                .memberStatus(EMemberStatus.INACTIVE)
+                .memberStatus(MemberStatus.INACTIVE)
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
                 .createdAt(LocalDateTime.of(2024, 1, 24, 12, 30))
                 .modifiedAt(LocalDateTime.of(2024, 1, 24, 12, 30))
@@ -57,8 +57,8 @@ class LoginServiceImplTest {
                 .password("test333")
                 .phone("010-2222-2222")
                 .name("테스트333")
-                .eMemberRole(EMemberRole.MEMBER)
-                .memberStatus(EMemberStatus.ACTIVE)
+                .memberRole(MemberRole.MEMBER)
+                .memberStatus(MemberStatus.ACTIVE)
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .createdAt(LocalDateTime.of(2024, 1, 24, 12, 30))
                 .modifiedAt(LocalDateTime.of(2024, 1, 24, 12, 30))
@@ -69,8 +69,8 @@ class LoginServiceImplTest {
                 .password("test333")
                 .phone("010-2222-2222")
                 .name("테스트333")
-                .eMemberRole(EMemberRole.MEMBER)
-                .memberStatus(EMemberStatus.ACTIVE)
+                .memberRole(MemberRole.MEMBER)
+                .memberStatus(MemberStatus.ACTIVE)
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .createdAt(LocalDateTime.of(2024, 1, 24, 12, 30))
                 .modifiedAt(LocalDateTime.of(2024, 1, 24, 12, 30))
@@ -90,8 +90,8 @@ class LoginServiceImplTest {
                 .memberRepository(fakeMemberRepository)
                 .jwtTokenizer(new JwtTokenizer("testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest",
                         "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest"))
-                .timeClockHolder(new TestClockHolder(123L))
-                .refreshTokenRepository(fakeRefreshTokenRepository)
+                .timeClockProvider(new TestClockProvider(123L))
+                .refreshTokenService(new RefreshTokenService(fakeRefreshTokenRepository))
                 .build();
     }
     @Test
@@ -119,7 +119,7 @@ class LoginServiceImplTest {
         assertThat(loginResponse.getEmail()).isEqualTo(login.getEmail());
         assertThat(loginResponse.getRefreshToken()).isEqualTo(byToken.getToken());
         assertThat(loginResponse.getAccessToken()).isNotEmpty();
-        assertThat(loginResponse.getMemberRole()).isEqualTo(EMemberRole.MEMBER);
+        assertThat(loginResponse.getMemberRole()).isEqualTo(MemberRole.MEMBER);
     }
 
     @Test
