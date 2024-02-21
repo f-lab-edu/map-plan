@@ -1,8 +1,7 @@
 package com.mapwithplan.mapplan.post.service;
 
 
-import com.mapwithplan.mapplan.common.timeutils.infrastructure.ClockHolder;
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
 import com.mapwithplan.mapplan.post.domain.Post;
 import com.mapwithplan.mapplan.post.domain.PostImg;
@@ -47,7 +46,7 @@ public class PostImgStore {
      * @param uuidHolder DB 저장에 사용되는 UUID 생성 클래스 입니다. DB 에는 저장용 이름과 처음에 Input 된 이름이 분류 됩니다.
      * @return
      */
-    public List<PostImg> storeFiles(List<MultipartFile>  postImgFiles, Post post, TimeClockHolder clockHolder , UuidHolder uuidHolder)  {
+    public List<PostImg> storeFiles(List<MultipartFile>  postImgFiles, Post post, TimeClockProvider clockHolder , UuidHolder uuidHolder)  {
         List<PostImg> storeFileResult = new ArrayList<>();
         try {
             for (MultipartFile multipartFile : postImgFiles) {
@@ -70,7 +69,7 @@ public class PostImgStore {
      * @return
      * @throws IOException
      */
-    public PostImg storeFile(MultipartFile multipartFile, Post post, TimeClockHolder clockHolder,UuidHolder uuidHolder) throws IOException {
+    public PostImg storeFile(MultipartFile multipartFile, Post post, TimeClockProvider clockHolder,UuidHolder uuidHolder) throws IOException {
         if (multipartFile.isEmpty()) {
             return null;
         }
