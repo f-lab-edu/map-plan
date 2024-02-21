@@ -36,6 +36,7 @@ public class FriendshipEntity {
     private LocalDateTime friendshipDate;
 
     @Column(name = "friend_status")
+    @Enumerated(EnumType.STRING)
     private FriendStatus friendStatus;
 
     @Builder
@@ -71,5 +72,9 @@ public class FriendshipEntity {
                 .friendshipDate(friendshipDate)
                 .friendStatus(friendStatus)
                 .build();
+    }
+
+    public void approve(){
+        this.friendStatus = FriendStatus.ACTIVE;
     }
 }
