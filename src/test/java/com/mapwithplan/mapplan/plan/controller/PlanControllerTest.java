@@ -1,15 +1,15 @@
 package com.mapwithplan.mapplan.plan.controller;
 
-import com.mapwithplan.mapplan.member.domain.EMemberRole;
-import com.mapwithplan.mapplan.member.domain.EMemberStatus;
+import com.mapwithplan.mapplan.member.domain.MemberRole;
+import com.mapwithplan.mapplan.member.domain.MemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
 import com.mapwithplan.mapplan.plan.controller.response.PlanCreateResponse;
 import com.mapwithplan.mapplan.plan.controller.response.PlanDetailResponse;
 import com.mapwithplan.mapplan.plan.domain.Plan;
 import com.mapwithplan.mapplan.plan.domain.PlanCreate;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PlanControllerTest {
 
@@ -30,7 +29,7 @@ class PlanControllerTest {
     @BeforeEach
     void init(){
         testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(1L))
+                .clockHolder(new TestClockProvider(1L))
                 .uuidHolder(() -> "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .build();
 
@@ -40,8 +39,8 @@ class PlanControllerTest {
                 .password("test333")
                 .phone("010-2222-2722")
                 .name("테스트333")
-                .eMemberRole(EMemberRole.MEMBER)
-                .memberStatus(EMemberStatus.ACTIVE)
+                .memberRole(MemberRole.MEMBER)
+                .memberStatus(MemberStatus.ACTIVE)
                 .statusMessage("안녕하세요?")
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .createdAt(LocalDateTime.of(2024, 1, 24, 12, 30))
@@ -53,16 +52,16 @@ class PlanControllerTest {
     void PlanControllerSaveTest() {
 
         ArrayList<String> roles = new ArrayList<>();
-        roles.add(EMemberRole.MEMBER.toString());
+        roles.add(MemberRole.MEMBER.toString());
         String accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(3L, "test3@naver.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(3L, "test3@naver.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
         //Given
         accessToken = "Bearer "+accessToken;
         PlanCreate planCreate = PlanCreate.builder()
                 .title("test 입니다.")
                 .content("내용입니다.")
-                .appointmentDate(new TestClockHolder(9L).clockHold())
+                .appointmentDate(new TestClockProvider(9L).clockProvider())
                 .category("카테고리입니다.")
                 .location("서울입니다.")
                 .build();
@@ -90,15 +89,15 @@ class PlanControllerTest {
     void planDetailPlanControllerTest() {
         //Given
         ArrayList<String> roles = new ArrayList<>();
-        roles.add(EMemberRole.MEMBER.toString());
+        roles.add(MemberRole.MEMBER.toString());
         String accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(3L, "test3@naver.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(3L, "test3@naver.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
         accessToken = "Bearer "+accessToken;
         PlanCreate planCreate = PlanCreate.builder()
                 .title("test 입니다.")
                 .content("내용입니다.")
-                .appointmentDate(new TestClockHolder(9L).clockHold())
+                .appointmentDate(new TestClockProvider(9L).clockProvider())
                 .category("카테고리입니다.")
                 .location("서울입니다.")
                 .build();

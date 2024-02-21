@@ -1,6 +1,7 @@
 package com.mapwithplan.mapplan.friendship.domain;
 
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,16 +21,16 @@ public class Friendship {
     private String friendNickName;
 
     private LocalDateTime friendshipDate;
-    private EFriendStatus efriendStatus;
+    private FriendStatus friendStatus;
 
     @Builder
-    public Friendship(Long id, Member memberId, Member friendMemberId, String friendNickName, LocalDateTime friendshipDate, EFriendStatus efriendStatus) {
+    public Friendship(Long id, Member memberId, Member friendMemberId, String friendNickName, LocalDateTime friendshipDate, FriendStatus friendStatus) {
         this.id = id;
         this.memberId = memberId;
         this.friendMemberId = friendMemberId;
         this.friendNickName = friendNickName;
         this.friendshipDate = friendshipDate;
-        this.efriendStatus = efriendStatus;
+        this.friendStatus = friendStatus;
     }
 
 
@@ -41,13 +42,13 @@ public class Friendship {
      * @param clockHolder 시간에 대한 값을 기록하기 위한 파라미터 입니다.
      * @return
      */
-    public static Friendship from(Member friendMemberId ,Member member, TimeClockHolder clockHolder){
+    public static Friendship from(Member friendMemberId ,Member member, TimeClockProvider clockHolder){
         return Friendship.builder()
                 .memberId(member)
                 .friendMemberId(friendMemberId)
                 .friendNickName(friendMemberId.getName())
-                .efriendStatus(EFriendStatus.PENDING)
-                .friendshipDate(clockHolder.clockHold())
+                .friendStatus(FriendStatus.PENDING)
+                .friendshipDate(clockHolder.clockProvider())
                 .build();
     }
 
@@ -55,7 +56,7 @@ public class Friendship {
      * 승인이 이루어질때 EFriendStatus 의 상태가 ACTIVE 로 변경 됩니다.
      */
     public void approve(){
-        this.efriendStatus = EFriendStatus.ACTIVE;
+        this.friendStatus = FriendStatus.ACTIVE;
     }
 
 

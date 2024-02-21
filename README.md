@@ -11,7 +11,9 @@ MapWithPlan
 
 ### 1. 프로젝트 구조
 - HLD (High-level design)
-  
+  ![img_1.png](img_1.png)
+
+- 
 
 
 ### 2. 프로젝트 주요 관심사
@@ -27,10 +29,23 @@ MapWithPlan
 
 ### 3. 브랜치 관리 전략
 
+Git flow 전략에 따라 main branch 와 develop 브랜치를 두고,
+개발된 feature 들을 develop 브랜치에 merge 합니다.
+그후 develop 브랜치를 main branch 에 merge 합니다. 
+
+
+[참고 자료]
+
+[우아한 형제들 기술 블로그](https://techblog.woowahan.com/2553/)
 
 ### 4. 테스트
 
 ##### 4.1 성능 테스트
+
+##### 4.2 테스트 코드 작성
+
+- Mockito, Framework, DB 에 의존하지 않는 테스트 코드 작성(Fake 객체를 만들어 활용, 빠른 테스트 검증 가능) 
+- 
 
 ### 5. 사용 기술 및 환경
 

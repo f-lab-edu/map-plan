@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,8 +34,8 @@ public class PostController {
      */
     @PostMapping("/create")
     public ResponseEntity<PostCreateResponse> createPost(@RequestHeader("Authorization") String authorizationHeader,
-                                                            @RequestPart(name = "PostCreate" ) PostCreate postCreate,
-                                                            @RequestPart(name = "postImgFiles",required = false) List<MultipartFile> postImgFiles){
+                                                         @RequestPart(name = "PostCreate" ) @Validated PostCreate postCreate,
+                                                         @RequestPart(name = "postImgFiles",required = false) List<MultipartFile> postImgFiles){
         PostDetail post = postService.createPost(postCreate, postImgFiles, authorizationHeader);
         PostCreateResponse response = PostCreateResponse.from(post.getPost());
         if (post.getPostImgList() != null){

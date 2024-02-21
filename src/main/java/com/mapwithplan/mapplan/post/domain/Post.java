@@ -1,8 +1,9 @@
 package com.mapwithplan.mapplan.post.domain;
 
+import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
 import com.mapwithplan.mapplan.common.timeutils.domain.BaseTime;
-import com.mapwithplan.mapplan.common.timeutils.infrastructure.ClockHolder;
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.member.domain.Member;
 
 import lombok.Builder;
@@ -28,10 +29,10 @@ public class Post  extends BaseTime {
 
     private String location;
 
-    private EPostStatus ePostStatus;
+    private PostStatus postStatus;
 
     @Builder
-    public Post(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, Member member, String title, String content, String anonymousName, Integer countLike, String location, EPostStatus ePostStatus) {
+    public Post(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, Member member, String title, String content, String anonymousName, Integer countLike, String location, PostStatus postStatus) {
         super(createdAt, modifiedAt);
         this.id = id;
         this.member = member;
@@ -40,12 +41,15 @@ public class Post  extends BaseTime {
         this.anonymousName = anonymousName;
         this.countLike = countLike;
         this.location = location;
-        this.ePostStatus = ePostStatus;
+        this.postStatus = postStatus;
     }
 
-    public static Post from(PostCreate postCreate , Member member, TimeClockHolder clockHolder){
+    public static Post from(PostCreate postCreate , Member member, TimeClockProvider timeClockProvider){
 
         final Integer DEFAULT_LIKE = 0;
+        if (member == null){
+            throw new ResourceNotFoundException("member","회원 정보");
+        }
 
         return Post.builder()
                 .member(member)
@@ -53,10 +57,10 @@ public class Post  extends BaseTime {
                 .content(postCreate.getContent())
                 .anonymousName(postCreate.getAnonymousName())
                 .location(postCreate.getLocation())
-                .createdAt(clockHolder.clockHold())
-                .modifiedAt(clockHolder.clockHold())
+                .createdAt(timeClockProvider.clockProvider())
+                .modifiedAt(timeClockProvider.clockProvider())
                 .countLike(DEFAULT_LIKE)
-                .ePostStatus(EPostStatus.ACTIVE)
+                .postStatus(PostStatus.ACTIVE)
                 .build();
     }
 }

@@ -1,9 +1,8 @@
 package com.mapwithplan.mapplan.member.infrastructure.entity;
 
 
-import com.mapwithplan.mapplan.member.domain.EMemberStatus;
-import com.mapwithplan.mapplan.member.domain.EMemberRole;
-import com.mapwithplan.mapplan.member.domain.EditMember;
+import com.mapwithplan.mapplan.member.domain.MemberStatus;
+import com.mapwithplan.mapplan.member.domain.MemberRole;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.common.timeutils.entity.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -41,17 +40,17 @@ public class MemberEntity extends BaseTimeEntity {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private EMemberStatus memberStatus;
+    private MemberStatus memberStatus;
 
     @Column(name = "certification_code")
     private String certificationCode;
 
     @Column(name = "member_role")
     @Enumerated(EnumType.STRING)
-    private EMemberRole memberRole;
+    private MemberRole memberRole;
 
     @Builder
-    public MemberEntity(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String email, String password, String name, String phone, String statusMessage, EMemberStatus memberStatus, String certificationCode, EMemberRole memberRole) {
+    public MemberEntity(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String email, String password, String name, String phone, String statusMessage, MemberStatus memberStatus, String certificationCode, MemberRole memberRole) {
         super(createdAt, modifiedAt);
         this.id = id;
         this.email = email;
@@ -76,7 +75,7 @@ public class MemberEntity extends BaseTimeEntity {
                 .certificationCode(member.getCertificationCode())
                 .modifiedAt(member.getModifiedAt())
                 .createdAt(member.getCreatedAt())
-                .memberRole(member.getEMemberRole())
+                .memberRole(member.getMemberRole())
                 .build();
 
     }
@@ -91,7 +90,7 @@ public class MemberEntity extends BaseTimeEntity {
                 .certificationCode(certificationCode)
                 .password(password)
                 .statusMessage(statusMessage)
-                .eMemberRole(memberRole)
+                .memberRole(memberRole)
                 .build();
     }
 

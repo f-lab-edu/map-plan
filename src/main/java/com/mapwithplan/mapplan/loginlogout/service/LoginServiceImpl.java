@@ -3,14 +3,13 @@ package com.mapwithplan.mapplan.loginlogout.service;
 
 import com.mapwithplan.mapplan.common.aop.logparameteraop.annotation.LogInputTrace;
 import com.mapwithplan.mapplan.common.exception.ResourceNotFoundException;
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.jwt.util.JwtTokenizer;
 import com.mapwithplan.mapplan.loginlogout.controller.port.LoginService;
 import com.mapwithplan.mapplan.loginlogout.controller.response.LoginResponse;
 import com.mapwithplan.mapplan.loginlogout.domain.Login;
 import com.mapwithplan.mapplan.loginlogout.domain.RefreshToken;
-import com.mapwithplan.mapplan.loginlogout.service.port.RefreshTokenRepository;
-import com.mapwithplan.mapplan.member.domain.EMemberStatus;
+import com.mapwithplan.mapplan.member.domain.MemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.service.port.MemberRepository;
 import lombok.Builder;
@@ -37,8 +36,8 @@ public class LoginServiceImpl implements LoginService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder encoder;
     private final JwtTokenizer jwtTokenizer;
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final TimeClockHolder timeClockHolder;
+    private final TimeClockProvider timeClockProvider;
+    private final RefreshTokenService refreshTokenService;
 
     /**
      * 회원에 대한 login 를 주입 받은후 조회합니다. 조회 불가능시 ResourceNotFoundException 을 호출합니다.
@@ -59,13 +58,13 @@ public class LoginServiceImpl implements LoginService {
 
         memberStatusVerification(member.getMemberStatus());
 
-        String memberRoles = member.getEMemberRole().toString();
+        String memberRoles = member.getMemberRole().toString();
         List<String> Roles  = new ArrayList<>();
         Roles.add(memberRoles);
 
         //토큰 생성
-        String accessToken = jwtTokenizer.createAccessToken(member.getId(), member.getEmail(), Roles,timeClockHolder);
-        String refreshToken = jwtTokenizer.createRefreshToken(member.getId(), member.getEmail(), Roles,timeClockHolder);
+        String accessToken = jwtTokenizer.createAccessToken(member.getId(), member.getEmail(), Roles, timeClockProvider);
+        String refreshToken = jwtTokenizer.createRefreshToken(member.getId(), member.getEmail(), Roles, timeClockProvider);
 
         saveOrUpdateRefreshToken(member,refreshToken);
 
@@ -77,33 +76,34 @@ public class LoginServiceImpl implements LoginService {
      * @param refreshToken
      */
     @Override
+    @Transactional
     public void logout(String refreshToken) {
-        refreshTokenRepository.delete(refreshToken);
+        refreshTokenService.deleteToken(refreshToken);
     }
 
     /**
      * 회원의 상태를 검증하는 내부 메서드 입니다.
-     * @param eMemberStatus
+     * @param memberStatus
      */
-    private void memberStatusVerification(EMemberStatus eMemberStatus){
-        if(eMemberStatus == EMemberStatus.INACTIVE || eMemberStatus ==EMemberStatus.PENDING){
+    private void memberStatusVerification(MemberStatus memberStatus){
+        if(memberStatus == MemberStatus.INACTIVE || memberStatus == MemberStatus.PENDING){
             throw new IllegalArgumentException("접근 불가능한 계정입니다.");
         }
     }
 
     /**
-     * 토근에 대한 저장 업데이트를 진행합  니다.
+     * 토근에 대한 저장 업데이트를 진행합니다.
      * @param member
      * @param refreshToken
      */
     private void saveOrUpdateRefreshToken(Member member, String refreshToken){
-        Optional<RefreshToken> findToken = refreshTokenRepository.findByMember(member);
+
+        Optional<RefreshToken> findToken = refreshTokenService.findByMember(member);
         if (findToken.isPresent()){
             findToken.get().update(refreshToken);
-            refreshTokenRepository.update(findToken.get());
+            refreshTokenService.updateRefreshToken(findToken.get());
         } else {
-            refreshTokenRepository
-                    .save(RefreshToken.from(member, refreshToken));
+            refreshTokenService.saveRefreshToken(RefreshToken.from(member, refreshToken));
         }
     }
 }

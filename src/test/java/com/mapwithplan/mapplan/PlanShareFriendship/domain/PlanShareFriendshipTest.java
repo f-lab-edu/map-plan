@@ -1,9 +1,11 @@
 package com.mapwithplan.mapplan.PlanShareFriendship.domain;
 
-import com.mapwithplan.mapplan.friendship.domain.EFriendStatus;
+
+import com.mapwithplan.mapplan.friendship.domain.FriendStatus;
 import com.mapwithplan.mapplan.friendship.domain.Friendship;
 import com.mapwithplan.mapplan.member.domain.Member;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.plan.domain.Plan;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -26,8 +28,8 @@ class PlanShareFriendshipTest {
                 .content("testContent")
                 .author(member)
                 .location("서울")
-                .modifiedAt(new TestClockHolder(1L).clockHold())
-                .createdAt(new TestClockHolder(1L).clockHold())
+                .modifiedAt(new TestClockProvider(1L).clockProvider())
+                .createdAt(new TestClockProvider(1L).clockProvider())
                 .build();
 
         Member friend = Member.builder()
@@ -37,9 +39,9 @@ class PlanShareFriendshipTest {
                 .id(1L)
                 .friendMemberId(friend)
                 .memberId(member)
-                .friendshipDate(new TestClockHolder(1L).clockHold())
+                .friendshipDate(new TestClockProvider(1L).clockProvider())
                 .friendNickName(friend.getName())
-                .efriendStatus(EFriendStatus.ACTIVE)
+                .friendStatus(FriendStatus.ACTIVE)
                 .build();
 
         PlanShareFriendshipCreate planShareFriendshipCreate = PlanShareFriendshipCreate.builder()
@@ -49,14 +51,14 @@ class PlanShareFriendshipTest {
 
         //When
         PlanShareFriendship planShareFriendship = PlanShareFriendship
-                .from(planShareFriendshipCreate, new TestClockHolder(5L));
+                .from(planShareFriendshipCreate, new TestClockProvider(5L));
 
         //Then
 
         assertThat(planShareFriendship.getFriendship()).isEqualTo(planShareFriendshipCreate.getFriendship());
         assertThat(planShareFriendship.getPlan()).isEqualTo(planShareFriendshipCreate.getPlan());
-        assertThat(planShareFriendship.getCreatedAt()).isEqualTo(new TestClockHolder(5L).clockHold());
-        assertThat(planShareFriendship.getModifiedAt()).isEqualTo(new TestClockHolder(5L).clockHold());
+        assertThat(planShareFriendship.getCreatedAt()).isEqualTo(new TestClockProvider(5L).clockProvider());
+        assertThat(planShareFriendship.getModifiedAt()).isEqualTo(new TestClockProvider(5L).clockProvider());
 
     }
 
