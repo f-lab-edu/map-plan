@@ -38,6 +38,12 @@ public interface MemberService {
      */
     Member findByEmailUseAccessToken(String accessToken);
 
+    /**
+     * 회원을 조회한후 회원의 상태메세지, 번호를 변경합니다.
+     * @param authorizationHeader 회원을 조회하는 것에 사용됩니다.
+     * @param editMember
+     * @return
+     */
     Member editMemberDetail(String authorizationHeader, EditMember editMember);
 
 }

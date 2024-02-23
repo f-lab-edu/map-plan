@@ -2,12 +2,15 @@ package com.mapwithplan.mapplan.PlanShareFriendship.service;
 
 import com.mapwithplan.mapplan.PlanShareFriendship.domain.PlanShareFriendship;
 import com.mapwithplan.mapplan.PlanShareFriendship.domain.PlanShareFriendshipList;
-import com.mapwithplan.mapplan.friendship.domain.EFriendStatus;
+
+import com.mapwithplan.mapplan.friendship.domain.FriendStatus;
 import com.mapwithplan.mapplan.friendship.domain.Friendship;
-import com.mapwithplan.mapplan.member.domain.EMemberRole;
-import com.mapwithplan.mapplan.member.domain.EMemberStatus;
+
 import com.mapwithplan.mapplan.member.domain.Member;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+import com.mapwithplan.mapplan.member.domain.MemberRole;
+import com.mapwithplan.mapplan.member.domain.MemberStatus;
+
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
 import com.mapwithplan.mapplan.plan.domain.Plan;
 import com.mapwithplan.mapplan.plan.domain.PlanCreate;
@@ -34,7 +37,7 @@ class PlanShareFriendshipServiceImplTest {
     @BeforeEach
     void init(){
         testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(1L))
+                .clockHolder(new TestClockProvider(1L))
                 .uuidHolder(() -> "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .build();
         Member role = Member.builder()
@@ -43,8 +46,8 @@ class PlanShareFriendshipServiceImplTest {
                 .password("test")
                 .phone("010-2222-0000")
                 .name("테스트" )
-                .eMemberRole(EMemberRole.MEMBER)
-                .memberStatus(EMemberStatus.ACTIVE)
+                .memberRole(MemberRole.MEMBER)
+                .memberStatus(MemberStatus.ACTIVE)
                 .statusMessage("안녕하세요?" )
                 .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                 .createdAt(LocalDateTime.of(2024, 1, 24, 12, 1))
@@ -59,8 +62,8 @@ class PlanShareFriendshipServiceImplTest {
                     .password("test"+i)
                     .phone("010-2222-000"+i)
                     .name("테스트" +i)
-                    .eMemberRole(EMemberRole.MEMBER)
-                    .memberStatus(EMemberStatus.ACTIVE)
+                    .memberRole(MemberRole.MEMBER)
+                    .memberStatus(MemberStatus.ACTIVE)
                     .statusMessage("안녕하세요?" + i)
                     .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
                     .createdAt(LocalDateTime.of(2024, 1, 24, 12, i))
@@ -71,7 +74,7 @@ class PlanShareFriendshipServiceImplTest {
                     .friendMemberId(member)
                     .memberId(role)
                     .friendNickName(member.getName())
-                    .efriendStatus(EFriendStatus.ACTIVE)
+                    .friendStatus(FriendStatus.ACTIVE)
                     .build();
             friendshipsIds.add(i + 1L);
             testContainer.friendshipRepository.createFriendship(friendship);
@@ -81,18 +84,18 @@ class PlanShareFriendshipServiceImplTest {
 
         //Given
         ArrayList<String> roles = new ArrayList<>();
-        roles.add(EMemberRole.MEMBER.toString());
+        roles.add(MemberRole.MEMBER.toString());
 
         accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(1L, "test@naver.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(1L, "test@naver.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
 
 
         accessToken = "Bearer "+accessToken;
         PlanCreate planCreate = PlanCreate.builder()
                 .title("test 입니다.")
                 .content("내용입니다.")
-                .appointmentDate(new TestClockHolder(9L).clockHold())
+                .appointmentDate(new TestClockProvider(9L).clockProvider())
                 .category("카테고리입니다.")
                 .location("서울입니다.")
                 .build();
@@ -115,7 +118,7 @@ class PlanShareFriendshipServiceImplTest {
         //When
         List<PlanShareFriendship> planShareFriendships = testContainer
                 .planShareFriendshipService
-                .sharePlan(planId, build);
+                .sharePlan(planId, build, accessToken);
 
         //Then
         Assertions.assertThat(planShareFriendships.size()).isEqualTo(9);

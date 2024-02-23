@@ -22,7 +22,7 @@ public class FakePostRepository implements PostRepository {
                     .content(post.getContent())
                     .createdAt(post.getCreatedAt())
                     .modifiedAt(post.getModifiedAt())
-                    .ePostStatus(post.getEPostStatus())
+                    .postStatus(post.getPostStatus())
                     .countLike(post.getCountLike())
                     .location(post.getLocation())
                     .member(post.getMember())

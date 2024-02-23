@@ -1,7 +1,8 @@
 package com.mapwithplan.mapplan.post.domain;
 
 
-import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockHolder;
+
+import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -37,15 +38,15 @@ public class PostImg {
      * @param post
      * @param uploadFileName
      * @param storeFileName
-     * @param clockHolder
+     * @param clockProvider
      * @return
      */
-    public static PostImg from(Post post,String uploadFileName, String storeFileName, TimeClockHolder clockHolder){
+    public static PostImg from(Post post,String uploadFileName, String storeFileName, TimeClockProvider clockProvider){
         return PostImg.builder()
                 .uploadFileName(uploadFileName)
                 .post(post)
                 .storeFileName(storeFileName)
-                .registrationDate(clockHolder.clockHold())
+                .registrationDate(clockProvider.clockProvider())
                 .build();
     }
 

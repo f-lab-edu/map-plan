@@ -38,12 +38,11 @@ public class PostDetail {
 
     /**
      * 이미지가 존재할시 추가로 도메인에 이미지 정보를 담는 메서드 입니다.
-     * @param postDetail 현재 도메인입니다.
      * @param postImgList 추가할 이미지 리스트 입니다.
      * @return
      */
-    public PostDetail addPostImg(PostDetail postDetail,List<PostImg> postImgList){
-        return postDetail.toBuilder()
+    public PostDetail addPostImg(List<PostImg> postImgList){
+        return this.toBuilder()
                 .postImgList(postImgList)
                 .build();
     }

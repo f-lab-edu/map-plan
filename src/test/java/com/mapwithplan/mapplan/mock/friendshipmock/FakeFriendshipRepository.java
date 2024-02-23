@@ -26,7 +26,7 @@ public class FakeFriendshipRepository implements FriendshipRepository {
                     .friendMemberId(friendship.getFriendMemberId())
                     .friendNickName(friendship.getFriendNickName())
                     .friendshipDate(friendship.getFriendshipDate())
-                    .efriendStatus(friendship.getEfriendStatus())
+                    .friendStatus(friendship.getFriendStatus())
                     .build();
             data.add(newFriendship);
             return newFriendship;
@@ -54,7 +54,7 @@ public class FakeFriendshipRepository implements FriendshipRepository {
     }
 
     @Override
-    public List<Friendship> findAllById(List<Long> friendshipIds) {
+    public List<Friendship> findAllByIds(List<Long> friendshipIds) {
         List<Friendship> result = new ArrayList<>();
         log.info("data {}" , data.size());
         for (Long friendshipId : friendshipIds) {

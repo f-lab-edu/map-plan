@@ -1,6 +1,6 @@
 package com.mapwithplan.mapplan.jwt.util;
 
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -25,7 +25,7 @@ class JwtTokenizerTest {
     String email = "testAOP@gmail.com";
     List<String> roles = List.of("MEMBER");
     Long id = 1L;
-    TestClockHolder testClockHolder;
+    TestClockProvider testClockHolder;
 
     @BeforeEach
     void init(){
@@ -37,15 +37,15 @@ class JwtTokenizerTest {
     @DisplayName("createAccessToken 토큰을 생성한다.")
     void createAccessTokenTest() {
         //Given
-        this.testClockHolder = new TestClockHolder(9999999999999999L);
+        this.testClockHolder = new TestClockProvider(9999999999999999L);
         byte[] accessSecretBytes = this.accessSecret.getBytes(StandardCharsets.UTF_8);
         //When
         String JwtToken = Jwts.builder()
                 .subject(email)
                 .claim("memberRoles",roles)
                 .claim("userId",id)
-                .issuedAt(testClockHolder.dateClockHold())
-                .expiration(new Date(testClockHolder.dateClockHold().getTime() + this.ACCESS_TOKEN_EXPIRE_COUNT))
+                .issuedAt(testClockHolder.dateClockProvider())
+                .expiration(new Date(testClockHolder.dateClockProvider().getTime() + this.ACCESS_TOKEN_EXPIRE_COUNT))
                 .signWith(JwtTokenizer.getSigningKey(accessSecretBytes))
                 .compact();
         //Then
@@ -59,7 +59,7 @@ class JwtTokenizerTest {
     @DisplayName("createRefreshToken 토큰을 생성한다.")
     void createRefreshTokenTest() {
         //Given
-        this.testClockHolder = new TestClockHolder(9999999999999999L);
+        this.testClockHolder = new TestClockProvider(9999999999999999L);
         byte[] refreshTokenBytes = this.refreshToken.getBytes(StandardCharsets.UTF_8);
 
         /**
@@ -70,8 +70,8 @@ class JwtTokenizerTest {
                 .subject(email)
                 .claim("memberRoles",roles)
                 .claim("userId",id)
-                .issuedAt(testClockHolder.dateClockHold())
-                .expiration(new Date(testClockHolder.dateClockHold().getTime() + this.REFRESH_TOKEN_EXPIRE_COUNT))
+                .issuedAt(testClockHolder.dateClockProvider())
+                .expiration(new Date(testClockHolder.dateClockProvider().getTime() + this.REFRESH_TOKEN_EXPIRE_COUNT))
                 .signWith(JwtTokenizer.getSigningKey(refreshTokenBytes))
                 .compact();
         //Then
@@ -85,15 +85,15 @@ class JwtTokenizerTest {
     @Test
     @DisplayName("parseAccessTokenTest 테스트로 만료토큰을 분석한다.")
     void parseAccessExpiredTokenTest() {
-        this.testClockHolder = new TestClockHolder(999999999L);
+        this.testClockHolder = new TestClockProvider(999999999L);
         //Given
         byte[] accessSecretBytes = this.accessSecret.getBytes(StandardCharsets.UTF_8);
         String accessToken = Jwts.builder()
                 .subject(email)
                 .claim("memberRoles",roles)
                 .claim("userId",id)
-                .issuedAt(testClockHolder.dateClockHold())
-                .expiration(new Date(testClockHolder.dateClockHold().getTime() + this.ACCESS_TOKEN_EXPIRE_COUNT))
+                .issuedAt(testClockHolder.dateClockProvider())
+                .expiration(new Date(testClockHolder.dateClockProvider().getTime() + this.ACCESS_TOKEN_EXPIRE_COUNT))
                 .signWith(JwtTokenizer.getSigningKey(accessSecretBytes))
                 .compact();
         //When
@@ -105,15 +105,15 @@ class JwtTokenizerTest {
     @Test
     @DisplayName("parseAccessTokenTest 테스트로 만료하지 않은 토큰을 분석한다.")
     void parseAccessNotExpiredTokenTest() {
-        this.testClockHolder = new TestClockHolder(900000000000000L);
+        this.testClockHolder = new TestClockProvider(900000000000000L);
         //Given
         byte[] accessSecretBytes = this.accessSecret.getBytes(StandardCharsets.UTF_8);
         String accessToken = Jwts.builder()
                 .subject(email)
                 .claim("memberRoles",roles)
                 .claim("userId",id)
-                .issuedAt(testClockHolder.dateClockHold())
-                .expiration(new Date(testClockHolder.dateClockHold().getTime() + this.ACCESS_TOKEN_EXPIRE_COUNT))
+                .issuedAt(testClockHolder.dateClockProvider())
+                .expiration(new Date(testClockHolder.dateClockProvider().getTime() + this.ACCESS_TOKEN_EXPIRE_COUNT))
                 .signWith(JwtTokenizer.getSigningKey(accessSecretBytes))
                 .compact();
         //When
@@ -121,8 +121,8 @@ class JwtTokenizerTest {
         //Then
         assertThat(claims.get("memberRoles")).isEqualTo(roles);
         assertThat(claims.get("userId")).isEqualTo(1);
-        assertThat(claims.getIssuedAt()).isEqualTo(this.testClockHolder.dateClockHold());
-        assertThat(claims.getExpiration()).isEqualTo(new Date(this.testClockHolder.dateClockHold().getTime()+ this.ACCESS_TOKEN_EXPIRE_COUNT));
+        assertThat(claims.getIssuedAt()).isEqualTo(this.testClockHolder.dateClockProvider());
+        assertThat(claims.getExpiration()).isEqualTo(new Date(this.testClockHolder.dateClockProvider().getTime()+ this.ACCESS_TOKEN_EXPIRE_COUNT));
 
     }
 
@@ -130,15 +130,15 @@ class JwtTokenizerTest {
     @Test
     @DisplayName("parseRefreshToken 테스트로 만료하지 않은 토큰을 분석한다.")
     void parseRefreshTokenTest() {
-        this.testClockHolder = new TestClockHolder(900000000000000L);
+        this.testClockHolder = new TestClockProvider(900000000000000L);
         //Given
         byte[] refreshTokenBytes = this.refreshToken.getBytes(StandardCharsets.UTF_8);
         String refreshToken = Jwts.builder()
                 .subject(email)
                 .claim("memberRoles",roles)
                 .claim("userId",id)
-                .issuedAt(testClockHolder.dateClockHold())
-                .expiration(new Date(testClockHolder.dateClockHold().getTime() + this.REFRESH_TOKEN_EXPIRE_COUNT))
+                .issuedAt(testClockHolder.dateClockProvider())
+                .expiration(new Date(testClockHolder.dateClockProvider().getTime() + this.REFRESH_TOKEN_EXPIRE_COUNT))
                 .signWith(JwtTokenizer.getSigningKey(refreshTokenBytes))
                 .compact();
         //When
@@ -146,23 +146,23 @@ class JwtTokenizerTest {
         //Then
         assertThat(claims.get("memberRoles")).isEqualTo(roles);
         assertThat(claims.get("userId")).isEqualTo(1);
-        assertThat(claims.getIssuedAt()).isEqualTo(this.testClockHolder.dateClockHold());
-        assertThat(claims.getExpiration()).isEqualTo(new Date(this.testClockHolder.dateClockHold().getTime()+ this.REFRESH_TOKEN_EXPIRE_COUNT));
+        assertThat(claims.getIssuedAt()).isEqualTo(this.testClockHolder.dateClockProvider());
+        assertThat(claims.getExpiration()).isEqualTo(new Date(this.testClockHolder.dateClockProvider().getTime()+ this.REFRESH_TOKEN_EXPIRE_COUNT));
 
     }
 
     @Test
     @DisplayName("parseRefreshToken 테스트로 만료된 토큰을 분석한다.")
     void parseRefreshTokenExpireTest() {
-        this.testClockHolder = new TestClockHolder(999999999L);
+        this.testClockHolder = new TestClockProvider(999999999L);
         //Given
         byte[] accessSecretBytes = this.refreshToken.getBytes(StandardCharsets.UTF_8);
         String refreshToken = Jwts.builder()
                 .subject(email)
                 .claim("memberRoles",roles)
                 .claim("userId",id)
-                .issuedAt(testClockHolder.dateClockHold())
-                .expiration(new Date(testClockHolder.dateClockHold().getTime() + this.REFRESH_TOKEN_EXPIRE_COUNT))
+                .issuedAt(testClockHolder.dateClockProvider())
+                .expiration(new Date(testClockHolder.dateClockProvider().getTime() + this.REFRESH_TOKEN_EXPIRE_COUNT))
                 .signWith(JwtTokenizer.getSigningKey(accessSecretBytes))
                 .compact();
         //When
@@ -177,14 +177,14 @@ class JwtTokenizerTest {
     @DisplayName("getUserIdFromToken 로 유저의 아이디를 얻을 수 있다.")
     void getUserIdFromTokenTest() {
         //Given
-        this.testClockHolder = new TestClockHolder(900000000000000L);
+        this.testClockHolder = new TestClockProvider(900000000000000L);
         byte[] accessSecretBytes = this.accessSecret.getBytes(StandardCharsets.UTF_8);
         String accessToken = Jwts.builder()
                 .subject(email)
                 .claim("memberRoles",roles)
                 .claim("userId",id)
-                .issuedAt(testClockHolder.dateClockHold())
-                .expiration(new Date(testClockHolder.dateClockHold().getTime() + this.ACCESS_TOKEN_EXPIRE_COUNT))
+                .issuedAt(testClockHolder.dateClockProvider())
+                .expiration(new Date(testClockHolder.dateClockProvider().getTime() + this.ACCESS_TOKEN_EXPIRE_COUNT))
                 .signWith(JwtTokenizer.getSigningKey(accessSecretBytes))
                 .compact();
         //When

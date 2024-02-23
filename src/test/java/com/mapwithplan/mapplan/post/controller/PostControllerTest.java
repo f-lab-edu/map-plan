@@ -1,8 +1,10 @@
 package com.mapwithplan.mapplan.post.controller;
 
-import com.mapwithplan.mapplan.member.domain.EMemberRole;
+
 import com.mapwithplan.mapplan.member.domain.Member;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+import com.mapwithplan.mapplan.member.domain.MemberRole;
+
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
 import com.mapwithplan.mapplan.mock.TestUuidHolder;
 import com.mapwithplan.mapplan.mock.postmock.FakeMultipartFile;
@@ -31,8 +33,8 @@ class PostControllerTest {
     @BeforeEach
     void init(){
         this.testContainer = TestContainer.builder()
-                .clockHolder(new TestClockHolder(1L))
-                .uuidHolder(new TestUuidHolder("testtsetset")).build();
+                .uuidHolder(new TestUuidHolder("testtsetset"))
+                .clockHolder(new TestClockProvider(1L)).build();
         member = Member.builder()
                 .name("test 이름")
                 .phone("010-1234-1234")
@@ -48,11 +50,11 @@ class PostControllerTest {
     void PostServiceImplCreatePostTest() {
 
         ArrayList<String> roles = new ArrayList<>();
-        roles.add(EMemberRole.MEMBER.toString());
+        roles.add(MemberRole.MEMBER.toString());
 
         String accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(1L, "test@test.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(1L, "test@test.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
 
 
         accessToken = "Bearer "+accessToken;
@@ -70,10 +72,10 @@ class PostControllerTest {
         //Then
         assertThat(post.getBody().getAnonymousName()).isEqualTo(postCreate.getAnonymousName());
         assertThat(post.getBody().getTitle()).isEqualTo(postCreate.getTitle());
-        assertThat(post.getBody().getCreatedAt()).isEqualTo(new TestClockHolder(1L).clockHold());
+        assertThat(post.getBody().getCreatedAt()).isEqualTo(new TestClockProvider(1L).clockProvider());
         assertThat(post.getBody().getLocation()).isEqualTo(postCreate.getLocation());
         assertThat(post.getBody().getCountLike()).isEqualTo(0);
-        assertThat(post.getBody().getModifiedAt()).isEqualTo(new TestClockHolder(1L).clockHold());
+        assertThat(post.getBody().getModifiedAt()).isEqualTo(new TestClockProvider(1L).clockProvider());
         assertThat(post.getBody().getContent()).isEqualTo(postCreate.getContent());
 
     }
@@ -84,11 +86,11 @@ class PostControllerTest {
     void PostServiceImplCreatePostAddImgTest() {
 
         ArrayList<String> roles = new ArrayList<>();
-        roles.add(EMemberRole.MEMBER.toString());
+        roles.add(MemberRole.MEMBER.toString());
 
         String accessToken = testContainer
                 .jwtTokenizer
-                .createAccessToken(1L, "test@test.com", roles, new TestClockHolder(Instant.now().toEpochMilli()));
+                .createAccessToken(1L, "test@test.com", roles, new TestClockProvider(Instant.now().toEpochMilli()));
 
 
         accessToken = "Bearer "+accessToken;
@@ -111,10 +113,10 @@ class PostControllerTest {
         //Then
         assertThat(post.getBody().getAnonymousName()).isEqualTo(postCreate.getAnonymousName());
         assertThat(post.getBody().getTitle()).isEqualTo(postCreate.getTitle());
-        assertThat(post.getBody().getCreatedAt()).isEqualTo(new TestClockHolder(1L).clockHold());
+        assertThat(post.getBody().getCreatedAt()).isEqualTo(new TestClockProvider(1L).clockProvider());
         assertThat(post.getBody().getLocation()).isEqualTo(postCreate.getLocation());
         assertThat(post.getBody().getCountLike()).isEqualTo(0);
-        assertThat(post.getBody().getModifiedAt()).isEqualTo(new TestClockHolder(1L).clockHold());
+        assertThat(post.getBody().getModifiedAt()).isEqualTo(new TestClockProvider(1L).clockProvider());
         assertThat(post.getBody().getContent()).isEqualTo(postCreate.getContent());
         assertThat(post.getBody().getPostImgResponses().size()).isEqualTo(1);
         assertThat(post.getBody().getPostImgResponses().stream().findFirst().get().getUploadFileName())

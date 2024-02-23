@@ -1,7 +1,8 @@
 package com.mapwithplan.mapplan.post.domain;
 
 import com.mapwithplan.mapplan.member.domain.Member;
-import com.mapwithplan.mapplan.mock.TestClockHolder;
+
+import com.mapwithplan.mapplan.mock.TestClockProvider;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,16 +28,16 @@ class PostImgTest {
                 .name("test 이름")
                 .build();
         //When
-        Post post = Post.from(postCreate, member, new TestClockHolder(1L));
+        Post post = Post.from(postCreate, member, new TestClockProvider(1L));
 
         //When
         PostImg postImg = PostImg
-                .from(post, uploadName, storeName, new TestClockHolder(1L));
+                .from(post, uploadName, storeName, new TestClockProvider(1L));
         //Then
         assertThat(postImg.getPost()).isEqualTo(post);
         assertThat(postImg.getStoreFileName()).isEqualTo(storeName);
         assertThat(postImg.getUploadFileName()).isEqualTo(uploadName);
-        assertThat(postImg.getRegistrationDate()).isEqualTo(new TestClockHolder(1L).clockHold());
+        assertThat(postImg.getRegistrationDate()).isEqualTo(new TestClockProvider(1L).clockProvider());
 
     }
 
