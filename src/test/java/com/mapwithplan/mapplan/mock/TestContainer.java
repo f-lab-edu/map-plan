@@ -2,6 +2,10 @@ package com.mapwithplan.mapplan.mock;
 
 import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
+import com.mapwithplan.mapplan.friendship.controller.FriendshipController;
+import com.mapwithplan.mapplan.friendship.controller.port.FriendshipService;
+import com.mapwithplan.mapplan.friendship.service.FriendshipServiceImpl;
+import com.mapwithplan.mapplan.friendship.service.port.FriendshipRepository;
 import com.mapwithplan.mapplan.jwt.util.JwtTokenizer;
 import com.mapwithplan.mapplan.loginlogout.controller.AuthController;
 import com.mapwithplan.mapplan.loginlogout.controller.port.LoginService;
@@ -13,6 +17,13 @@ import com.mapwithplan.mapplan.member.service.CertificationService;
 import com.mapwithplan.mapplan.member.service.MemberServiceImpl;
 import com.mapwithplan.mapplan.member.service.port.MailSender;
 import com.mapwithplan.mapplan.member.service.port.MemberRepository;
+import com.mapwithplan.mapplan.mock.friendshipmock.FakeFriendshipRepository;
+import com.mapwithplan.mapplan.mock.membermock.FakeMemberRepository;
+import com.mapwithplan.mapplan.mock.planmock.FakePlanRepository;
+import com.mapwithplan.mapplan.plan.controller.PlanController;
+import com.mapwithplan.mapplan.plan.controller.port.PlanService;
+import com.mapwithplan.mapplan.plan.service.PlanServiceImpl;
+import com.mapwithplan.mapplan.plan.service.port.PlanRepository;
 import lombok.Builder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -36,7 +47,17 @@ public class TestContainer {
     public final RefreshTokenRepository refreshTokenRepository;
 
     public final JwtTokenizer jwtTokenizer;
+    public final PlanRepository planRepository;
+    public final PlanService planService;
 
+    public final PlanController planController;
+
+
+    //friendship
+    public final FriendshipRepository friendshipRepository;
+    public final FriendshipService friendshipService;
+
+    public final FriendshipController friendshipController;
 
     @Builder
     public TestContainer(TimeClockProvider clockHolder, UuidHolder uuidHolder) {
@@ -73,6 +94,36 @@ public class TestContainer {
                 .build();
         this.authController = AuthController.builder()
                 .loginService(loginService)
+                .build();
+
+
+
+        //planContainer
+        this.planRepository = new FakePlanRepository();
+        this.planService = PlanServiceImpl.builder()
+                .planRepository(this.planRepository)
+                .clockHolder(clockHolder)
+                .jwtTokenizer(this.jwtTokenizer)
+                .memberRepository(this.memberRepository)
+                .build();
+
+        this.planController = PlanController.builder()
+                .planService(this.planService)
+                .build();
+
+
+        //friendship
+        this.friendshipRepository = new FakeFriendshipRepository();
+
+        this.friendshipService = FriendshipServiceImpl.builder()
+                .clockHolder(clockHolder)
+                .jwtTokenizer(jwtTokenizer)
+                .friendshipRepository(friendshipRepository)
+                .memberRepository(memberRepository)
+                .build();
+
+        this.friendshipController = FriendshipController.builder()
+                .friendshipService(this.friendshipService)
                 .build();
     }
 }

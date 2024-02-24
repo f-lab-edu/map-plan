@@ -8,6 +8,7 @@ import com.mapwithplan.mapplan.member.domain.MemberCreate;
 import com.mapwithplan.mapplan.member.service.CertificationService;
 import com.mapwithplan.mapplan.member.service.MemberServiceImpl;
 import com.mapwithplan.mapplan.mock.*;
+import com.mapwithplan.mapplan.mock.membermock.FakeMemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 class RefreshTokenServiceTest {
 
