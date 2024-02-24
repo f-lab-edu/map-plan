@@ -9,7 +9,7 @@ import com.mapwithplan.mapplan.loginlogout.controller.port.LoginService;
 import com.mapwithplan.mapplan.loginlogout.controller.response.LoginResponse;
 import com.mapwithplan.mapplan.loginlogout.domain.Login;
 import com.mapwithplan.mapplan.loginlogout.domain.RefreshToken;
-import com.mapwithplan.mapplan.member.domain.EMemberStatus;
+import com.mapwithplan.mapplan.member.domain.MemberStatus;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.member.service.port.MemberRepository;
 import lombok.Builder;
@@ -58,7 +58,7 @@ public class LoginServiceImpl implements LoginService {
 
         memberStatusVerification(member.getMemberStatus());
 
-        String memberRoles = member.getEMemberRole().toString();
+        String memberRoles = member.getMemberRole().toString();
         List<String> Roles  = new ArrayList<>();
         Roles.add(memberRoles);
 
@@ -83,10 +83,10 @@ public class LoginServiceImpl implements LoginService {
 
     /**
      * 회원의 상태를 검증하는 내부 메서드 입니다.
-     * @param eMemberStatus
+     * @param memberStatus
      */
-    private void memberStatusVerification(EMemberStatus eMemberStatus){
-        if(eMemberStatus == EMemberStatus.INACTIVE || eMemberStatus ==EMemberStatus.PENDING){
+    private void memberStatusVerification(MemberStatus memberStatus){
+        if(memberStatus == MemberStatus.INACTIVE || memberStatus == MemberStatus.PENDING){
             throw new IllegalArgumentException("접근 불가능한 계정입니다.");
         }
     }

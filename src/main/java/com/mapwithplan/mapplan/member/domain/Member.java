@@ -31,12 +31,12 @@ public class Member extends BaseTime {
 
     private final String certificationCode;
 
-    private final EMemberStatus memberStatus;
+    private final MemberStatus memberStatus;
 
-    private final EMemberRole eMemberRole;
+    private final MemberRole memberRole;
 
     @Builder(toBuilder = true)
-    public Member(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String email, String password, String name, String phone, String statusMessage, String certificationCode, EMemberStatus memberStatus, EMemberRole eMemberRole) {
+    public Member(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String email, String password, String name, String phone, String statusMessage, String certificationCode, MemberStatus memberStatus, MemberRole memberRole) {
         super(createdAt, modifiedAt);
         this.id = id;
         this.email = email;
@@ -46,7 +46,7 @@ public class Member extends BaseTime {
         this.statusMessage = statusMessage;
         this.certificationCode = certificationCode;
         this.memberStatus = memberStatus;
-        this.eMemberRole = eMemberRole;
+        this.memberRole = memberRole;
     }
 
 
@@ -56,12 +56,12 @@ public class Member extends BaseTime {
                 .email(memberCreate.getEmail())
                 .name(memberCreate.getName())
                 .password(encoder.encode(memberCreate.getPassword()))
-                .memberStatus(EMemberStatus.PENDING)
+                .memberStatus(MemberStatus.PENDING)
                 .certificationCode(uuidHolder.random())
                 .phone(memberCreate.getPhone())
                 .createdAt(clockHolder.clockProvider())
                 .modifiedAt(clockHolder.clockProvider())
-                .eMemberRole(EMemberRole.MEMBER)
+                .memberRole(MemberRole.MEMBER)
                 .build();
     }
 
@@ -79,9 +79,9 @@ public class Member extends BaseTime {
                 .email(email)
                 .name(name)
                 .password(password)
-                .memberStatus(EMemberStatus.ACTIVE)
+                .memberStatus(MemberStatus.ACTIVE)
                 .phone(phone)
-                .eMemberRole(eMemberRole)
+                .memberRole(memberRole)
                 .certificationCode(certificationCode)
                 .build();
     }
