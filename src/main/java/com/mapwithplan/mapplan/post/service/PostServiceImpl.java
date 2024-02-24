@@ -83,7 +83,7 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findPostWithImagesById(postId);
         PostDetail postDetail = PostDetail.from(post);
         if (post.getPostImgList() != null){
-            postDetail= postDetail.addPostImg(postDetail,post.getPostImgList());
+            postDetail= postDetail.addPostImg(post.getPostImgList());
         }
 
         return postDetail;

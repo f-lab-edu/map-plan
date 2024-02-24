@@ -53,7 +53,6 @@ public class PostDetailResponse {
                 .location(postDetail.getPost().getLocation())
                 .createdAt(postDetail.getPost().getCreatedAt())
                 .modifiedAt(postDetail.getPost().getModifiedAt())
-                .urlResourceList(postDetail.getPostImgList())
                 .build();
     }
 }

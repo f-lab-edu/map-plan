@@ -8,12 +8,14 @@ MapWithPlan
 실제 서버에 대한 학습과 배포를 목적으로 하고 있습니다.
 
  [OverView](https://ovenapp.io/view/igQ9zwNX8hZeELH4pUkpYjcAqXwPrMgd/)
+ [ProtoType](https://ovenapp.io/view/kQ9bpGlA8kSjXexXvNPTym1u2JSNatnK/)
 
 ### 1. 프로젝트 구조
 - HLD (High-level design)
   ![img_1.png](img_1.png)
 
-- 
+- ERD
+  ![img_2.png](img_2.png)
 
 
 ### 2. 프로젝트 주요 관심사
@@ -45,10 +47,10 @@ Git flow 전략에 따라 main branch 와 develop 브랜치를 두고,
 ##### 4.2 테스트 코드 작성
 
 - Mockito, Framework, DB 에 의존하지 않는 테스트 코드 작성(Fake 객체를 만들어 활용, 빠른 테스트 검증 가능) 
-- 
+- 소형(단위) 테스트 코드 작성
 
 ### 5. 사용 기술 및 환경
-
+이미지 추가 예정
 
 ### 6. Wiki
 [Project Wiki](https://github.com/f-lab-edu/map-plan/wiki)
@@ -58,9 +60,7 @@ Git flow 전략에 따라 main branch 와 develop 브랜치를 두고,
 ### 8. CD
 
 
-### 9. 화면 설계
 
-#### 9.1 고객화면
 
-[ProtoType](https://ovenapp.io/view/kQ9bpGlA8kSjXexXvNPTym1u2JSNatnK/)
+
 
