@@ -1,6 +1,7 @@
 package com.mapwithplan.mapplan.config.ncloud;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +33,7 @@ public class BucketConfig {
 
     private final S3Properties properties;
 
-    public BucketConfig(S3Properties properties) {
+    public BucketConfig( S3Properties properties) {
         this.properties = properties;
     }
 
@@ -68,17 +69,17 @@ public class BucketConfig {
                     .bucket(bucketName)
                     .build());
             if (headBucketResponse.sdkHttpResponse().isSuccessful()) {
-                log.info("Bucket {} already exists.", bucketName);
+                log.info("이미 존재하는 {} 버킷 입니다..", bucketName);
             } else {
                 // 버킷 생성
                 s3.createBucket(CreateBucketRequest.builder()
                         .bucket(bucketName)
                         .build());
-                log.info("Bucket {} has been created.", bucketName);
+                log.info("버킷 {} 이 생성되었습니다.", bucketName);
             }
         } catch (S3Exception e) {
             // 서비스 요청이 실패한 경우
-            e.printStackTrace();
+            log.info("S3 서비스 요청이 실패하였습니다. S3Exception.Message = {}",e.getMessage());
         }
     }
 
@@ -92,7 +93,7 @@ public class BucketConfig {
         try {
             return new URI(endpoint);
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            log.info(" 잘못된 URI 형식 입니다. URISyntaxException = {} ", e.getMessage());
             return null;
         }
     }

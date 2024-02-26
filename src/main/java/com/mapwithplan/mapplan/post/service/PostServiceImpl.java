@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -39,6 +37,7 @@ public class PostServiceImpl implements PostService {
     private final UuidHolder uuidHolder;
 
     private final PostImgRepository postImgRepository;
+
 
     /**
      * 헤더에 있는 토큰 값을 활용하여 회원 정보를 찾고 게시글을 생성합니다.
@@ -65,6 +64,8 @@ public class PostServiceImpl implements PostService {
 
         return postDetail;
     }
+
+
 
     @Transactional(readOnly = true)
     @Override

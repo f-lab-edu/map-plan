@@ -69,6 +69,8 @@ dependencies {
 
 	//테스트에서 롬복 사용
 	testImplementation 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 clean {

@@ -56,6 +56,15 @@ public class PostController {
                 .body(response);
     }
 
+    @PostMapping("")
+    public ResponseEntity<PostCreateResponse> createPostTest(@RequestHeader("Authorization") String authorizationHeader,
+                                                             @RequestPart(name = "PostCreate" ) @Validated PostCreate postCreate,
+                                                             @RequestPart(name = "postImgFiles",required = false) List<MultipartFile> postImgFiles){
+        PostDetail post = postService.createPost(postCreate, postImgFiles, authorizationHeader);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(null);
+    }
 
     @GetMapping("/{postId}")
     public ResponseEntity<PostDetailResponse> getPostContents(@PathVariable Long postId){
