@@ -44,7 +44,7 @@ public class Post  extends BaseTime {
         this.postStatus = postStatus;
     }
 
-    public static Post from(PostCreate postCreate , Member member, TimeClockProvider timeClockProvider){
+    public static Post from(PostRequest postRequest, Member member, TimeClockProvider timeClockProvider){
 
         final Integer DEFAULT_LIKE = 0;
         if (member == null){
@@ -53,10 +53,10 @@ public class Post  extends BaseTime {
 
         return Post.builder()
                 .member(member)
-                .title(postCreate.getTitle())
-                .content(postCreate.getContent())
-                .anonymousName(postCreate.getAnonymousName())
-                .location(postCreate.getLocation())
+                .title(postRequest.getTitle())
+                .content(postRequest.getContent())
+                .anonymousName(postRequest.getAnonymousName())
+                .location(postRequest.getLocation())
                 .createdAt(timeClockProvider.clockProvider())
                 .modifiedAt(timeClockProvider.clockProvider())
                 .countLike(DEFAULT_LIKE)

@@ -7,19 +7,16 @@ import com.mapwithplan.mapplan.member.domain.MemberRole;
 import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
 import com.mapwithplan.mapplan.post.controller.response.PostCreateResponse;
-import com.mapwithplan.mapplan.post.domain.Post;
-import com.mapwithplan.mapplan.post.domain.PostCreate;
+import com.mapwithplan.mapplan.post.domain.PostRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.Instant;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PostControllerTest {
 
@@ -54,7 +51,7 @@ class PostControllerTest {
 
         accessToken = "Bearer "+accessToken;
         //Given
-        PostCreate postCreate = PostCreate.builder()
+        PostRequest postRequest = PostRequest.builder()
                 .title("Post")
                 .anonymousName("아무 이름")
                 .content("아무 내용")
@@ -62,15 +59,15 @@ class PostControllerTest {
                 .build();
         //When
 
-        ResponseEntity<PostCreateResponse> post = testContainer.postController.createPost(accessToken, postCreate);
+        ResponseEntity<PostCreateResponse> post = testContainer.postController.createPost(accessToken, postRequest);
         //Then
-        assertThat(post.getBody().getAnonymousName()).isEqualTo(postCreate.getAnonymousName());
-        assertThat(post.getBody().getTitle()).isEqualTo(postCreate.getTitle());
+        assertThat(post.getBody().getAnonymousName()).isEqualTo(postRequest.getAnonymousName());
+        assertThat(post.getBody().getTitle()).isEqualTo(postRequest.getTitle());
         assertThat(post.getBody().getCreatedAt()).isEqualTo(new TestClockProvider(1L).clockProvider());
-        assertThat(post.getBody().getLocation()).isEqualTo(postCreate.getLocation());
+        assertThat(post.getBody().getLocation()).isEqualTo(postRequest.getLocation());
         assertThat(post.getBody().getCountLike()).isEqualTo(0);
         assertThat(post.getBody().getModifiedAt()).isEqualTo(new TestClockProvider(1L).clockProvider());
-        assertThat(post.getBody().getContent()).isEqualTo(postCreate.getContent());
+        assertThat(post.getBody().getContent()).isEqualTo(postRequest.getContent());
 
     }
 

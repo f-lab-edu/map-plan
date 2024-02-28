@@ -7,8 +7,7 @@ import com.mapwithplan.mapplan.member.domain.MemberRole;
 import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
 import com.mapwithplan.mapplan.post.domain.Post;
-import com.mapwithplan.mapplan.post.domain.PostCreate;
-import org.assertj.core.api.Assertions;
+import com.mapwithplan.mapplan.post.domain.PostRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PostServiceImplTest {
 
@@ -52,17 +50,17 @@ class PostServiceImplTest {
 
         accessToken = "Bearer "+accessToken;
         //Given
-        PostCreate postCreate = PostCreate.builder()
+        PostRequest postRequest = PostRequest.builder()
                 .title("Post")
                 .anonymousName("아무 이름")
                 .content("아무 내용")
                 .location("서울")
                 .build();
         //When
-        Post post = testContainer.postService.createPost(postCreate, accessToken);
+        Post post = testContainer.postService.createPost(postRequest, accessToken);
 
         //Then
-        assertThat(post.getContent()).isEqualTo(postCreate.getContent());
+        assertThat(post.getContent()).isEqualTo(postRequest.getContent());
         assertThat(post.getMember().getEmail()).isEqualTo(member.getEmail());
     }
 
