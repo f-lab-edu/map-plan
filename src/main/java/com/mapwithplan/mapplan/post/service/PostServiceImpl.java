@@ -7,22 +7,22 @@ import com.mapwithplan.mapplan.member.controller.port.MemberService;
 import com.mapwithplan.mapplan.member.domain.Member;
 import com.mapwithplan.mapplan.post.controller.port.PostService;
 import com.mapwithplan.mapplan.post.domain.Post;
-import com.mapwithplan.mapplan.post.domain.PostCreate;
+
 import com.mapwithplan.mapplan.post.domain.PostDetail;
 import com.mapwithplan.mapplan.post.domain.PostImg;
+import com.mapwithplan.mapplan.post.domain.PostRequest;
 import com.mapwithplan.mapplan.post.service.port.PostImgRepository;
 import com.mapwithplan.mapplan.post.service.port.PostRepository;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
+
 
 @Builder
 @RequiredArgsConstructor
@@ -52,15 +52,11 @@ public class PostServiceImpl implements PostService {
      * @param postImgFiles 게시글에 첨부된 파일이다. required = false 는 해당 파라미터가 필수는 아님을 나타낸다.
      * @return 생성된 게시글 정보와 이미지 정보를 리턴 합니다.
      */
-    @Transactional
     @Override
-    public Post createPost(PostRequest postRequest, String authorizationHeader) {
     @Transactional
-    public PostDetail createPost(PostCreate postCreate, List<MultipartFile> postImgFiles, String authorizationHeader){
+    public PostDetail createPost(PostRequest postRequest, List<MultipartFile> postImgFiles, String authorizationHeader){
         Member member = memberService.findByEmailUseAccessToken(authorizationHeader);
         Post post = Post.from(postRequest, member, clockProvider);
-        return postRepository.createPost(post);
-        Post post = Post.from(postCreate, member, clockProvider);
         Post savePost = postRepository.createPost(post);
         PostDetail postDetail = PostDetail.from(savePost);
         if (postImgFiles != null){
@@ -68,6 +64,7 @@ public class PostServiceImpl implements PostService {
             List<PostImg> postImgs = postImgRepository.saveAll(postImgList);
             postDetail = postDetail.addPostImg(postImgs);
         }
+
 
         return postDetail;
     }

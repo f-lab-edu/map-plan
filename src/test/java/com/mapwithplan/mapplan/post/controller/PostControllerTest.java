@@ -13,9 +13,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -60,8 +62,9 @@ class PostControllerTest {
                 .location("서울")
                 .build();
         //When
+        List<MultipartFile> testFile = null;
 
-        ResponseEntity<PostCreateResponse> post = testContainer.postController.createPost(accessToken, postRequest);
+        ResponseEntity<PostCreateResponse> post = testContainer.postController.createPost(accessToken, postRequest,testFile);
         //Then
         assertThat(post.getBody().getAnonymousName()).isEqualTo(postRequest.getAnonymousName());
         assertThat(post.getBody().getTitle()).isEqualTo(postRequest.getTitle());

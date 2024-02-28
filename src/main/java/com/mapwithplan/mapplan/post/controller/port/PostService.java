@@ -1,7 +1,11 @@
 package com.mapwithplan.mapplan.post.controller.port;
 
 import com.mapwithplan.mapplan.post.domain.Post;
+import com.mapwithplan.mapplan.post.domain.PostDetail;
 import com.mapwithplan.mapplan.post.domain.PostRequest;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * controller 와 함께 사용하는 port 역할을 하는 interface 입니다.
@@ -14,5 +18,5 @@ public interface PostService {
      * @param authorizationHeader 헤더 값에 있는 토큰을 활용해 회원 정보를 확인합니다.
      * @return
      */
-    Post createPost(PostRequest postRequest, String authorizationHeader);
+    PostDetail createPost(PostRequest postRequest, List<MultipartFile> postImgFiles, String authorizationHeader);
 }

@@ -9,10 +9,8 @@ import com.mapwithplan.mapplan.mock.TestContainer;
 import com.mapwithplan.mapplan.mock.TestUuidHolder;
 import com.mapwithplan.mapplan.mock.postmock.FakeMultipartFile;
 import com.mapwithplan.mapplan.post.domain.Post;
-import com.mapwithplan.mapplan.post.domain.PostCreate;
+
 import com.mapwithplan.mapplan.post.domain.PostDetail;
-import com.mapwithplan.mapplan.post.domain.PostImg;
-import org.assertj.core.api.Assertions;
 import com.mapwithplan.mapplan.post.domain.PostRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -67,12 +65,19 @@ class PostServiceImplTest {
                 .content("아무 내용")
                 .location("서울")
                 .build();
+        List<MultipartFile> testFile = new ArrayList<>();
+        FakeMultipartFile fakeMultipartFile = FakeMultipartFile.builder()
+                .originalFilename("test.png")
+                .name("test.png").build();
+
+        testFile.add(fakeMultipartFile);
+
         //When
-        Post post = testContainer.postService.createPost(postRequest, accessToken);
+        PostDetail post = testContainer.postService.createPost(postRequest, testFile, accessToken);
 
         //Then
-        assertThat(post.getContent()).isEqualTo(postRequest.getContent());
-        assertThat(post.getMember().getEmail()).isEqualTo(member.getEmail());
+        assertThat(post.getPost().getMember().getEmail()).isEqualTo(member.getEmail());
+        assertThat(post.getPostImgList().size()).isEqualTo(1);
     }
 
 
