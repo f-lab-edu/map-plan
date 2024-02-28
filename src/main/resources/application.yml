@@ -12,6 +12,10 @@ spring:
       max-file-size: 1MB
       max-request-size: 10MB
       enabled: true
+  s3:
+    accessKey: 1m4B4ebcg75bNqkV29XT
+    secretKey: ms4wULSDm9WQnJxMH9vuXSuM09QQR1DLtLIxwees
+    bucketName: projectbucket
   sql:
     init:
       data-locations: classpath*:data.sql
@@ -36,7 +40,6 @@ spring:
           starttls:
             enable: true
 
-
 file:
   dir: C:/Users/kyj20/Desktop/flabproject/ProjectFile/
 
@@ -59,7 +62,7 @@ spring:
     username: test
     password: test123!
   s3:
-    accessKey: 1m4B4ebcg75bNqkV29XT
+    accessey: 1m4B4ebcg75bNqkV29XT
     secretKey: ms4wULSDm9WQnJxMH9vuXSuM09QQR1DLtLIxwees
     bucketName: projectbucket
   servlet:

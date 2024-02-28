@@ -7,8 +7,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    username: setset
+    password: setset
     properties:
       mail:
         smtp:
@@ -16,6 +16,10 @@ spring:
           timeout: 5000
           starttls:
             enable: true
+  s3:
+    accessKey: test
+    secretKey: stet
+    bucketName: sets
   sql:
     init:
       data-locations:

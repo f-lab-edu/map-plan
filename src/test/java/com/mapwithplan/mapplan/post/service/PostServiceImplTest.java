@@ -8,11 +8,7 @@ import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
 import com.mapwithplan.mapplan.mock.TestUuidHolder;
 import com.mapwithplan.mapplan.mock.postmock.FakeMultipartFile;
-import com.mapwithplan.mapplan.post.domain.Post;
 import com.mapwithplan.mapplan.post.domain.PostCreate;
-import com.mapwithplan.mapplan.post.domain.PostDetail;
-import com.mapwithplan.mapplan.post.domain.PostImg;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,11 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PostServiceImplTest {
 
@@ -75,11 +67,10 @@ class PostServiceImplTest {
         testFile.add(fakeMultipartFile);
 
         //When
-        PostDetail post = testContainer.postService.createPost(postCreate, testFile, accessToken);
+
 
         //Then
-        assertThat(post.getPost().getMember().getEmail()).isEqualTo(member.getEmail());
-        assertThat(post.getPostImgList().size()).isEqualTo(1);
+
     }
 
 

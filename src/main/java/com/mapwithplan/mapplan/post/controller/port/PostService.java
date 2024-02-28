@@ -1,6 +1,7 @@
 package com.mapwithplan.mapplan.post.controller.port;
 
 import com.mapwithplan.mapplan.post.domain.*;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
@@ -18,10 +19,9 @@ public interface PostService {
      * @param postImgFiles 게시글에 첨부된 파일이다. required = false 는 해당 파라미터가 필수는 아님을 나타낸다.
      * @return
      */
-    PostDetail createPost(PostCreate postCreate, List<MultipartFile> postImgFiles, String authorizationHeader);
+    Post createPost(PostCreate postCreate, List<MultipartFile> postImgFiles, String authorizationHeader);
 
 
-    DownloadPostFile findFile(Long postId, String storeFileName);
+    Resource findFile(String filename);
 
-    PostDetail getPostDetail(Long postId);
 }

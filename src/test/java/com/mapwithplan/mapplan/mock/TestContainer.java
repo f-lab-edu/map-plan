@@ -34,6 +34,7 @@ import com.mapwithplan.mapplan.plan.service.PlanServiceImpl;
 import com.mapwithplan.mapplan.plan.service.port.PlanRepository;
 import com.mapwithplan.mapplan.post.controller.PostController;
 import com.mapwithplan.mapplan.post.controller.port.PostService;
+import com.mapwithplan.mapplan.post.service.FileService;
 import com.mapwithplan.mapplan.post.service.PostImgStore;
 import com.mapwithplan.mapplan.post.service.PostServiceImpl;
 import com.mapwithplan.mapplan.post.service.port.PostImgRepository;

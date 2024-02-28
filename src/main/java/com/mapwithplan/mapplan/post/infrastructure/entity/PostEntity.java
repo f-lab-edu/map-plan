@@ -42,7 +42,7 @@ public class PostEntity extends BaseTimeEntity {
     private PostStatus postStatus;
 
 
-    @OneToMany(mappedBy = "postEntity",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "postEntity",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PostImgEntity> postImgEntityList = new ArrayList<>();
 
 
@@ -73,7 +73,10 @@ public class PostEntity extends BaseTimeEntity {
                 .createdAt(post.getCreatedAt())
                 .modifiedAt(post.getModifiedAt())
                 .location(post.getLocation())
-                .postImgEntityList(post.getPostImgList().stream().map(PostImgEntity::from).toList())
+                .postImgEntityList(post.getPostImgList()
+                        .stream()
+                        .map(PostImgEntity::from)
+                        .toList())
                 .build();
     }
     public Post toModel(){

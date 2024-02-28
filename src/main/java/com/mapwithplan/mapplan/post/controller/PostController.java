@@ -2,27 +2,19 @@ package com.mapwithplan.mapplan.post.controller;
 
 
 import com.mapwithplan.mapplan.post.controller.port.PostService;
-import com.mapwithplan.mapplan.post.controller.response.PostCreateResponse;
-import com.mapwithplan.mapplan.post.controller.response.PostDetailResponse;
-import com.mapwithplan.mapplan.post.domain.DownloadPostFile;
+import com.mapwithplan.mapplan.post.domain.Post;
 import com.mapwithplan.mapplan.post.domain.PostCreate;
-import com.mapwithplan.mapplan.post.domain.PostDetail;
-import com.mapwithplan.mapplan.post.domain.PostImg;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.UriUtils;
 
-import java.net.MalformedURLException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Slf4j
@@ -42,39 +34,29 @@ public class PostController {
      * @return PostCreateResponse 에 게시글 정보는 기본적으로 담겨 있고 이미지 파일이 있다면 이미지 정보까지 담아서 리턴한다.
      */
     @PostMapping("/create")
-    public ResponseEntity<PostCreateResponse> createPost(@RequestHeader("Authorization") String authorizationHeader,
+    public ResponseEntity<Post> createPost(@RequestHeader("Authorization") String authorizationHeader,
                                                          @RequestPart(name = "PostCreate" ) @Validated PostCreate postCreate,
                                                          @RequestPart(name = "postImgFiles",required = false) List<MultipartFile> postImgFiles){
-        PostDetail post = postService.createPost(postCreate, postImgFiles, authorizationHeader);
-        PostCreateResponse response = PostCreateResponse.from(post.getPost());
-        if (post.getPostImgList() != null){
-            response = response.addPostImgList(response, post.getPostImgList());
-        }
+
+        Post post = postService.createPost(postCreate, postImgFiles, authorizationHeader);
+
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(response);
+                .body(post);
     }
 
 
-    @GetMapping("/{postId}/{filename}")
-    public ResponseEntity<Resource> downloadAttach(@PathVariable Long postId,
-                                                   @PathVariable String filename) {
+    @GetMapping("/images/{filename}")
+    public ResponseEntity<Resource> downloadAttach(@PathVariable String filename) {
 
-        DownloadPostFile file = postService.findFile(postId, filename);
-        String contentDisposition;
-        UrlResource urlResource;
-        try {
-            urlResource = new UrlResource("file:" + file.getFullPath());
-            String encodedUploadFileName = UriUtils.encode(file.getUploadFileName(), StandardCharsets.UTF_8);
-            contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        Resource resource = postService.findFile( filename);
+
+        String contentDisposition = "attachment; filename=\"" + filename + "\"";
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,contentDisposition)
-                .body(urlResource);
+                .body(resource);
 
     }
 }

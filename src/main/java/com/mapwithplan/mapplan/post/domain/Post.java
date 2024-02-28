@@ -50,7 +50,7 @@ public class Post  extends BaseTime {
         this.postImgList = postImgList;
     }
 
-    public static Post from(PostCreate postCreate , Member member, TimeClockProvider timeClockProvider){
+    public static Post from(PostCreate postCreate , List<PostImg> postImgList,  Member member, TimeClockProvider timeClockProvider){
 
         final Integer DEFAULT_LIKE = 0;
         if (member == null){
@@ -65,14 +65,9 @@ public class Post  extends BaseTime {
                 .location(postCreate.getLocation())
                 .createdAt(timeClockProvider.clockProvider())
                 .modifiedAt(timeClockProvider.clockProvider())
+                .postImgList(postImgList)
                 .countLike(DEFAULT_LIKE)
                 .postStatus(PostStatus.ACTIVE)
                 .build();
     }
-
-    public Post createPostImg(Post post, List<PostImg> postImgList){
-        return post.toBuilder()
-                .postImgList(postImgList).build();
-    }
-
 }
