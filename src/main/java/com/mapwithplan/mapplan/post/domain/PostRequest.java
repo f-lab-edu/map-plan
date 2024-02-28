@@ -1,7 +1,6 @@
 package com.mapwithplan.mapplan.post.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mapwithplan.mapplan.member.domain.Member;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -11,7 +10,7 @@ import lombok.Getter;
  * 게시글 생성에 필요한 DTO 입니다.
  */
 @Getter
-public class PostCreate {
+public class PostRequest {
 
     @NotEmpty
     @Size(min = 1, max = 20)
@@ -28,10 +27,10 @@ public class PostCreate {
     private String location;
 
     @Builder
-    public PostCreate(@JsonProperty("title") String title,
-                      @JsonProperty("content") String content,
-                      @JsonProperty("anonymousName") String anonymousName,
-                      @JsonProperty("location") String location) {
+    public PostRequest(@JsonProperty("title") String title,
+                       @JsonProperty("content") String content,
+                       @JsonProperty("anonymousName") String anonymousName,
+                       @JsonProperty("location") String location) {
         this.title = title;
         this.content = content;
         this.anonymousName = anonymousName;
