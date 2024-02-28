@@ -18,7 +18,7 @@ class PostImgTest {
         //Given
         String uploadName = "upload.test";
         String storeName = "store.test";
-        PostCreate postCreate = PostCreate.builder()
+        PostRequest postCreate = PostRequest.builder()
                 .title("Post")
                 .anonymousName("아무 이름")
                 .content("아무 내용")

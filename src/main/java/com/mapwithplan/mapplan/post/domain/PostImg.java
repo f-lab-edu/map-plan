@@ -15,11 +15,12 @@ import java.time.LocalDateTime;
 public class PostImg {
 
     private Long id;
-
+    //업로드 당시 회원이 올린 파일명 입니다.
     private String uploadFileName;
 
     private Post post;
 
+    //저장을 할때 변경한 파일명 입니다.
     private String storeFileName;
 
     private LocalDateTime registrationDate;

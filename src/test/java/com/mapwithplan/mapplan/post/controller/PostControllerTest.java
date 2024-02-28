@@ -6,6 +6,8 @@ import com.mapwithplan.mapplan.member.domain.MemberRole;
 
 import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
+import com.mapwithplan.mapplan.post.controller.response.PostCreateResponse;
+import com.mapwithplan.mapplan.post.domain.PostRequest;
 import com.mapwithplan.mapplan.mock.TestUuidHolder;
 import com.mapwithplan.mapplan.mock.postmock.FakeMultipartFile;
 
@@ -13,14 +15,16 @@ import com.mapwithplan.mapplan.post.domain.PostCreate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PostControllerTest {
 
@@ -56,7 +60,7 @@ class PostControllerTest {
 
         accessToken = "Bearer "+accessToken;
         //Given
-        PostCreate postCreate = PostCreate.builder()
+        PostRequest postRequest = PostRequest.builder()
                 .title("Post")
                 .anonymousName("아무 이름")
                 .content("아무 내용")

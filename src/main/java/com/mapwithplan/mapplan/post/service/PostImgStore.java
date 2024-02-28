@@ -1,6 +1,7 @@
 package com.mapwithplan.mapplan.post.service;
 
 
+import com.mapwithplan.mapplan.common.exception.FileOperationException;
 import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
 import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
 import com.mapwithplan.mapplan.post.domain.Post;
@@ -55,7 +56,7 @@ public class PostImgStore {
                 }
             }
         } catch (IOException e){
-            log.info("{}",e.getMessage());
+            throw new FileOperationException("잘못된 파일 요청 입니다.");
         }
         return storeFileResult;
     }

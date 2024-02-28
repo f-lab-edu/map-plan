@@ -41,9 +41,6 @@ public class PostServiceImpl implements PostService {
 
     private final PostImgRepository postImgRepository;
 
-    private final FileService fileService;
-
-
     /**
      * 헤더에 있는 토큰 값을 활용하여 회원 정보를 찾고 게시글을 생성합니다.
      * 게시글에 파일이 존재하지 않을 경우 게시글 내용만 저장하고
@@ -77,8 +74,6 @@ public class PostServiceImpl implements PostService {
 
 
     }
-
-
 
 
 }
