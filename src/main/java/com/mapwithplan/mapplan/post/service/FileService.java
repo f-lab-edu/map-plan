@@ -1,6 +1,7 @@
 package com.mapwithplan.mapplan.post.service;
 
 
+import com.mapwithplan.mapplan.common.exception.FileOperationException;
 import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
 import com.mapwithplan.mapplan.config.ncloud.S3Properties;
 import com.mapwithplan.mapplan.post.domain.PostImg;
@@ -58,13 +59,14 @@ public class FileService {
      * @param filePath 버킷에 있는 디렉토리 입니다.
      * @return
      */
-    private List<PostImg> uploadFiles(List<MultipartFile> multipartFiles, String filePath,UuidHolder uuidHolder) {
+    private List<PostImg> uploadFiles(List<MultipartFile> multipartFiles, String filePath, UuidHolder uuidHolder) {
         List<PostImg> s3Files = new ArrayList<>();
 
         for (MultipartFile multipartFile : multipartFiles) {
+
             String originalFileName = multipartFile.getOriginalFilename();
             String uploadFileName = getUuidFileName(originalFileName,uuidHolder);
-            String storeFileName = "";
+            String storeFileName;
 
             try (InputStream inputStream = multipartFile.getInputStream()) {
                 String keyName = filePath + "/" + uploadFileName;
@@ -82,7 +84,7 @@ public class FileService {
                 storeFileName = "https://kr.object.ncloudstorage.com/" + properties.getBucketName() + "/" + keyName;
 
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new FileOperationException("잘못된 입력입니다.");
             }
 
             s3Files.add(

@@ -8,7 +8,8 @@ import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
 import com.mapwithplan.mapplan.mock.TestUuidHolder;
 import com.mapwithplan.mapplan.mock.postmock.FakeMultipartFile;
-import com.mapwithplan.mapplan.post.domain.PostCreate;
+
+import com.mapwithplan.mapplan.post.domain.PostRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,7 +54,7 @@ class PostServiceImplTest {
         accessToken = "Bearer "+accessToken;
 
         //Given
-        PostCreate postCreate = PostCreate.builder()
+        PostRequest postRequest = PostRequest.builder()
                 .title("Post")
                 .anonymousName("아무 이름")
                 .content("아무 내용")

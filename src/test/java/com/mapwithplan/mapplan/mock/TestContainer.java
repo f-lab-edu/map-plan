@@ -34,8 +34,7 @@ import com.mapwithplan.mapplan.plan.service.PlanServiceImpl;
 import com.mapwithplan.mapplan.plan.service.port.PlanRepository;
 import com.mapwithplan.mapplan.post.controller.PostController;
 import com.mapwithplan.mapplan.post.controller.port.PostService;
-import com.mapwithplan.mapplan.post.service.FileService;
-import com.mapwithplan.mapplan.post.service.PostImgStore;
+
 import com.mapwithplan.mapplan.post.service.PostServiceImpl;
 import com.mapwithplan.mapplan.post.service.port.PostImgRepository;
 import com.mapwithplan.mapplan.post.service.port.PostRepository;
@@ -94,7 +93,6 @@ public class TestContainer {
 
     public final PostController postController;
 
-    public final PostImgStore postImgStore;
     public final PostImgRepository postImgRepository;
 
     @Builder
@@ -183,10 +181,8 @@ public class TestContainer {
 
         //post
         this.postImgRepository = new FakePostImgRepository();
-        this.postImgStore = new PostImgStore();
         this.postRepository = new FakePostRepository();
         this.postService = PostServiceImpl.builder()
-                .postImgStore(this.postImgStore)
                 .postRepository(this.postRepository)
                 .memberService(this.memberService)
                 .postImgRepository(this.postImgRepository)

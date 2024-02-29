@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.*;
 class PostTest {
 
     @Test
-    @DisplayName("PostRequest 로 Post 를 만든다.")
+    @DisplayName("PostCreate 로 Post 를 만든다.")
     void PostCreateTest() {
         //Given
         PostRequest postRequest = PostRequest.builder()
@@ -23,8 +23,7 @@ class PostTest {
                 .name("test 이름")
                 .build();
         //When
-        Post post = Post.from(postCreate,null, member, new TestClockProvider(1L));
-        Post post = Post.from(postRequest, member, new TestClockProvider(1L));
+        Post post = Post.from(postRequest,null ,member, new TestClockProvider(1L));
         //Then
 
         assertThat(post.getTitle()).isEqualTo(postRequest.getTitle());
