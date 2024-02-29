@@ -57,7 +57,6 @@ public class PostServiceImpl implements PostService {
         Member member = memberService.findByEmailUseAccessToken(authorizationHeader);
         List<PostImg> postImgList = fileService.uploadFilesToObjectStorage(postImgFiles, uuidHolder);
         Post post = Post.from(postRequest, postImgList, member, clockProvider);
-
         return postRepository.createPost(post);
     }
 

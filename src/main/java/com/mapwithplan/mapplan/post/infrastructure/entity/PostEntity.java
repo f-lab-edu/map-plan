@@ -47,7 +47,7 @@ public class PostEntity extends BaseTimeEntity {
 
 
 
-    @Builder
+    @Builder(toBuilder = true)
     public PostEntity(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, MemberEntity memberEntity, String title, String content, String anonymousName, Integer countLike, String location, PostStatus postStatus,  List<PostImgEntity> postImgEntityList) {
         super(createdAt, modifiedAt);
         this.id = id;
@@ -99,11 +99,9 @@ public class PostEntity extends BaseTimeEntity {
      * 게시글, 게시글 이미지의 양방향 연관 관계 설정 메서드 추가
      */
     public void addAllPostImg(List<PostImgEntity> postImgEntityList){
+        this.toBuilder()
+                .postImgEntityList(postImgEntityList);
 
-        for (PostImgEntity postImgEntity : postImgEntityList) {
-            postImgEntityList.add(postImgEntity);
-            postImgEntity.setPost(this);
-        }
 
     }
 

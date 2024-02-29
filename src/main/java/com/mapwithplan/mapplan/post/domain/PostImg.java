@@ -25,8 +25,8 @@ public class PostImg {
 
     private LocalDateTime registrationDate;
 
-    @Builder
-    public PostImg(Long id, String uploadFileName,Post post, String storeFileName, LocalDateTime registrationDate) {
+    @Builder(toBuilder = true)
+    public PostImg(Long id, String uploadFileName,Post post, String storeFileName ,LocalDateTime registrationDate) {
         this.id = id;
         this.uploadFileName = uploadFileName;
         this.post = post;
@@ -42,7 +42,7 @@ public class PostImg {
      * @param clockProvider
      * @return
      */
-    public static PostImg from(Post post,String uploadFileName, String storeFileName, TimeClockProvider clockProvider){
+    public static PostImg from(Post post,String uploadFileName, String storeFileName,TimeClockProvider clockProvider){
         return PostImg.builder()
                 .uploadFileName(uploadFileName)
                 .post(post)

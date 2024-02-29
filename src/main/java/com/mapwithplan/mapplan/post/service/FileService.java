@@ -65,11 +65,11 @@ public class FileService {
         for (MultipartFile multipartFile : multipartFiles) {
 
             String originalFileName = multipartFile.getOriginalFilename();
-            String uploadFileName = getUuidFileName(originalFileName,uuidHolder);
-            String storeFileName;
+            String storeFileName = getUuidFileName(originalFileName,uuidHolder);
+            String storeFileUrl;
 
             try (InputStream inputStream = multipartFile.getInputStream()) {
-                String keyName = filePath + "/" + uploadFileName;
+                String keyName = filePath + "/" + storeFileName;
 
                 // S3에 파일 업로드
                 PutObjectRequest putObjectRequest = PutObjectRequest.builder()
@@ -81,7 +81,7 @@ public class FileService {
                 amazonS3Client.putObject(putObjectRequest, RequestBody.fromInputStream(inputStream, multipartFile.getSize()));
 
                 // S3에 업로드한 파일 URL
-                storeFileName = "https://kr.object.ncloudstorage.com/" + properties.getBucketName() + "/" + keyName;
+                storeFileUrl = "https://kr.object.ncloudstorage.com/" + properties.getBucketName() + "/" + keyName;
 
             } catch (IOException e) {
                 throw new FileOperationException("잘못된 입력입니다.");
