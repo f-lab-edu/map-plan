@@ -41,7 +41,7 @@ public class FakePlanRepository implements PlanRepository {
     }
 
     @Override
-    public Plan findPlanDetail(Long planId) {
+    public Plan findById(Long planId) {
         return data.stream()
                 .filter(test -> test.getId()
                 .equals(planId))

@@ -2,8 +2,6 @@ package com.mapwithplan.mapplan.plan.service.port;
 
 import com.mapwithplan.mapplan.plan.domain.Plan;
 
-import java.util.Optional;
-
 
 /**
  * service class 에 사용되는 PlanRepository 인테페이스입니다.
@@ -23,7 +21,7 @@ public interface PlanRepository {
      * @param planId
      * @return
      */
-    Plan findPlanDetail(Long planId);
+    Plan findById(Long planId);
 
 
 }

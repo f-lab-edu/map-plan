@@ -1,6 +1,11 @@
 package com.mapwithplan.mapplan.mock;
 
 import com.mapwithplan.mapplan.common.timeutils.service.port.TimeClockProvider;
+import com.mapwithplan.mapplan.PlanShareFriendship.controller.PlanShareFriendshipController;
+import com.mapwithplan.mapplan.PlanShareFriendship.controller.port.PlanShareFriendshipService;
+import com.mapwithplan.mapplan.PlanShareFriendship.service.PlanShareFriendshipServiceImpl;
+import com.mapwithplan.mapplan.PlanShareFriendship.service.port.PlanShareFriendshipRepository;
+
 import com.mapwithplan.mapplan.common.uuidutils.service.port.UuidHolder;
 import com.mapwithplan.mapplan.friendship.controller.FriendshipController;
 import com.mapwithplan.mapplan.friendship.controller.port.FriendshipService;
@@ -20,13 +25,24 @@ import com.mapwithplan.mapplan.member.service.port.MemberRepository;
 import com.mapwithplan.mapplan.mock.friendshipmock.FakeFriendshipRepository;
 import com.mapwithplan.mapplan.mock.membermock.FakeMemberRepository;
 import com.mapwithplan.mapplan.mock.planmock.FakePlanRepository;
+import com.mapwithplan.mapplan.mock.plansharefriendshipmock.FakePlanShareFriendshipRepository;
+import com.mapwithplan.mapplan.mock.postmock.FakePostImgRepository;
+import com.mapwithplan.mapplan.mock.postmock.FakePostRepository;
 import com.mapwithplan.mapplan.plan.controller.PlanController;
 import com.mapwithplan.mapplan.plan.controller.port.PlanService;
 import com.mapwithplan.mapplan.plan.service.PlanServiceImpl;
 import com.mapwithplan.mapplan.plan.service.port.PlanRepository;
+import com.mapwithplan.mapplan.post.controller.PostController;
+import com.mapwithplan.mapplan.post.controller.port.PostService;
+
+import com.mapwithplan.mapplan.post.service.PostServiceImpl;
+import com.mapwithplan.mapplan.post.service.port.PostImgRepository;
+import com.mapwithplan.mapplan.post.service.port.PostRepository;
 import lombok.Builder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+@Slf4j
 public class TestContainer {
 
     public final MailSender mailSender;
@@ -47,6 +63,9 @@ public class TestContainer {
     public final RefreshTokenRepository refreshTokenRepository;
 
     public final JwtTokenizer jwtTokenizer;
+
+
+    // plan
     public final PlanRepository planRepository;
     public final PlanService planService;
 
@@ -58,6 +77,23 @@ public class TestContainer {
     public final FriendshipService friendshipService;
 
     public final FriendshipController friendshipController;
+
+
+
+
+    // PlanShareFriendship
+    public final PlanShareFriendshipRepository planShareFriendshipRepository;
+    public final PlanShareFriendshipService planShareFriendshipService;
+    public final PlanShareFriendshipController planShareFriendshipController;
+
+
+    //post
+    public final PostRepository postRepository;
+    public final PostService postService;
+
+    public final PostController postController;
+
+    public final PostImgRepository postImgRepository;
 
     @Builder
     public TestContainer(TimeClockProvider clockHolder, UuidHolder uuidHolder) {
@@ -125,5 +161,36 @@ public class TestContainer {
         this.friendshipController = FriendshipController.builder()
                 .friendshipService(this.friendshipService)
                 .build();
+
+
+        // PlanShareFriendship
+
+        this.planShareFriendshipRepository = new FakePlanShareFriendshipRepository();
+        this.planShareFriendshipService = PlanShareFriendshipServiceImpl.builder()
+                .planShareFriendshipRepository(this.planShareFriendshipRepository)
+                .friendshipRepository(this.friendshipRepository)
+                .planRepository(this.planRepository)
+                .timeClockProvider(clockHolder)
+                .jwtTokenizer(this.jwtTokenizer)
+                .memberRepository(this.memberRepository)
+                .build();
+        this.planShareFriendshipController= PlanShareFriendshipController.builder()
+                .planShareFriendshipService(this.planShareFriendshipService)
+                .build();
+
+
+        //post
+        this.postImgRepository = new FakePostImgRepository();
+        this.postRepository = new FakePostRepository();
+        this.postService = PostServiceImpl.builder()
+                .postRepository(this.postRepository)
+                .memberService(this.memberService)
+                .postImgRepository(this.postImgRepository)
+                .uuidHolder(uuidHolder)
+                .clockProvider(clockHolder).build();
+        this.postController = PostController.builder()
+                .postService(this.postService)
+                .build();
+
     }
 }

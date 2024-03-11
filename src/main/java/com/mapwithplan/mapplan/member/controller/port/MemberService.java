@@ -45,4 +45,5 @@ public interface MemberService {
      * @return
      */
     Member editMemberDetail(String authorizationHeader, EditMember editMember);
+
 }

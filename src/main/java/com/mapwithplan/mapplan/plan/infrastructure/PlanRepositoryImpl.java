@@ -30,7 +30,7 @@ public class PlanRepositoryImpl implements PlanRepository {
     }
 
     @Override
-    public Plan findPlanDetail(Long planId) {
+    public Plan findById(Long planId) {
         return planJPARepository
                 .findById(planId)
                 .orElseThrow(() -> new ResourceNotFoundException("Plan", planId))
