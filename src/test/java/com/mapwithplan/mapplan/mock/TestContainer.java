@@ -28,6 +28,7 @@ import com.mapwithplan.mapplan.mock.planmock.FakePlanRepository;
 import com.mapwithplan.mapplan.mock.plansharefriendshipmock.FakePlanShareFriendshipRepository;
 import com.mapwithplan.mapplan.mock.postmock.FakePostImgRepository;
 import com.mapwithplan.mapplan.mock.postmock.FakePostRepository;
+import com.mapwithplan.mapplan.mock.searchmembermock.FakeSearchMemberRepository;
 import com.mapwithplan.mapplan.plan.controller.PlanController;
 import com.mapwithplan.mapplan.plan.controller.port.PlanService;
 import com.mapwithplan.mapplan.plan.service.PlanServiceImpl;
@@ -38,6 +39,10 @@ import com.mapwithplan.mapplan.post.controller.port.PostService;
 import com.mapwithplan.mapplan.post.service.PostServiceImpl;
 import com.mapwithplan.mapplan.post.service.port.PostImgRepository;
 import com.mapwithplan.mapplan.post.service.port.PostRepository;
+import com.mapwithplan.mapplan.search.member.controller.SearchMemberController;
+import com.mapwithplan.mapplan.search.member.controller.port.SearchMemberService;
+import com.mapwithplan.mapplan.search.member.service.SearchMemberServiceImpl;
+import com.mapwithplan.mapplan.search.member.service.port.SearchMemberRepository;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -95,10 +100,20 @@ public class TestContainer {
 
     public final PostImgRepository postImgRepository;
 
+    //searchMember
+    public final SearchMemberRepository searchMemberRepository;
+
+    public final SearchMemberService searchMemberService;
+
+    public final SearchMemberController searchMemberController;
+
     @Builder
     public TestContainer(TimeClockProvider clockHolder, UuidHolder uuidHolder) {
         this.mailSender = new FakeMailSender();
-        this.memberRepository = new FakeMemberRepository();
+        FakeMemberRepository fakeMemberRepository = new FakeMemberRepository();
+
+        this.memberRepository = fakeMemberRepository;
+
         this.certificationService = new CertificationService(this.mailSender);
         String accessSecret = "testtesttesttesttesttesttesttesttesttesttesttest";
         String refreshSecret = "testtesttesttesttesttesttesttesttesttesttesttest";
@@ -192,5 +207,14 @@ public class TestContainer {
                 .postService(this.postService)
                 .build();
 
+        //SearchMember
+
+        this.searchMemberRepository = new FakeSearchMemberRepository(fakeMemberRepository);
+        this.searchMemberService = SearchMemberServiceImpl.builder()
+                .searchMemberRepository(searchMemberRepository)
+                .build();
+        this.searchMemberController = SearchMemberController.builder()
+                .searchMemberService(searchMemberService)
+                .build();
     }
 }

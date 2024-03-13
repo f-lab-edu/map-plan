@@ -64,4 +64,8 @@ public class FakeMemberRepository implements MemberRepository {
         return member;
     }
 
+
+    public List<Member> getAllMember(){
+        return data;
+    }
 }
