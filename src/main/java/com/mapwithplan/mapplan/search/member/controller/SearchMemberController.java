@@ -23,6 +23,7 @@ public class SearchMemberController {
 
     /**
      * 요청 받은 이메일을 기반으로 회원을 조회합니다.
+     * 조회 대상은 서비스를 이용하는 모든 회원입니다.
      * 조회된 회원은 FindMemberResponse 에 있는 정보만을 반환합니다.
      * @param email 요청받은 메일입니다.
      * @return 검색 요청 받은 email 을 기반으로 값을 return 합니다.
