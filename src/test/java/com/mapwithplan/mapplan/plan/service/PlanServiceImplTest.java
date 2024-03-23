@@ -7,7 +7,6 @@ import com.mapwithplan.mapplan.member.domain.Member;
 
 import com.mapwithplan.mapplan.mock.TestClockProvider;
 import com.mapwithplan.mapplan.mock.TestContainer;
-import com.mapwithplan.mapplan.mock.planmock.TestPlanContainer;
 import com.mapwithplan.mapplan.plan.domain.Plan;
 import com.mapwithplan.mapplan.plan.domain.PlanCreate;
 import org.junit.jupiter.api.BeforeEach;

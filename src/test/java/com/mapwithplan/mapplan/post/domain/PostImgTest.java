@@ -28,7 +28,7 @@ class PostImgTest {
                 .name("test 이름")
                 .build();
         //When
-        Post post = Post.from(postCreate, member, new TestClockProvider(1L));
+        Post post = Post.from(postCreate, null,member ,new TestClockProvider(1L));
 
         //When
         PostImg postImg = PostImg

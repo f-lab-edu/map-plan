@@ -10,6 +10,8 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "post")
 @Entity
@@ -39,8 +41,14 @@ public class PostEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private PostStatus postStatus;
 
-    @Builder
-    public PostEntity(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, MemberEntity memberEntity, String title, String content, String anonymousName, Integer countLike, String location, PostStatus postStatus) {
+
+    @OneToMany(mappedBy = "postEntity",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PostImgEntity> postImgEntityList = new ArrayList<>();
+
+
+
+    @Builder(toBuilder = true)
+    public PostEntity(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, MemberEntity memberEntity, String title, String content, String anonymousName, Integer countLike, String location, PostStatus postStatus,  List<PostImgEntity> postImgEntityList) {
         super(createdAt, modifiedAt);
         this.id = id;
         this.memberEntity = memberEntity;
@@ -49,6 +57,7 @@ public class PostEntity extends BaseTimeEntity {
         this.anonymousName = anonymousName;
         this.countLike = countLike;
         this.location = location;
+        this.postImgEntityList = postImgEntityList;
         this.postStatus = postStatus;
     }
 
@@ -64,6 +73,10 @@ public class PostEntity extends BaseTimeEntity {
                 .createdAt(post.getCreatedAt())
                 .modifiedAt(post.getModifiedAt())
                 .location(post.getLocation())
+                .postImgEntityList(post.getPostImgList()
+                        .stream()
+                        .map(PostImgEntity::from)
+                        .toList())
                 .build();
     }
     public Post toModel(){
@@ -77,10 +90,19 @@ public class PostEntity extends BaseTimeEntity {
                 .postStatus(postStatus)
                 .createdAt(getCreatedAt())
                 .modifiedAt(getModifiedAt())
+                .postImgList(postImgEntityList.stream().map(PostImgEntity::toModel).toList())
                 .location(location)
                 .build();
     }
 
+    /**
+     * 게시글, 게시글 이미지의 양방향 연관 관계 설정 메서드 추가
+     */
+    public void addAllPostImg(List<PostImgEntity> postImgEntityList){
+        this.toBuilder()
+                .postImgEntityList(postImgEntityList);
 
+
+    }
 
 }

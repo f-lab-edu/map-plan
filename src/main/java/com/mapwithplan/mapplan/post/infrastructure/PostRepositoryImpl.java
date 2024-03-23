@@ -22,4 +22,9 @@ public class PostRepositoryImpl implements PostRepository {
     public Post createPost(Post post) {
         return postJPARepository.save(PostEntity.from(post)).toModel();
     }
+
+    @Override
+    public Post findPostWithImagesById(Long postId) {
+        return postJPARepository.findPostWithImagesById(postId).toModel();
+    }
 }

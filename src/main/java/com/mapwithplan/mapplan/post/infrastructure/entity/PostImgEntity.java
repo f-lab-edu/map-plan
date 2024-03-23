@@ -18,7 +18,7 @@ public class PostImgEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private PostEntity postEntity;
 
@@ -61,4 +61,9 @@ public class PostImgEntity {
                 .build();
     }
 
+
+    // 이미지와 게시글 간의 양방향 연관 관계 설정
+    public void setPost(PostEntity postEntity) {
+        this.postEntity = postEntity;
+    }
 }

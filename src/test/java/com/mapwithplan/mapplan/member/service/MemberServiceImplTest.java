@@ -30,8 +30,14 @@ class MemberServiceImplTest {
 
     private MemberServiceImpl memberService;
     private JwtTokenizer jwtTokenizer;
+    private TestContainer testContainer;
     @BeforeEach
     void init(){
+        this.testContainer = TestContainer
+                .builder()
+                .uuidHolder(new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab"))
+                .clockHolder(new TestClockProvider(1L))
+                .build();
         FakeMemberRepository fakeMemberRepository = new FakeMemberRepository();
         FakeMailSender fakeMailSender = new FakeMailSender();
         this.jwtTokenizer = new JwtTokenizer("testsettsetsetsetsetestestsettsetsetsetsetestestsettsetsetsetsetes"
@@ -93,7 +99,9 @@ class MemberServiceImplTest {
                 .password("test123")
                 .build();
         //When
-        Member member = memberService.saveMember(memberCreate);
+        Member member = testContainer
+                .memberService
+                .saveMember(memberCreate);
         //Then
         assertThat(member.getId()).isNotNull();
         assertThat(member.getPassword()).isNotEqualTo(memberCreate.getPassword());

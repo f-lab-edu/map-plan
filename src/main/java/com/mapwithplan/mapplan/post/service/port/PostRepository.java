@@ -14,4 +14,7 @@ public interface PostRepository {
      * @return 저장된 게시글을 리턴 합니다.
      */
     Post createPost(Post post);
+
+
+    Post findPostWithImagesById(Long postId);
 }

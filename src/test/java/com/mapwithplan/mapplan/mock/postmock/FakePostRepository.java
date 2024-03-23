@@ -35,4 +35,9 @@ public class FakePostRepository implements PostRepository {
             return post;
         }
     }
+
+    @Override
+    public Post findPostWithImagesById(Long postId) {
+        return null;
+    }
 }
