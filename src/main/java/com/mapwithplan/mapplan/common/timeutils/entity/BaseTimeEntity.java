@@ -25,10 +25,10 @@ public class BaseTimeEntity {
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime createdAt;
+    protected LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime modifiedAt;
+    protected LocalDateTime modifiedAt;
 
     public BaseTimeEntity(LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.createdAt = createdAt;
